@@ -1,0 +1,31 @@
+.Login h1 {
+  font-family: "TradeGothic";
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 36px;
+  line-height: 45px;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.Login p {
+  width: auto;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 17px;
+  font-weight: 300;
+  text-align: center;
+  letter-spacing: 0;
+  color: #5b6a87;
+  line-height: 1.8em;
+  font-weight: 600;
+  max-width: 600px;
+  margin: auto;
+}
+
+.Login form a {
+  margin-top: 15px;
+  display: block;
+  font-size: 14px;
+}

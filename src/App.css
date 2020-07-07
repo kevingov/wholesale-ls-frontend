@@ -1,7 +1,293 @@
-.App {
-  margin-top: 15px;
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0px;
+  padding: 0px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #333;
+  background-color: #fff !important;
 }
 
-.App .navbar-brand {
+.App .nav .active {
+  color: #6c63ff;
+}
+
+.App .nav {
+  top: 0;
+  z-index: 9999;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: visible;
+  width: 100%;
+  height: 70px;
+  max-width: none;
+  margin-right: auto;
+  margin-left: auto;
+  -ms-flex-align: center;
+  align-items: center;
+  font-weight: 400;
+}
+
+.App .nav span {
+  cursor: pointer;
+}
+
+.App .nav .nav-content {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  max-width: 1180px;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  margin: auto;
+}
+
+.App .nav .nav-content .logo {
+  width: 110px;
+  max-width: 100%;
+  display: inline-block;
+}
+
+.App .nav .nav-content .links {
+  display: flex;
+  width: auto;
+  margin-left: auto;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: auto;
+  -ms-flex-item-align: auto;
+  align-self: auto;
+  -webkit-box-ordinal-group: 1;
+  -webkit-order: 0;
+  -ms-flex-order: 0;
+  order: 0;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  text-decoration: none;
+}
+
+.link-10 {
+  transition: all 0.2s ease;
+  color: #132144;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.link-10:hover {
+  text-decoration: none !important;
+}
+
+.seperator {
+  width: 1px;
+  height: 18px;
+  margin-right: 8px;
+  margin-left: 8px;
+  border-radius: 20px;
+  background-color: rgba(141, 162, 181, 0.33);
+  margin: 0px 20px;
+}
+
+.conclusion {
+  background-color: #33353a;
+  color: #fff;
+  margin-bottom: 0px;
+  padding: 80px 0px;
+  padding-bottom: 20px;
+}
+
+.conclusion h1 {
+  font-family: "TradeGothic", sans-serif;
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 45px;
+  text-align: center;
+}
+
+.conclusion p {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 23px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.footer-nav {
+  display: flex;
+  padding: 60px 20px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  background-color: #33353a;
+  color: #fff;
+}
+
+.footer-nav-container {
+  display: flex;
+  width: auto;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 35px 0;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  display: block;
+  width: 1040px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.sections-menu-headline {
+  margin-bottom: 24px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 26px;
+  font-family: "TradeGothic", sans-serif;
+  text-transform: uppercase;
+}
+
+.structure-menu-link {
+  display: block;
+  margin-bottom: 22px;
+  -webkit-transition: color 0.2s ease, -webkit-transform 0.4s ease;
+  transition: color 0.2s ease, -webkit-transform 0.4s ease;
+  transition: color 0.2s ease, transform 0.4s ease;
+  transition: color 0.2s ease, transform 0.4s ease, -webkit-transform 0.4s ease;
+  color: #8792a1;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.structure-menu-link:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+.copy {
+  display: flex;
+  height: 60px;
+  margin-left: auto;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #33353a;
+  background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(hsla(0, 0%, 100%, 0.05)),
+    to(hsla(0, 0%, 100%, 0.05))
+  );
+  background-image: linear-gradient(
+    180deg,
+    hsla(0, 0%, 100%, 0.05),
+    hsla(0, 0%, 100%, 0.05)
+  );
+}
+
+.copy-inner {
+  font-size: 14px;
+  font-weight: 500;
+  color: hsla(0, 0%, 100%, 0.37);
+  line-height: 26px;
+}
+
+.secondary-btn {
+  color: #fff;
+  background-color: #6c63ff;
+  border-radius: 3px;
+  padding: 10px 20px;
+  border: none;
+}
+
+.secondary-btn:hover,
+.secondary-btn:active,
+.secondary-btn:focus {
+  color: #fff;
+  opacity: 0.8;
+  text-decoration: none;
+  transition: 0.2s all ease;
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+button:hover {
+  color: #0085ef;
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+}
+
+.other-btn {
+  color: #444444;
+  background: #f3f3f3;
+  border: 1px #dadada solid;
+  padding: 5px 10px;
+  border-radius: 2px;
   font-weight: bold;
+  font-size: 12px;
+  outline: none;
+  cursor: pointer;
+}
+
+.other-btn:hover {
+  border: 1px #c6c6c6 solid;
+  box-shadow: 1px 1px 1px #eaeaea;
+  color: #333333;
+  background: #f7f7f7;
+  text-decoration: none !important;
 }
