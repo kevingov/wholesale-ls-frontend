@@ -56,7 +56,13 @@ class App extends Component {
               <a href="/" className="logo hidden-xs">
                 Modena
               </a>
-              {this.state.isAuthenticated ? null : (
+              {this.state.isAuthenticated ? (
+                <div className="links">
+                  <a href="/properties/new" className="secondary-btn">
+                    New Property
+                  </a>
+                </div>
+              ) : (
                 <div className="links">
                   <a
                     href="/login"

@@ -31,7 +31,7 @@ export default function NewProperty(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   function validateForm() {
-    return true;
+    return title.length > 5;
   }
 
   async function handleSubmit(event) {
@@ -57,26 +57,37 @@ export default function NewProperty(props) {
     <div className="NewProperty">
       <Row>
         <Col sm={12}>
-          <form onSubmit={handleSubmit}>
-            <FormGroup controlId="firstFollowUpText">
-              <ControlLabel>Title</ControlLabel>
-              <FormControl
-                value={title}
-                type="text"
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </FormGroup>
+          <div className="form-wrapper">
+            <form onSubmit={handleSubmit}>
+              <FormGroup controlId="title">
+                <ControlLabel>Title</ControlLabel>
+                <FormControl
+                  value={title}
+                  type="text"
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </FormGroup>
 
-            <button
-              className="other-btn pull-right"
-              isloading={isLoading}
-              type="submit"
-              disabled={!validateForm()}
-            >
-              Create Property
-              <MdArrowForward fontSize="16px" />
-            </button>
-          </form>
+              <FormGroup controlId="tagline">
+                <ControlLabel>Tagline</ControlLabel>
+                <FormControl
+                  value={tagline}
+                  type="text"
+                  onChange={(e) => setTagline(e.target.value)}
+                />
+              </FormGroup>
+              <br />
+              <button
+                className="other-btn pull-right"
+                isloading={isLoading}
+                type="submit"
+                disabled={!validateForm()}
+              >
+                Create Property
+                <MdArrowForward fontSize="16px" />
+              </button>
+            </form>
+          </div>
         </Col>
       </Row>
     </div>
