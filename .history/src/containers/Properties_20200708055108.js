@@ -4,8 +4,8 @@ import { Col, Modal, Row, Table } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 import { API } from "aws-amplify";
-// import IosChatboxes from "react-ionicons/lib/IosChatboxes";
-// import IosRefresh from "react-ionicons/lib/IosRefresh";
+import IosChatboxes from "react-ionicons/lib/IosChatboxes";
+import IosRefresh from "react-ionicons/lib/IosRefresh";
 import MdAdd from "react-ionicons/lib/MdAdd";
 import NewProperty from "./NewProperty";
 import ViewProperty from "./ViewProperty";
@@ -56,7 +56,7 @@ export default function Properties(props) {
             <br />
             <br />
             <p className="text-center">
-              {/* <IosChatboxes fontSize="64px" color="#8792a2" /> */}
+              <IosChatboxes fontSize="64px" color="#8792a2" />
             </p>
             <p>Create your first property</p>
             <p className="text-center">
@@ -164,7 +164,7 @@ export default function Properties(props) {
           <br />
           <br />
           <br />
-          {/* <IosRefresh fontSize="60px" color="#0085ef" rotate={true} /> */}
+          <IosRefresh fontSize="60px" color="#0085ef" rotate={true} />
         </div>
       )}
       <Modal show={viewNewPropertyModel} dialogClassName="modal-90w">
