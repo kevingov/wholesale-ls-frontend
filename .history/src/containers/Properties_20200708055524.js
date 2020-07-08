@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 import { API } from "aws-amplify";
 // import IosChatboxes from "react-ionicons/lib/IosChatboxes";
-// import IosRefresh from "react-ionicons/lib/IosRefresh";
+import IosRefresh from "react-ionicons/lib/IosRefresh";
 import MdAdd from "react-ionicons/lib/MdAdd";
 import NewProperty from "./NewProperty";
 import ViewProperty from "./ViewProperty";
@@ -164,7 +164,7 @@ export default function Properties(props) {
           <br />
           <br />
           <br />
-          {/* <IosRefresh fontSize="60px" color="#0085ef" rotate={true} /> */}
+          <IosRefresh fontSize="60px" color="#0085ef" rotate={true} />
         </div>
       )}
       <Modal show={viewNewPropertyModel} dialogClassName="modal-90w">
