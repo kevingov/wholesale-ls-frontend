@@ -22,11 +22,11 @@ export default function NewProperty(props) {
   const [offerDate, setOfferDate] = useState("");
   const [closeDate, setCloseDate] = useState("");
   const [groupShowingDate, setGroupShowingDate] = useState("");
-  const [bedroom, setBedroom] = useState("");
+  const [bedroom, setBedroom] = useState(0);
   const [bathroom, setBathroom] = useState("");
   const [parking, setParking] = useState("");
-  const [netOperatingIncome, setNetOperatingIncome] = useState("");
-  const [canCrowdFund, setCanCrowdFund] = useState("");
+  const [netOperatingIncome, setNetOperatingIncome] = useState(0);
+  const [canCrowdFund, setCanCrowdFund] = useState(true);
   const [description, setDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,7 +40,23 @@ export default function NewProperty(props) {
     setIsLoading(true);
 
     try {
-      await createProperty({});
+      await createProperty({
+        title,
+        tagline, 
+        city,
+        address,
+        propertyType,
+        status,
+        offerDate,
+        closeDate,
+        groupShowingDate,
+        bedroom,
+        bathroom,
+        parking,
+        netOperatingIncome,
+        canCrowdFund,
+        description,
+      });
     } catch (e) {
       alert(e);
       setIsLoading(false);
@@ -58,6 +74,7 @@ export default function NewProperty(props) {
       <Row>
         <Col sm={12}>
           <div className="form-wrapper">
+            <h1>{city}</h1>
             <form onSubmit={handleSubmit}>
               <FormGroup controlId="title">
                 <ControlLabel>Title</ControlLabel>
@@ -76,6 +93,125 @@ export default function NewProperty(props) {
                   onChange={(e) => setTagline(e.target.value)}
                 />
               </FormGroup>
+
+              <FormGroup controlId="city">
+                <ControlLabel>City</ControlLabel>
+                <FormControl
+                  value={city}
+                  type="text"
+                  onChange={(e) => setCity(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="address">
+                <ControlLabel>Address</ControlLabel>
+                <FormControl
+                  value={address}
+                  type="text"
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="propertyType">
+                <ControlLabel>Property Type</ControlLabel>
+                <FormControl
+                  value={propertyType}
+                  type="text"
+                  onChange={(e) => setPropertyType(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="status">
+                <ControlLabel>Status</ControlLabel>
+                <FormControl
+                  value={status}
+                  type="text"
+                  onChange={(e) => setStatus(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="offerDate">
+                <ControlLabel>Offer Date</ControlLabel>
+                <FormControl
+                  value={offerDate}
+                  type="text"
+                  onChange={(e) => setOfferDate(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="closeDate">
+                <ControlLabel>Close Date</ControlLabel>
+                <FormControl
+                  value={closeDate}
+                  type="text"
+                  onChange={(e) => setCloseDate(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="groupShowingDate">
+                <ControlLabel>Group Showing Date</ControlLabel>
+                <FormControl
+                  value={groupShowingDate}
+                  type="text"
+                  onChange={(e) => setGroupShowingDate(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="bedroom">
+                <ControlLabel>Bedrooms</ControlLabel>
+                <FormControl
+                  value={bedroom}
+                  type="number"
+                  onChange={(e) => setBedroom(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="bathroom">
+                <ControlLabel>Bathrooms</ControlLabel>
+                <FormControl
+                  value={bathroom}
+                  type="text"
+                  onChange={(e) => setBathroom(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="address">
+                <ControlLabel>Parking</ControlLabel>
+                <FormControl
+                  value={parking}
+                  type="text"
+                  onChange={(e) => setParking(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="netOperatingIncome">
+                <ControlLabel>Net Operating Income</ControlLabel>
+                <FormControl
+                  value={netOperatingIncome}
+                  type="text"
+                  onChange={(e) => setNetOperatingIncome(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="canCrowdFund">
+                <ControlLabel>Able to Crowdfund</ControlLabel>
+                <FormControl
+                  type="checkbox"
+                  checked={canCrowdFund}
+                  onChange={() => setCanCrowdFund(!canCrowdFund)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="description">
+                <ControlLabel>Description</ControlLabel>
+                <FormControl
+                  value={description}
+                  type="text"
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </FormGroup>
+
+
               <br />
               <button
                 className="other-btn pull-right"
