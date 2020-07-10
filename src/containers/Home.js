@@ -13,6 +13,8 @@ export default function Home() {
     <div className="Home">
       <div className="lander">
         <div className="container">
+
+          {/* /* @Dave Hurley Need help with this piece of the Jumbotron. Trying to add modena_home.jpg as background picture */ }
         <Jumbotron>
         <h1>Find your Next Investment Property</h1>
         <p>Wholesale Properties for Flip, BRRRR, or Resale</p>
