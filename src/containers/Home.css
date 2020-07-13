@@ -1,26 +1,43 @@
   .Home .lander {
-    padding: 80px;
+    /* padding: 80px; */
     text-align: center;
+    margin-bottom: -30px;
     
   }
   
   .Home .lander h1 {
     font-family: "Open Sans", sans-serif;
     font-weight: 600;
-    color: black;
+    color: white;
   }
   
   .Home .lander p {
-    color: #999;
+    color: white;
+    font-weight: 600;
     
   }
 
+  
 
   /* @Dave Hurley Need help with this piece. trying to add modena_home.jpg as background pic  */
   .jumbotron {
-    /* background-image: url('../public/modena_home.jpg') */
-
+    background-image: linear-gradient( rgba(0,0,0,0.5), rgba(0, 0, 0, 0.5) ), url("https://wholesale-ls-marketing.s3.amazonaws.com/Modena+Home+House.jpg");
+    background-blend-mode: darken;
+    background-repeat: no-repeat, repeat;
+    background-position: center;
+    background-size: cover;
+    height: 70vh;
+    width: 100%;
   }
+
+  .jumbotron .container {
+    margin-top: 185px;
+  }
+
+  .jumbotron .container .h1 .p {
+    color: white;
+  }
+  /* .jumbotron .container . */
 
   .highlight-container {
     background: #3ab984;
@@ -89,11 +106,26 @@
         object-fit: cover;
     }
 
+  .featured-property {
+    padding: 130px;
+    margin-top: -150px;
+  }
+    /* .Card {
+
+    } */
+
+  .featured-property h1 {
+    color: black;
+  }
+
+
+
+
   .about-us-container {
     background: #3ab984;
     padding: 50px;
     margin-top: 50px;
-    height: 400px;
+    height: 1000px;
   }
 
   .about-us-text {

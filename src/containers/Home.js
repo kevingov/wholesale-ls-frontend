@@ -12,26 +12,26 @@ export default function Home() {
   return (
     <div className="Home">
       <div className="lander">
-        <div className="container">
-
-          {/* /* @Dave Hurley Need help with this piece of the Jumbotron. Trying to add modena_home.jpg as background picture */ }
-        <Jumbotron>
-        <h1>Find your Next Investment Property</h1>
-        <p>Wholesale Properties for Flip, BRRRR, or Resale</p>
-
-        <FormGroup>
-          <Row>
-            <Col xs={6}>
-              <FormControl placeholder="Location" />
-            </Col>
-            <Col xs={6}>
-              <FormControl placeholder="Max Price" />
-            </Col>
-          </Row>
-        </FormGroup>
-        </Jumbotron>
-
+        <div className="backgroundphoto" style={{backgroundImage: 'url(${https://wholesale-ls-marketing.s3.amazonaws.com/Modena+Home+House.jpg}'}}>
+          
         </div>
+          <Jumbotron>
+            <div className="container">
+              <h1>Find your Next Investment Property</h1>
+              <p>Wholesale Properties for Flip, BRRRR, or Resale</p>
+
+                <FormGroup>
+                  <Row>
+                    <Col xs={6}>
+                      <FormControl placeholder="Location" />
+                    </Col>
+                    <Col xs={6}>
+                      <FormControl placeholder="Max Price" />
+                    </Col>
+                  </Row>
+                </FormGroup>
+            </div>
+          </Jumbotron>
       </div>
 
       <div className="highlight-container">
@@ -62,7 +62,7 @@ export default function Home() {
           <Row>
             <Col xs="6" sm="4" className="text-center" >
               <Card className="text-center" as="a" onClick={"/properties"} style={{ cursor: "pointer"}}>
-                <CardImg variant="top" src="skyline_hamilton.jpg" />
+                <CardImg variant="top" src="https://wholesale-ls-marketing.s3.amazonaws.com/hamilton+skyline.jpg" />
                   <CardBody>
                     <CardTitle>Hamilton</CardTitle>
                         {/* <CardText tag="p">
@@ -75,7 +75,7 @@ export default function Home() {
 
             <Col xs="6" sm="4" className="text-center" > 
               <Card as="a" onClick={"/properties"} style={{ cursor: "pointer"}}>
-                <CardImg variant="top" src="skyline_toronto.jpg" />
+                <CardImg variant="top" src="https://wholesale-ls-marketing.s3.amazonaws.com/toronto+skyline.jpg" />
                   <CardBody>
                     <CardTitle>Toronto</CardTitle>
                       {/* <CardText tag="p">
@@ -88,7 +88,7 @@ export default function Home() {
 
             <Col xs="6" sm="4" className='text-center'>
               <Card as="a" onClick={"/properties"} style={{ cursor: "pointer"}}>
-                <CardImg variant="top" src="skyline_ottawa.jpg" />
+                <CardImg variant="top" src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg" />
                   <CardBody>
                     <CardTitle>Ottawa</CardTitle>
                       {/* <CardText tag="p">
@@ -99,14 +99,39 @@ export default function Home() {
               </Card>
             </Col>
           </Row>
-        <h1>Featured Properties</h1>
-          <Row>
-                      
-
-
-          </Row>
 
       </div>
+
+      <div className="featured-property">
+        <h1>Featured Properties</h1>
+            <Row>
+              <Col>
+                <Card as="a" onClick={"/properties"} style={{ cursor: "pointer"}}>
+                  <CardImg variant="top" src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg" />
+                    <CardBody>
+                      <CardTitle>Ottawa</CardTitle>
+                        <CardText tag="p">
+                          Export your Leads to your favorite CRM to analyze which campaigns are the most effective.
+                        </CardText>
+                          {/* <Button variant="primary">See Properties</Button> */}
+                    </CardBody>
+                </Card>  
+              </Col>
+              <Col>
+                <Card as="a" onClick={"/properties"} style={{ cursor: "pointer"}}>
+                  <CardImg variant="top" src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg" />
+                    <CardBody>
+                      <CardTitle>Ottawa</CardTitle>
+                        <CardText tag="p">
+                          Export your Leads to your favorite CRM to analyze which campaigns are the most effective.
+                        </CardText>
+                          {/* <Button variant="primary">See Properties</Button> */}
+                    </CardBody>
+                </Card>
+              </Col>   
+            </Row>
+      </div>
+
 
       <div className="about-us-container">
         <Row className="about-us-text">
@@ -119,7 +144,50 @@ export default function Home() {
               Instead of scouring through MLS or your Real Estate Broker for deals, come browse our selection of private home owners in need of a quick sale. 
             </h3>
           </Col>
-          <Col></Col>
+        </Row>
+
+        <Row>
+
+          <Col xs={6}>
+            <Row>
+              <Card as="a" onClick={"/properties"} style={{ cursor: "pointer"}}>
+                  <CardImg variant="top" src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg" />
+                    <CardBody>
+                      <CardTitle>Ottawa</CardTitle>
+                        {/* <CardText tag="p">
+                          Export your Leads to your favorite CRM to analyze which campaigns are the most effective.
+                        </CardText> */}
+                    </CardBody>
+              </Card>
+            </Row>
+          </Col>
+
+
+          <Col xs={6}>
+              <Row>
+                <Card as="a" onClick={"/properties"} style={{ cursor: "pointer"}}>
+                    <CardImg variant="top" src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg" />
+                      <CardBody>
+                        <CardTitle>Ottawa</CardTitle>
+                          {/* <CardText tag="p">
+                            Export your Leads to your favorite CRM to analyze which campaigns are the most effective.
+                          </CardText> */}
+                      </CardBody>
+                </Card>     
+              </Row>
+              <Row>
+              <Card as="a" onClick={"/properties"} style={{ cursor: "pointer"}}>
+                    <CardImg variant="top" src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg" />
+                      <CardBody>
+                        <CardTitle>Ottawa</CardTitle>
+                          {/* <CardText tag="p">
+                            Export your Leads to your favorite CRM to analyze which campaigns are the most effective.
+                          </CardText> */}
+                      </CardBody>
+                </Card> 
+              </Row>
+          
+          </Col>
         </Row>
       </div>
 
