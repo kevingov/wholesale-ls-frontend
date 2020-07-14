@@ -6,16 +6,19 @@
   }
   
   .Home .lander h1 {
-    font-family: "Open Sans", sans-serif;
-    font-weight: 600;
+    font-family: 'Sorts Mill Goudy', sans-serif;
+    font-weight: 400;
     color: white;
+    font-size: 42px;
+    line-height: 49px;
   }
   
   .Home .lander p {
     color: white;
-    font-weight: 600;
+    font-weight: 400;
     
   }
+
 
   
 
@@ -31,13 +34,38 @@
   }
 
   .jumbotron .container {
-    margin-top: 185px;
+    margin-top: 150px;
+    max-width: 530px;
+    text-align: center;
   }
 
   .jumbotron .container .h1 .p {
     color: white;
+    font-family: 'Sorts Mill Goudy', sans-serif;
   }
-  /* .jumbotron .container . */
+  
+  .jumbotron .btn {
+    color: #3ab984;
+    min-height: 42px;
+    padding: 12px 20px 11px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #3ab984;
+    border-radius: 25px;
+    background-color: transparent;
+    transition: color 200ms ease, background-color 200ms ease;
+    font-size: 14px;
+    line-height: 15px;
+    font-weight: 700;
+  }
+
+  .jumbotron .btn:hover {
+    background-color: #3ab984;
+    color:white;
+   
+  }
+
+
 
   .highlight-container {
     background: #3ab984;
@@ -64,10 +92,24 @@
 
   .cityCards {
     padding: 130px;
+    margin-top: -70px;
   }
 
   .cityCards h1 {
     color: black;
+    text-align: center;
+    /* margin-bottom: 10px; */
+  }
+
+  .cityCards h2 {
+    color: black;
+    text-align: center;
+    /* margin-bottom: 10px; */
+  }
+
+  .cityCards p {
+    color: black;
+    text-align: center;
   }
     .card {
     background-color: whitesmoke;
@@ -77,6 +119,8 @@
     border-color: white;
     box-shadow: 5px 10px 20px 1px rgba(0,0,0,0.253) !important;
     padding: 0px;
+    border-radius: 25px;
+
     }
 
     .card:hover {
@@ -104,11 +148,180 @@
         width: 100%;
         height: 15vw;
         object-fit: cover;
+        border-top-right-radius: 25px;
+        border-top-left-radius: 25px;
     }
+
+
+
+
+
+
+  .about-us-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    max-width: 1190px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 20px;
+    padding-left: 20px;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    -ms-grid-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    -ms-grid-rows: auto auto;
+    grid-template-rows: auto auto;
+    
+
+  }
+
+  /* .about-us-text {
+    margin-left: 120px;
+    margin-right: 120px;
+    text-align: center;
+  } */
+
+  .about-us-text h1 {
+    position: relative;
+    z-index: 1;
+    font-family: Oswald, sans-serif;
+    color: #000;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .about-us-text h3 {
+    margin-top: 10px;
+    font-size: 26px;
+    line-height: 32px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    font-family: 'Sorts Mill Goudy', sans-serif;
+    color: #000;
+
+
+  }
+
+  .about-us-text .title-underline {
+    position: absolute;
+    left: 0%;
+    top: auto;
+    right: 0%;
+    bottom: 0%;
+    width: 100%;
+    height: 2px;
+    max-width: 200px;
+    background-color: #3ab984;
+  }
+
+  .about-us-text img {
+    height: 22vw;
+  }
+
+  .how-it-works {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    max-width: 1190px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 20px;
+    padding-left: 20px;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    -ms-grid-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    -ms-grid-rows: auto auto;
+    grid-template-rows: auto auto;
+    margin-top: 70px;
+  }
+
+
+  .grid-template {
+    padding: 200px;
+    margin-top: -175px;
+    margin-bottom: 50px;
+  }
+
+  .grid-template .card-title{
+    font-size: 16px;
+  }
+
+  .grid-template .card-text{
+    font-size: 10px;
+  }
+
+  .grid-template .browse-property .card {
+    width: 80%;
+    height: 80%;
+  }
+
+  .grid-template .browse-property .card-img {
+    height: 700px;
+    width: 100%;
+  }
+
+
+  .newsletter {
+    position: relative;
+    overflow: hidden;
+    padding-top: 70px;
+    padding-bottom: 70px;
+    background-color: #3ab984;
+  }
+
+  .newsletter-box {
+    z-index: 2;
+  }
+
+  .green-bg {
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    right: 0%;
+    bottom: 0%;
+    z-index: 1;
+    width: 52%;
+    height: 100%;
+    background-color: #3ab984;
+    -webkit-transform: skew(-15deg, 0deg);
+    -ms-transform: skew(-15deg, 0deg);
+    transform: skew(-15deg, 0deg);
+  }
+
+  .image-bg {
+    position: absolute;
+    left: auto;
+    top: 0%;
+    right: 0%;
+    bottom: 0%;
+    width: 53%;
+    background-image: url(https://wholesale-ls-marketing.s3.amazonaws.com/Modena-Newsletter-Home.jpg);
+    background-position: 50% 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  
+
+
+
+
+
+
+
+
+
+
 
   .featured-property {
     padding: 130px;
-    margin-top: -150px;
+    margin-top: -100px;
+    border-bottom: 1px solid #cbd2de;
   }
     /* .Card {
 
@@ -118,28 +331,9 @@
     color: black;
   }
 
-
-
-
-  .about-us-container {
-    background: #3ab984;
-    padding: 50px;
-    margin-top: 50px;
-    height: 1000px;
+  .featured-property .card-text {
+    font-size: 10px;
+    text-align: left;
+    padding: 10px;
   }
 
-  .about-us-text {
-    margin-left: 100px;
-  }
-
-  h1 {
-    color: rgb(255, 255, 255);
-    font-weight: bold;
-    font-size: 26px;
-  }
-
-  h3 {
-    color: rgb(255, 255, 255);
-    font-size: 16px;
-
-  }
