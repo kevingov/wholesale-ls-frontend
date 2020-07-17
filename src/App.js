@@ -61,6 +61,7 @@ class App extends Component {
                   <a href="/properties/new" className="secondary-btn">
                     New Property
                   </a>
+                  <button onClick={() => this.handleLogout()}>Logout</button>
                 </div>
               ) : (
                 <div className="links">
