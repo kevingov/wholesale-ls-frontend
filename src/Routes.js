@@ -12,6 +12,7 @@ import React from "react";
 import Signup from "./containers/Signup";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import ViewProperty from "./containers/ViewProperty";
+import UserDashboard from "./containers/UserDashboard";
 
 export default ({ childProps }) => (
   <Switch>
@@ -50,6 +51,12 @@ export default ({ childProps }) => (
       path="/properties/:id"
       exact
       component={ViewProperty}
+      props={childProps}
+    />
+    <AuthenticatedRoute
+      path="/UserDashboard"
+      exact
+      component={UserDashboard}
       props={childProps}
     />
     {/* Finally, catch all unmatched routes */}

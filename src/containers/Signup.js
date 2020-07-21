@@ -23,6 +23,7 @@ export default function Signup(props) {
     phoneNumber: "",
     confirmPassword: "",
     confirmationCode: "",
+    bio: "",
   });
   const [newUser, setNewUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -80,6 +81,14 @@ export default function Signup(props) {
               type="checkbox"
               checked={isWholesaler}
               onChange={() => setIsWholesaler(!isWholesaler)}
+            />
+          </FormGroup>
+          <FormGroup controlId="bio" bsSize="large">
+            <ControlLabel>Include a Short Bio</ControlLabel>
+            <FormControl
+              type="text"
+              value={fields.bio}
+              onChange={handleFieldChange}
             />
           </FormGroup>
           <FormGroup controlId="email" bsSize="large">

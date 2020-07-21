@@ -42,7 +42,7 @@ export default function NewProperty(props) {
     try {
       await createProperty({
         title,
-        tagline,
+        tagline, 
         city,
         address,
         propertyType,
@@ -57,7 +57,6 @@ export default function NewProperty(props) {
         canCrowdFund,
         description,
       });
-      props.history.push("/");
     } catch (e) {
       alert(e);
       setIsLoading(false);
@@ -211,6 +210,7 @@ export default function NewProperty(props) {
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </FormGroup>
+
 
               <br />
               <button
