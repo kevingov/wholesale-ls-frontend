@@ -10,21 +10,19 @@ import MdTrash from "react-ionicons/lib/MdTrash";
 
 export default function EditProperty(props) {
   const [title, setTitle] = useState("");
-  const [dailyLimit, setDailyLimit] = useState("");
-  const [paused, setPaused] = useState("");
+  const [tagline, setTagline] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     function loadProperty() {
-      return API.get("properties", `/properties/${props.propertyId}`);
+      return API.get("properties", `/properties/${props.match.params.id}`);
     }
 
     async function onLoad() {
       try {
         const property = await loadProperty();
         setTitle(property.title);
-        setPaused(property.paused);
-        setDailyLimit(parseInt(property.dailyLimit));
+        setTagline(property.tagline);
         setIsLoading(false);
       } catch (e) {
         alert(e);
@@ -32,10 +30,10 @@ export default function EditProperty(props) {
     }
 
     onLoad();
-  }, [props.propertyId]);
+  }, [props.match.params.id]);
 
   function deleteProperty() {
-    return API.del("properties", `/properties/${props.propertyId}`);
+    return API.del("properties", `/properties/${props.match.params.id}`);
   }
 
   async function handleDelete(event) {
@@ -53,7 +51,7 @@ export default function EditProperty(props) {
 
     try {
       await deleteProperty();
-      props.props.props.props.history.push(`/dashboard`);
+      props.history.push("/");
     } catch (e) {
       alert(e);
       setIsLoading(false);
@@ -65,7 +63,7 @@ export default function EditProperty(props) {
   }
 
   function saveProperty(property) {
-    return API.put("properties", `/properties/${props.propertyId}`, {
+    return API.put("properties", `/properties/${props.match.params.id}`, {
       body: property,
     });
   }
@@ -76,7 +74,7 @@ export default function EditProperty(props) {
     setIsLoading(true);
 
     try {
-      await saveProperty({ title, paused, dailyLimit });
+      await saveProperty({ title });
       setIsLoading(false);
     } catch (e) {
       alert(e);
@@ -102,12 +100,13 @@ export default function EditProperty(props) {
               onChange={(e) => setTitle(e.target.value)}
             />
           </FormGroup>
-          <FormGroup controlId="dailyLimit">
-            <ControlLabel>Daily Sending Limit</ControlLabel>
+
+          <FormGroup controlId="tagline">
+            <ControlLabel>Tagline</ControlLabel>
             <FormControl
-              value={dailyLimit}
-              type="number"
-              onChange={(e) => setDailyLimit(parseInt(e.target.value))}
+              value={tagline}
+              type="text"
+              onChange={(e) => setTagline(e.target.value)}
             />
           </FormGroup>
 
