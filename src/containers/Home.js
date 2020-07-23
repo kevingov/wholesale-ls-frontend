@@ -24,7 +24,7 @@ export default function Home(props) {
               <div className="container">
                 <h1>Find your Next Investment Property</h1>
                 <p>Wholesale Contracts for Flip, BRRRR, or Resale</p>
-                <Button variant="success" href="#">
+                <Button variant="success" href="/properties">
                   Search Properties
                 </Button>
                 {/* <FormGroup>

@@ -1,5 +1,6 @@
 import "./App.css";
 
+import { Col, Row } from "react-bootstrap";
 import React, { Component } from "react";
 
 import { Auth } from "aws-amplify";
@@ -84,6 +85,70 @@ class App extends Component {
             </div>
           </div>
           <Routes childProps={childProps} />
+          <div className="footer">
+            <div className="footer-nav">
+              <div className=" container">
+                <Row>
+                  <Col sm={12} md={6}>
+                    <div>
+                      <img
+                        height="45"
+                        alt="conversify logo"
+                        src="https://conversify-marketing.s3.amazonaws.com/uconnectly-lgoo.png"
+                      />
+                    </div>
+                    <br />
+                    <br />
+                  </Col>
+
+                  <Col sm={12} md={2}>
+                    <div className="sections-menu-headline">Menu</div>
+                    <a href="/" className="structure-menu-link">
+                      Home
+                    </a>
+                    <a
+                      href="https://www.facebook.com/groups/conversify/"
+                      className="structure-menu-link"
+                    >
+                      Community
+                    </a>
+                  </Col>
+
+                  <Col sm={12} md={2}>
+                    <div className="sections-menu-headline">Legal</div>
+                    <a href="/privacy" className="structure-menu-link">
+                      Privacy Policy
+                    </a>
+                    <a href="/terms" className="structure-menu-link">
+                      Terms
+                    </a>
+                  </Col>
+                  <Col sm={12} md={2}>
+                    <div className="sections-menu-headline">Contact</div>
+                    <a
+                      href="https://linkedin.com/company/uconnectly"
+                      className="structure-menu-link"
+                    >
+                      LinkedIn
+                    </a>
+                    <a
+                      href="https://twitter.com/uconnectly"
+                      className="structure-menu-link"
+                    >
+                      Twitter
+                    </a>
+                  </Col>
+                </Row>
+              </div>
+            </div>
+            <div className="copy">
+              <div className="copy-inner">
+                <span className="fadedspan">
+                  © 2019 Uncommonestate, Inc. All rights reserved.
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       )
     );
