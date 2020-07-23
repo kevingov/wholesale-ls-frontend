@@ -86,7 +86,7 @@ export default function Signup(props) {
           <FormGroup controlId="bio" bsSize="large">
             <ControlLabel>Include a Short Bio</ControlLabel>
             <FormControl
-              type="text"
+              type="textarea"
               value={fields.bio}
               onChange={handleFieldChange}
             />
