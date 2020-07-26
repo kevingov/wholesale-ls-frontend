@@ -377,6 +377,10 @@
     margin-bottom: 100px;
   }
 
+  .grid-template img {
+    width: 70%;
+  }
+
   .grid-template .card-title {
     font-size: 1.8rem;
     font-weight: 300;
