@@ -55,7 +55,7 @@ class App extends Component {
           <div className="nav">
             <div className="nav-content container">
               <a href="/" className="logo hidden-xs">
-                Modena
+                Uncommon Estate
               </a>
               {this.state.isAuthenticated ? (
                 <div className="links">
@@ -126,16 +126,28 @@ class App extends Component {
                   <Col sm={12} md={2}>
                     <div className="sections-menu-headline">Contact</div>
                     <a
-                      href="https://linkedin.com/company/uconnectly"
+                      href="https://linkedin.com/company/uncommonestate"
                       className="structure-menu-link"
                     >
                       LinkedIn
                     </a>
                     <a
-                      href="https://twitter.com/uconnectly"
+                      href="https://twitter.com/uncommonestate"
                       className="structure-menu-link"
                     >
                       Twitter
+                    </a>
+                    <a
+                      href="https://instagram.com/uncommonestate"
+                      className="structure-menu-link"
+                    >
+                      Instagram
+                    </a>
+                    <a
+                      href="https://facebook.com/uncommonestate"
+                      className="structure-menu-link"
+                    >
+                      Facebook
                     </a>
                   </Col>
                 </Row>
@@ -144,7 +156,7 @@ class App extends Component {
             <div className="copy">
               <div className="copy-inner">
                 <span className="fadedspan">
-                  © 2019 Uncommonestate, Inc. All rights reserved.
+                  © 2020 Uncommonestate, Inc. All rights reserved.
                 </span>
               </div>
             </div>

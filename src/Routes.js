@@ -13,6 +13,7 @@ import Signup from "./containers/Signup";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import ViewProperty from "./containers/ViewProperty";
 import UserDashboard from "./containers/UserDashboard";
+import PrivacyPolicy from "./containers/PrivacyPolicy";
 
 export default ({ childProps }) => (
   <Switch>
@@ -57,6 +58,12 @@ export default ({ childProps }) => (
       path="/dashboard"
       exact
       component={UserDashboard}
+      props={childProps}
+    />
+    <AppliedRoute
+      path="/privacy"
+      exact
+      component={PrivacyPolicy}
       props={childProps}
     />
     {/* Finally, catch all unmatched routes */}

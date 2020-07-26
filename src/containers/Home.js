@@ -7,8 +7,9 @@ import {
   CardImg,
   CardText,
   CardTitle,
+
 } from "reactstrap";
-import { Col, Jumbotron, Row } from "react-bootstrap";
+import { Col, Jumbotron, Row, FormControl, FormGroup} from "react-bootstrap";
 
 import React from "react";
 
@@ -64,6 +65,30 @@ export default function Home(props) {
               </Row>
             </div>
           </div>
+          {/* <div className="cities">
+          <Row>
+          
+          <div className="cities-container">
+            
+              <div className="col-md-8">
+                <div className="places_wrapper_type_2">
+                  <div className="toronto-city">
+                    <div className="places_type_2_tagline">
+                      Toronto
+                    </div>
+                  </div>
+              <div className="col-md-4">
+                <div className="ottawa-city">
+                </div>
+              </div>
+                  </div>
+                </div>
+         
+          </div>
+        
+          </Row>
+          </div>  */}
+
 
           <div className="cityCards">
             <h1>Featured Cities</h1>
@@ -141,19 +166,28 @@ export default function Home(props) {
                   Welcome to the First Real Estate Marketplace for Off-Market
                   Properties.{" "}
                 </h3>
+                
+                <div class="title-underline"></div>
 
-                <h3>
+                <p>
                   We Work exclusively with Real Estate Wholesalers to find you
                   undervalued property that are ready to flip in one convenience
                   platform.{" "}
-                </h3>
+                </p>
+                
+                <p>
+                  Wholesaling Property is the act of assigning a contract on a property 
+                  that is ready to close. Wholesalers will market and knock on every door 
+                  to find distressed properties in need of a quick sale. Once found, they 
+                  buy the property, contract it out, and flip the contracts over to Real Estate Investors, such as us!
+                </p>
 
-                <h3>
+                <p>
                   Instead of scouring through MLS or your Real Estate Broker for
                   deals, come browse our selection of private home owners in
                   need of a quick sale.
-                </h3>
-                <div class="title-underline"></div>
+                </p>
+                
               </Col>
               <Col xs={6}>
                 <img
@@ -181,36 +215,40 @@ export default function Home(props) {
                   onClick={"/properties"}
                   style={{ cursor: "pointer" }}
                 >
-                  <CardImg
+                  {/* <CardImg
                     variant="top"
                     src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-browse+property.jpg"
-                  />
+                  /> */}
                   <CardBody>
-                    <CardTitle>Find your Ideal Contract</CardTitle>
+                    <CardTitle>1) Find your Ideal Contract</CardTitle>
                     <CardText tag="p">
-                      Search through our entire listing of property contracts to
-                      find one that suits your criterias.
+                      Browse through our large selection of Real Estate Contract to discover one that fits the 
+                      Budget, Metrics, and Location for your desirable investment.
                     </CardText>
                   </CardBody>
                 </Card>
+                <img src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-Walls.jpg">
+              </img>
               </Col>
+
+              
               <Col xs={6}>
                 <Row>
                   <Col xs={6}>
                     <Card
+                      className="two-shelf-cards"
                       as="a"
                       onClick={"/properties"}
                       style={{ cursor: "pointer" }}
                     >
-                      <CardImg
+                      {/* <CardImg
                         variant="top"
                         src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-Message.jpg"
-                      />
+                      /> */}
                       <CardBody>
-                        <CardTitle>Message the Seller</CardTitle>
+                        <CardTitle>2) Message the Seller</CardTitle>
                         <CardText tag="p">
-                          Inquiry directly with the wholeseller regarding the
-                          contract.
+                          Once you've found a contract that fits suits your goals, you can message the wholeseller directly for more information. 
                         </CardText>
                       </CardBody>
                     </Card>
@@ -222,15 +260,14 @@ export default function Home(props) {
                       onClick={"/properties"}
                       style={{ cursor: "pointer" }}
                     >
-                      <CardImg
+                      {/* <CardImg
                         variant="top"
                         src="https://wholesale-ls-marketing.s3.amazonaws.com/modena-houseviewing.jpg"
-                      />
+                      /> */}
                       <CardBody>
-                        <CardTitle>Schedule a Showing</CardTitle>
+                        <CardTitle>3) Schedule a Showing</CardTitle>
                         <CardText tag="p">
-                          Coordinate a time to view the property in person prior
-                          to purchase.
+                          After you've spoken with the Wholeseller and you're ready to view the property, you can schedule and book a time to view the property. 
                         </CardText>
                       </CardBody>
                     </Card>
@@ -242,15 +279,14 @@ export default function Home(props) {
                     onClick={"/properties"}
                     style={{ cursor: "pointer" }}
                   >
-                    <CardImg
+                    {/* <CardImg
                       variant="top"
                       src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-Transaction.jpg"
-                    />
+                    /> */}
                     <CardBody>
-                      <CardTitle>Purchase the Contract</CardTitle>
+                      <CardTitle>4) Purchase the Contract</CardTitle>
                       <CardText tag="p">
-                        Finalize the details and purchase the contract from the
-                        wholeseller.
+                        When you're happy with the price and condition of the home, you can than finalize the contract and finish the assignment over to your name. Happy Investing! 
                       </CardText>
                     </CardBody>
                   </Card>
@@ -261,8 +297,22 @@ export default function Home(props) {
 
           <div className="newsletter">
             <div className="green-bg"></div>
-            <div className="newsletter-box">
+            <div className="narrow-box">
+              <div className="newsletter-box">
               <h1>Subscribe to our Newsletter</h1>
+              <h3>Receive the Best Property Deals</h3>
+              <Row>
+              
+                  <FormGroup controlId="subscribe" bsSize="small">
+
+                  
+                <FormControl placeholder="Name"/>
+                <FormControl type="email" placeholder="Email" />
+              
+                </FormGroup>
+              
+              </Row>
+              </div>
             </div>
 
             <div className="image-bg"></div>

@@ -28,6 +28,13 @@ export default function NewProperty(props) {
   const [netOperatingIncome, setNetOperatingIncome] = useState(0);
   const [canCrowdFund, setCanCrowdFund] = useState(true);
   const [description, setDescription] = useState("");
+  const [propertyNeeds, setPropertyNeeds] = useState("");
+  const [whyThisProperty, setWhyThisProperty] = useState("");
+  const [comparable, setComparable] = useState("");
+  // const [comparableAddress, setComparableAddress] = useState("");
+  // const [comparablePrice, setComparablePrice] = useState("");
+  // const [comparableBedroom, setComparableBedroom] = useState("");
+  // const [comparableBathroom, setComparableBathroom] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   function validateForm() {
@@ -56,6 +63,13 @@ export default function NewProperty(props) {
         netOperatingIncome,
         canCrowdFund,
         description,
+        propertyNeeds,
+        whyThisProperty,
+        comparable,
+        // comparableAddress,
+        // comparablePrice,
+        // comparableBedroom,
+        // comparableBathroom, 
       });
     } catch (e) {
       alert(e);
@@ -208,6 +222,33 @@ export default function NewProperty(props) {
                   value={description}
                   type="text"
                   onChange={(e) => setDescription(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="propertyNeeds">
+                <ControlLabel>Property Needs</ControlLabel>
+                <FormControl
+                  value={propertyNeeds}
+                  type="text"
+                  onChange={(e) => setPropertyNeeds(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="whyThisProperty">
+                <ControlLabel>Why This Property?</ControlLabel>
+                <FormControl
+                  value={whyThisProperty}
+                  type="text"
+                  onChange={(e) => setWhyThisProperty(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="comparable">
+                <ControlLabel>Comparable Properties</ControlLabel>
+                <FormControl
+                  value={comparable}
+                  type="text"
+                  onChange={(e) => setComparable(e.target.value)}
                 />
               </FormGroup>
 

@@ -90,9 +90,84 @@
     font-size: 16px;
   }
 
+  .cities {
+    margin-top: 70px;
+    margin-bottom: 70px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    max-width: 1190px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 20px;
+    padding-left: 20px;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    -ms-grid-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    -ms-grid-rows: auto auto;
+    grid-template-rows: auto auto;
+  }
+
+  .cities-container {
+    width: 66.66666667%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .places_wrapper_type_2 {
+    width: 100%;
+    text-align: center;
+    background-position: center;
+    background-size: cover;
+    transition: all .4s ease;
+    height: 400px;
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, .1), 0 0 0 1px rgba(0, 0, 0, .02);
+    margin-bottom: 30px;
+    
+  }
+
+  .toronto-city {
+    background-image: url("https://skyhub.ca/images/1/GuidesImages/Toronto Real Estate Listings.jpg");
+    height: 400px;
+    position: relative;
+    background-size: cover;
+    background-position: 50% 50%;
+  }
+
+  .ottawa-city {
+    background-image: url("https://skyhub.ca/images/1/GuidesImages/Ottawa Properties for Sale.jpg");
+    height: 400px;
+    position: relative;
+    background-size: cover;
+    background-position: 50% 50%;
+  }
+
   .cityCards {
-    padding: 130px;
-    margin-top: -70px;
+    /* padding: 130px; */
+    margin-top: 70px; 
+    margin-bottom: 70px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    max-width: 1190px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 20px;
+    padding-left: 20px;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    -ms-grid-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    -ms-grid-rows: auto auto;
+    grid-template-rows: auto auto;
+    border-bottom: 1px solid #cbd2de;
+    padding-bottom: 50px;
   }
 
   .cityCards h1 {
@@ -112,7 +187,7 @@
     text-align: center;
   }
     .card {
-    background-color: whitesmoke;
+    background-color: white;
     transition: all 0.5s ease-in-out;
     border-radius: 0.5rem;
     margin: 12px;
@@ -173,15 +248,17 @@
     grid-template-columns: 1fr 1fr;
     -ms-grid-rows: auto auto;
     grid-template-rows: auto auto;
+    border-bottom: 1px solid #cbd2de;
+    padding-bottom: 50px;
+
+
     
 
   }
 
-  /* .about-us-text {
-    margin-left: 120px;
-    margin-right: 120px;
-    text-align: center;
-  } */
+  .about-us-text {
+    width: 80%;
+  }
 
   .about-us-text h1 {
     position: relative;
@@ -206,6 +283,16 @@
 
   }
 
+  .about-us-text p {
+    margin-top: 0;
+    margin-bottom: 10px;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+  }
+
   .about-us-text .title-underline {
     position: absolute;
     left: 0%;
@@ -219,7 +306,8 @@
   }
 
   .about-us-text img {
-    height: 22vw;
+    /* height: 22vw; */
+    width: 150%;
   }
 
   .how-it-works {
@@ -241,30 +329,94 @@
     margin-top: 70px;
   }
 
+  .how-it-works img {
+    width: 100%;
+    height: 100%;
+  
+  }
+
+  .how-it-works h1 {
+    font-size: 13px;
+    font-family: sans-serif;
+    color: black;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .how-it-works h3 {
+    margin-top: 10px;
+    font-size: 26px;
+    line-height: 32px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    font-family: 'Sorts Mill Goudy', sans-serif;
+    color: #000;
+  }
+
+
+  
+
+
 
   .grid-template {
-    padding: 200px;
-    margin-top: -175px;
-    margin-bottom: 50px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    max-width: 1190px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 20px;
+    padding-left: 20px;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    margin-top: 10px;
+    margin-bottom: 100px;
   }
 
-  .grid-template .card-title{
-    font-size: 16px;
+  .grid-template .card-title {
+    font-size: 1.8rem;
+    font-weight: 300;
+    font-family: "PT Serif", serif;
+    line-height: 27px;
   }
 
-  .grid-template .card-text{
-    font-size: 10px;
+  .grid-template .card-text {
+    font-size: 1rem;
+    font-weight: 300;
+    text-align: left;
+    font-family: "PT Serif", serif;
   }
 
-  .grid-template .browse-property .card {
-    width: 80%;
-    height: 80%;
+  .grid-template .card {
+    width: 100%;
+    height: 100%;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    background-color: white;
   }
 
   .grid-template .browse-property .card-img {
-    height: 700px;
+    height: 100%;
     width: 100%;
   }
+
+  .grid-template .two-shelf-cards .card {
+    height: 100%;
+  }
+
+  .grid-template .two-shelf-cards .card-img {
+    height: 100%;
+  }
+
+ 
+
+  
 
 
   .newsletter {
@@ -275,8 +427,43 @@
     background-color: #3ab984;
   }
 
+  .narrow-box {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    max-width: 1190px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 20px;
+    padding-left: 20px;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    -ms-grid-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    -ms-grid-rows: auto auto;
+    grid-template-rows: auto auto;
+  }
+
   .newsletter-box {
-    z-index: 2;
+    opacity: 1;
+    transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+    transform-style: preserve-3d;
+    width: 36%;
+  }
+
+  .email-collect {
+    width: 50%;
+    height: 47px;
+    margin-bottom: 0px;
+    padding-left: 15px;
+    border-style: none solid none none;
+    border-width: 1px;
+    border-color: #000 #469e79 #000 #000;
+    border-top-left-radius: 2.5px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    font-size: 13px;
   }
 
   .green-bg {
@@ -319,13 +506,23 @@
 
 
   .featured-property {
-    padding: 130px;
-    margin-top: -100px;
-    border-bottom: 1px solid #cbd2de;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    max-width: 1190px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 20px;
+    padding-left: 20px;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    margin-top: 100px;
+    margin-bottom: 100px;
   }
-    /* .Card {
 
-    } */
 
   .featured-property h1 {
     color: black;

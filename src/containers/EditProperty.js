@@ -11,6 +11,22 @@ import MdTrash from "react-ionicons/lib/MdTrash";
 export default function EditProperty(props) {
   const [title, setTitle] = useState("");
   const [tagline, setTagline] = useState("");
+  const [city, setCity] = useState("");
+  const [address, setAddress] = useState("");
+  const [propertyType, setPropertyType] = useState("");
+  const [status, setStatus] = useState("");
+  const [offerDate, setOfferDate] = useState("");
+  const [closeDate, setCloseDate] = useState("");
+  const [groupShowingDate, setGroupShowingDate] = useState("");
+  const [bedroom, setBedroom] = useState(0);
+  const [bathroom, setBathroom] = useState("");
+  const [parking, setParking] = useState("");
+  const [netOperatingIncome, setNetOperatingIncome] = useState(0);
+  const [canCrowdFund, setCanCrowdFund] = useState(true);
+  const [description, setDescription] = useState("");
+  const [propertyNeeds, setPropertyNeeds] = useState("");
+  const [whyThisProperty, setWhyThisProperty] = useState("");
+  const [comparable, setComparable] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -23,6 +39,22 @@ export default function EditProperty(props) {
         const property = await loadProperty();
         setTitle(property.title);
         setTagline(property.tagline);
+        setCity(property.city);
+        setAddress(property.Address);
+        setPropertyType(property.PropertyType);
+        setStatus(property.status);
+        setOfferDate(property.offerDate);
+        setCloseDate(property.closeDate);
+        setGroupShowingDate(property.groupShowingDate);
+        setBedroom(property.bedroom);
+        setBathroom(property.bathroom);
+        setParking(property.parking);
+        setNetOperatingIncome(property.netOperatingIncome);
+        setCanCrowdFund(property.canCrowdFund);
+        setDescription(property.description);
+        setPropertyNeeds(property.propertyNeeds);
+        setWhyThisProperty(property.whyThisProperty);
+        setComparable(property.comparable);
         setIsLoading(false);
       } catch (e) {
         alert(e);
@@ -109,6 +141,150 @@ export default function EditProperty(props) {
               onChange={(e) => setTagline(e.target.value)}
             />
           </FormGroup>
+
+          <FormGroup controlId="city">
+                <ControlLabel>City</ControlLabel>
+                <FormControl
+                  value={city}
+                  type="text"
+                  onChange={(e) => setCity(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="address">
+                <ControlLabel>Address</ControlLabel>
+                <FormControl
+                  value={address}
+                  type="text"
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="propertyType">
+                <ControlLabel>Property Type</ControlLabel>
+                <FormControl
+                  value={propertyType}
+                  type="text"
+                  onChange={(e) => setPropertyType(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="status">
+                <ControlLabel>Status</ControlLabel>
+                <FormControl
+                  value={status}
+                  type="text"
+                  onChange={(e) => setStatus(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="offerDate">
+                <ControlLabel>Offer Date</ControlLabel>
+                <FormControl
+                  value={offerDate}
+                  type="text"
+                  onChange={(e) => setOfferDate(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="closeDate">
+                <ControlLabel>Close Date</ControlLabel>
+                <FormControl
+                  value={closeDate}
+                  type="text"
+                  onChange={(e) => setCloseDate(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="groupShowingDate">
+                <ControlLabel>Group Showing Date</ControlLabel>
+                <FormControl
+                  value={groupShowingDate}
+                  type="text"
+                  onChange={(e) => setGroupShowingDate(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="bedroom">
+                <ControlLabel>Bedrooms</ControlLabel>
+                <FormControl
+                  value={bedroom}
+                  type="number"
+                  onChange={(e) => setBedroom(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="bathroom">
+                <ControlLabel>Bathrooms</ControlLabel>
+                <FormControl
+                  value={bathroom}
+                  type="text"
+                  onChange={(e) => setBathroom(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="address">
+                <ControlLabel>Parking</ControlLabel>
+                <FormControl
+                  value={parking}
+                  type="text"
+                  onChange={(e) => setParking(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="netOperatingIncome">
+                <ControlLabel>Net Operating Income</ControlLabel>
+                <FormControl
+                  value={netOperatingIncome}
+                  type="text"
+                  onChange={(e) => setNetOperatingIncome(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="canCrowdFund">
+                <ControlLabel>Able to Crowdfund</ControlLabel>
+                <FormControl
+                  type="checkbox"
+                  checked={canCrowdFund}
+                  onChange={() => setCanCrowdFund(!canCrowdFund)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="description">
+                <ControlLabel>Description</ControlLabel>
+                <FormControl
+                  value={description}
+                  type="text"
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="propertyNeeds">
+                <ControlLabel>Property Needs</ControlLabel>
+                <FormControl
+                  value={propertyNeeds}
+                  type="text"
+                  onChange={(e) => setPropertyNeeds(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="whyThisProperty">
+                <ControlLabel>Why This Property?</ControlLabel>
+                <FormControl
+                  value={whyThisProperty}
+                  type="text"
+                  onChange={(e) => setWhyThisProperty(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="comparable">
+                <ControlLabel>Comparable Properties</ControlLabel>
+                <FormControl
+                  value={comparable}
+                  type="text"
+                  onChange={(e) => setComparable(e.target.value)}
+                />
+              </FormGroup>
 
           <p className="text-right">
             <LoaderButton
