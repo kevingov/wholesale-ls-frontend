@@ -227,7 +227,8 @@ export default function Home(props) {
                     </CardText>
                   </CardBody>
                 </Card>
-                <img src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-Walls.jpg">
+                <img src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-Walls.jpg"
+                alt="grid-photos">
               </img>
               </Col>
 
