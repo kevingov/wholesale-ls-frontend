@@ -94,30 +94,11 @@ export default function Home(props) {
             <h1>Featured Cities</h1>
             <h2>Search your Favourite Cities</h2>
             <p>Browse the best deals in the Hottest Markets</p>
-            <Row>
-              <Col xs="6" sm="4" className="text-center">
-                <Card
-                  className="text-center"
-                  as="a"
-                  onClick={"/properties"}
-                  style={{ cursor: "pointer" }}
-                >
-                  <CardImg
-                    variant="top"
-                    src="https://wholesale-ls-marketing.s3.amazonaws.com/hamilton+skyline.jpg"
-                  />
-                  <CardBody>
-                    <CardTitle>Hamilton</CardTitle>
-                    {/* <CardText tag="p">
-                                Build Bots that will scrape Linkedin & Twitter to curate your own List of Leads
-                            </CardText> */}
-                    {/* <Button variant="primary">See Properties</Button> */}
-                  </CardBody>
-                </Card>
-              </Col>
 
-              <Col xs="6" sm="4" className="text-center">
+            <div className="grid-template">
+              <div className="col-6">
                 <Card
+                  className="browse-property"
                   as="a"
                   onClick={"/properties"}
                   style={{ cursor: "pointer" }}
@@ -128,34 +109,78 @@ export default function Home(props) {
                   />
                   <CardBody>
                     <CardTitle>Toronto</CardTitle>
-                    {/* <CardText tag="p">
-                            Automatically create a Drip Campagin of emails/messages designed to start Conversations.
-                          </CardText> */}
-                    {/* <Button variant="primary">See Properties</Button> */}
+                    <CardText tag="p">
+                      {/* Toronto */}
+                    </CardText>
                   </CardBody>
                 </Card>
-              </Col>
+                {/* <img src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-Walls.jpg"
+                alt="grid-photos">
+                </img> */}
+              </div>
+              <div className="col-6">
+                <Row>
+                  <Col xs={6}>
+                    <Card
+                      as="a"
+                      onClick={"/properties"}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <CardImg
+                        variant="top"
+                        src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg"
+                      />
+                      <CardBody>
+                        <CardTitle>Ottawa</CardTitle>
+                        {/* <CardText tag="p">
+                          Once you've found a contract that fits suits your goals, you can message the wholeseller directly for more information. 
+                        </CardText> */}
+                      </CardBody>
+                    </Card>
+                  </Col>
 
-              <Col xs="6" sm="4" className="text-center">
-                <Card
-                  as="a"
-                  onClick={"/properties"}
-                  style={{ cursor: "pointer" }}
-                >
-                  <CardImg
-                    variant="top"
-                    src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg"
-                  />
-                  <CardBody>
-                    <CardTitle>Ottawa</CardTitle>
-                    {/* <CardText tag="p">
-                            Export your Leads to your favorite CRM to analyze which campaigns are the most effective.
-                          </CardText> */}
-                    {/* <Button variant="primary">See Properties</Button> */}
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
+                  <Col xs={6}>
+                    <Card
+                      as="a"
+                      onClick={"/properties"}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <CardImg
+                        variant="top"
+                        src="https://wholesale-ls-marketing.s3.amazonaws.com/hamilton+skyline.jpg"
+                      />
+                      <CardBody>
+                        <CardTitle>Hamilton</CardTitle>
+                        {/* <CardText tag="p">
+                          After you've spoken with the Wholeseller and you're ready to view the property, you can schedule and book a time to view the property. 
+                        </CardText> */}
+                      </CardBody>
+                    </Card>
+                  </Col>
+                </Row>
+                <Row>
+                  <div className="col-lg-12">
+                    <Card
+                      as="a"
+                      onClick={"/properties"}
+                      style={{ cursor: "pointer", margin: "10px 0 0" }}
+                    >
+                      <CardImg
+                        variant="top"
+                        src="https://wholesale-ls-marketing.s3.amazonaws.com/modena-houseviewing.jpg"
+                      />
+                      <CardBody>
+                        <CardTitle>Windsor</CardTitle>
+                        {/* <CardText tag="p">
+                          When you're happy with the price and condition of the home, you can than finalize the contract and finish the assignment over to your name. Happy Investing! 
+                        </CardText> */}
+                      </CardBody>
+                    </Card>
+                  </div>  
+                </Row>
+              </div>
+          </div>
+            
           </div>
 
           <div className="about-us-container">
@@ -205,97 +230,88 @@ export default function Home(props) {
                 <h3>We'll help streamline the entire transaction.</h3>
               </Col>
             </Row>
-          </div>
-          <div className="grid-template">
             <Row>
-              <Col xs={6}>
+              <Col xs="6" sm="3" className="text-center">
                 <Card
-                  className="browse-property"
+                  className="text-center"
                   as="a"
                   onClick={"/properties"}
                   style={{ cursor: "pointer" }}
                 >
                   {/* <CardImg
                     variant="top"
-                    src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-browse+property.jpg"
+                    src="https://wholesale-ls-marketing.s3.amazonaws.com/hamilton+skyline.jpg"
                   /> */}
                   <CardBody>
                     <CardTitle>1) Find your Ideal Contract</CardTitle>
                     <CardText tag="p">
-                      Browse through our large selection of Real Estate Contract to discover one that fits the 
-                      Budget, Metrics, and Location for your desirable investment.
-                    </CardText>
+                                Browse through our curated selection of contracts for one that fits your budget and location.
+                            </CardText>
+                    {/* <Button variant="primary">See Properties</Button> */}
                   </CardBody>
                 </Card>
-                <img src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-Walls.jpg"
-                alt="grid-photos">
-              </img>
               </Col>
-
-              
-              <Col xs={6}>
-                <Row>
-                  <Col xs={6}>
-                    <Card
-                      className="two-shelf-cards"
-                      as="a"
-                      onClick={"/properties"}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {/* <CardImg
-                        variant="top"
-                        src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-Message.jpg"
-                      /> */}
-                      <CardBody>
-                        <CardTitle>2) Message the Seller</CardTitle>
-                        <CardText tag="p">
-                          Once you've found a contract that fits suits your goals, you can message the wholeseller directly for more information. 
-                        </CardText>
-                      </CardBody>
-                    </Card>
-                  </Col>
-
-                  <Col xs={6}>
-                    <Card
-                      as="a"
-                      onClick={"/properties"}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {/* <CardImg
-                        variant="top"
-                        src="https://wholesale-ls-marketing.s3.amazonaws.com/modena-houseviewing.jpg"
-                      /> */}
-                      <CardBody>
-                        <CardTitle>3) Schedule a Showing</CardTitle>
-                        <CardText tag="p">
-                          After you've spoken with the Wholeseller and you're ready to view the property, you can schedule and book a time to view the property. 
-                        </CardText>
-                      </CardBody>
-                    </Card>
-                  </Col>
-                </Row>
-                <Row>
-                  <Card
-                    as="a"
-                    onClick={"/properties"}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {/* <CardImg
-                      variant="top"
-                      src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-Transaction.jpg"
-                    /> */}
-                    <CardBody>
-                      <CardTitle>4) Purchase the Contract</CardTitle>
-                      <CardText tag="p">
-                        When you're happy with the price and condition of the home, you can than finalize the contract and finish the assignment over to your name. Happy Investing! 
-                      </CardText>
-                    </CardBody>
-                  </Card>
-                </Row>
+              <Col xs="6" sm="3" className="text-center">
+                <Card
+                  as="a"
+                  onClick={"/properties"}
+                  style={{ cursor: "pointer" }}
+                >
+                  {/* <CardImg
+                    variant="top"
+                    src="https://wholesale-ls-marketing.s3.amazonaws.com/toronto+skyline.jpg"
+                  /> */}
+                  <CardBody>
+                    <CardTitle>2) Message the Wholeseller</CardTitle>
+                    <CardText tag="p">
+                    Once you've found a contract that fits suits your goals, you can message the wholeseller directly for more information. 
+                          </CardText> 
+                    {/* <Button variant="primary">See Properties</Button> */}
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col xs="6" sm="3" className="text-center">
+                <Card
+                  as="a"
+                  onClick={"/properties"}
+                  style={{ cursor: "pointer" }}
+                >
+                  {/* <CardImg
+                    variant="top"
+                    src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg"
+                  /> */}
+                  <CardBody>
+                    <CardTitle>3) Schedule a Showing</CardTitle>
+                    <CardText tag="p">
+                            After you've spoken with the Wholeseller and you're ready to view the property, you can schedule and book a time to view the property. 
+                          </CardText>
+                    {/* <Button variant="primary">See Properties</Button> */}
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col xs="6" sm="3" className="text-center">
+                <Card
+                  as="a"
+                  onClick={"/properties"}
+                  style={{ cursor: "pointer" }}
+                >
+                  {/* <CardImg
+                    variant="top"
+                    src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg"
+                  /> */}
+                  <CardBody>
+                    <CardTitle>4) Purchase the Contract</CardTitle>
+                    <CardText tag="p">
+                    When you're happy with the price and condition of the home, you can than finalize the contract and finish the assignment over to your name. Happy Investing! 
+                          </CardText>
+                    {/* <Button variant="primary">See Properties</Button> */}
+                  </CardBody>
+                </Card>
               </Col>
             </Row>
-          </div>
 
+          </div>
+          
           <div className="newsletter">
             <div className="green-bg"></div>
             <div className="narrow-box">
@@ -390,7 +406,7 @@ export default function Home(props) {
                 >
                   <CardImg
                     variant="top"
-                    src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg"
+                    src="https://wholesale-ls-marketing.s3.amazonaws.com/hamilton+skyline.jpg"
                   />
                   <CardBody>
                     <CardTitle>Ottawa</CardTitle>

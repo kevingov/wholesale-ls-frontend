@@ -58,7 +58,7 @@ class App extends Component {
               <img
                         height="45"
                         alt="conversify logo"
-                        src="https://wholesale-ls-marketing.s3.amazonaws.com/UELogo.png"
+                        src="https://wholesale-ls-marketing.s3.amazonaws.com/UELOGOBLACK.png"
                       />
               </a>
               {this.state.isAuthenticated ? (
@@ -98,7 +98,7 @@ class App extends Component {
                       <img
                         height="45"
                         alt="conversify logo"
-                        src="https://wholesale-ls-marketing.s3.amazonaws.com/UELogo.png"
+                        src="https://wholesale-ls-marketing.s3.amazonaws.com/UELOGOWHITE.png"
                       />
                     </div>
                     <br />
