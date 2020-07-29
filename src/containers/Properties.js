@@ -4,6 +4,7 @@ import { Col, Row } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 import { API } from "aws-amplify";
+import Loading from "./Loading";
 
 export default function Properties(props) {
   const [properties, setProperties] = useState([]);
@@ -44,7 +45,9 @@ export default function Properties(props) {
             </Col>
           ))}
         </Row>
-      ) : null}
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }

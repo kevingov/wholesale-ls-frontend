@@ -5,6 +5,7 @@ import { Col, Jumbotron, Row } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 import { API } from "aws-amplify";
+import Loading from "./Loading";
 
 export default function ViewProperty(props) {
   const [property, setProperty] = useState(null);
@@ -72,23 +73,25 @@ export default function ViewProperty(props) {
 
   return (
     <div className="ViewProperty container">
-      {isLoading
-        ? // Why can't we put div container here?
+      {isLoading ? (
+        // Why can't we put div container here?
 
-          // <Row>
-          //   <Col sm={12}>
-          //     <img>
+        // <Row>
+        //   <Col sm={12}>
+        //     <img>
 
-          //     </img>
-          //     <p>
-          //       <b>{property.title} </b>
-          //     </p>
-          //     <p>{property.description}</p>
-          //   </Col>
-          // </Row>
+        //     </img>
+        //     <p>
+        //       <b>{property.title} </b>
+        //     </p>
+        //     <p>{property.description}</p>
+        //   </Col>
+        // </Row>
 
-          renderProperty()
-        : null}
+        renderProperty()
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }
