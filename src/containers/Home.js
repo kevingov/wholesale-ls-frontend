@@ -8,8 +8,9 @@ import {
   CardText,
   CardTitle,
 
+
 } from "reactstrap";
-import { Col, Jumbotron, Row, FormControl, FormGroup} from "react-bootstrap";
+import { Col, Jumbotron, Row, FormControl, FormGroup, Image} from "react-bootstrap";
 
 import React from "react";
 
@@ -95,7 +96,41 @@ export default function Home(props) {
             <h2>Search your Favourite Cities</h2>
             <p>Browse the best deals in the Hottest Markets</p>
 
+
+
+             <div class="row">
+                <div className="col-md-8 image-wrapper-big">
+                <Image src="https://wholesale-ls-marketing.s3.amazonaws.com/toronto+skyline.jpg" fluid></Image>
+                </div>
+                
+                <div className="col-md-4 image-wrapper-small">
+                <Image src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg" fluid></Image>
+
+                </div>
+              </div>
+              <Row>
+                <div className="col-md-4 image-wrapper-small">
+                <Image src="https://wholesale-ls-marketing.s3.amazonaws.com/hamilton+skyline.jpg" fluid></Image>
+                </div>
+                <div className="col-md-4 image-wrapper-small">
+                <Image src="https://wholesale-ls-marketing.s3.amazonaws.com/Windsor-Skyline.jpg" fluid></Image>
+                </div>
+                <div className="col-md-4 image-wrapper-small">
+                <Image src="https://wholesale-ls-marketing.s3.amazonaws.com/Niagara+Falls-Skyline.jpg" fluid></Image>
+                </div>
+              </Row>
+
+
             <div className="grid-template">
+             
+
+
+            </div>
+
+
+
+
+            {/* <div className="grid-template">
               <div className="col-6">
                 <Card
                   className="browse-property"
@@ -105,57 +140,55 @@ export default function Home(props) {
                 >
                   <CardImg
                     variant="top"
-                    src="https://wholesale-ls-marketing.s3.amazonaws.com/toronto+skyline.jpg"
+                    src="https://wholesale-ls-marketing.s3.amazonaws.com/Toronto-Nathan+Phillips+Night.jpg"
                   />
                   <CardBody>
                     <CardTitle>Toronto</CardTitle>
                     <CardText tag="p">
                       {/* Toronto */}
-                    </CardText>
+                    {/* </CardText>
                   </CardBody>
-                </Card>
+                </Card> */}
                 {/* <img src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-Walls.jpg"
                 alt="grid-photos">
                 </img> */}
-              </div>
+              {/* </div>
               <div className="col-6">
                 <Row>
-                  <Col xs={6}>
-                    <Card
+                  <Col xs={6}> */}
+                    {/* <Card
                       as="a"
                       onClick={"/properties"}
                       style={{ cursor: "pointer" }}
                     >
                       <CardImg
                         variant="top"
-                        src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa+skyline.jpg"
+                        src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa-Parliament.jpg"
                       />
                       <CardBody>
                         <CardTitle>Ottawa</CardTitle>
-                        {/* <CardText tag="p">
-                          Once you've found a contract that fits suits your goals, you can message the wholeseller directly for more information. 
-                        </CardText> */}
-                      </CardBody>
-                    </Card>
-                  </Col>
+                    
+                      {/* </CardBody>
+                    </Card>  */}
 
-                  <Col xs={6}>
-                    <Card
+                    {/* <Image src="https://wholesale-ls-marketing.s3.amazonaws.com/Ottawa-Parliament.jpg" rounded></Image>
+                  </Col> */}
+
+                  {/* <Col xs={6}> */}
+                    {/* <Card
                       as="a"
                       onClick={"/properties"}
                       style={{ cursor: "pointer" }}
                     >
                       <CardImg
                         variant="top"
-                        src="https://wholesale-ls-marketing.s3.amazonaws.com/hamilton+skyline.jpg"
+                        src="https://wholesale-ls-marketing.s3.amazonaws.com/Hamilton-Skyline.jpg"
                       />
                       <CardBody>
                         <CardTitle>Hamilton</CardTitle>
-                        {/* <CardText tag="p">
-                          After you've spoken with the Wholeseller and you're ready to view the property, you can schedule and book a time to view the property. 
-                        </CardText> */}
                       </CardBody>
-                    </Card>
+                    </Card> */}
+                    {/* <Image src="https://wholesale-ls-marketing.s3.amazonaws.com/Hamilton-Skyline.jpg" fluid></Image>
                   </Col>
                 </Row>
                 <Row>
@@ -170,16 +203,16 @@ export default function Home(props) {
                         src="https://wholesale-ls-marketing.s3.amazonaws.com/modena-houseviewing.jpg"
                       />
                       <CardBody>
-                        <CardTitle>Windsor</CardTitle>
+                        <CardTitle>Windsor</CardTitle> */}
                         {/* <CardText tag="p">
                           When you're happy with the price and condition of the home, you can than finalize the contract and finish the assignment over to your name. Happy Investing! 
                         </CardText> */}
-                      </CardBody>
+                      {/* </CardBody>
                     </Card>
                   </div>  
                 </Row>
               </div>
-          </div>
+          </div> */} 
             
           </div>
 

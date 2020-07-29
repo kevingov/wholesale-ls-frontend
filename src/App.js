@@ -55,11 +55,12 @@ class App extends Component {
           <div className="nav">
             <div className="nav-content container">
               <a href="/" className="logo hidden-xs">
-              <img
+                <p>Uncommon Estate</p>
+              {/* <img
                         height="45"
                         alt="conversify logo"
                         src="https://wholesale-ls-marketing.s3.amazonaws.com/UELOGOBLACK.png"
-                      />
+                      /> */}
               </a>
               {this.state.isAuthenticated ? (
                 <div className="links">
@@ -95,11 +96,11 @@ class App extends Component {
                 <Row>
                   <Col sm={12} md={6}>
                     <div>
-                      <img
+                      {/* <img
                         height="45"
                         alt="conversify logo"
                         src="https://wholesale-ls-marketing.s3.amazonaws.com/UELOGOWHITE.png"
-                      />
+                      /> */}
                     </div>
                     <br />
                     <br />

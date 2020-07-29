@@ -19,6 +19,18 @@
     
   }
 
+  img {
+    box-align: center;
+    height: 100%;
+    width: 100%;
+ 
+    object-fit: cover;
+    /* border-top-right-radius: 25px;
+    border-top-left-radius: 25px; */
+    min-height: 300px;
+    max-height: 482px;
+    margin-top: 20px;
+  }
 
   
 
@@ -131,26 +143,12 @@
     
   }
 
-  .toronto-city {
-    background-image: url("https://skyhub.ca/images/1/GuidesImages/Toronto Real Estate Listings.jpg");
-    height: 400px;
-    position: relative;
-    background-size: cover;
-    background-position: 50% 50%;
-  }
 
-  .ottawa-city {
-    background-image: url("https://skyhub.ca/images/1/GuidesImages/Ottawa Properties for Sale.jpg");
-    height: 400px;
-    position: relative;
-    background-size: cover;
-    background-position: 50% 50%;
-  }
 
   .cityCards {
     /* padding: 130px; */
-    margin-top: 70px; 
-    margin-bottom: 70px;
+    margin-top: 50px; 
+    margin-bottom: 30px;
     position: relative;
     z-index: 1;
     width: 100%;
@@ -167,7 +165,7 @@
     -ms-grid-rows: auto auto;
     grid-template-rows: auto auto;
     border-bottom: 1px solid #cbd2de;
-    padding-bottom: 50px;
+    padding-bottom: 20px;
   }
 
   .cityCards h1 {
@@ -185,6 +183,16 @@
   .cityCards p {
     color: black;
     text-align: center;
+  }
+
+  .cityCards .image-wrapper-big {
+    height: 325px;
+    margin-top: 20px;
+  }
+
+  .cityCards .image-wrapper-small {
+    height: 325px;
+    margin-top: 20px;
   }
     
   .cityCards .grid-template {
@@ -205,6 +213,8 @@
     margin-top: 30px;
     margin-bottom: 70px;
   }
+
+
 
   .grid-template .card-title {
     font-size: 1.8rem;
@@ -239,17 +249,27 @@
     box-align: center;
     /* padding: 17px; */
     width: 100%;
-    height: 80%;
+    /* height: 80%; */
     object-fit: cover;
     border-top-right-radius: 25px;
     border-top-left-radius: 25px;
-    padding-top: -2rem;
-    padding-bottom: -2rem;
-    padding-left: -2rem;
-    padding-right: -2rem;
+    min-height: 300px;
+    max-height: 482px;
   }
 
+  .grid-template .Image .img-rounded { 
+    box-align: center;
+    /* padding: 17px; */
+    width: 100%;
+    /* height: 80%; */
+    object-fit: cover;
+    border-top-right-radius: 25px;
+    border-top-left-radius: 25px;
+    min-height: 300px;
+    max-height: 482px;
+  }
 
+ 
 
 
 
