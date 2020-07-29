@@ -22,9 +22,9 @@ export default function NewProperty(props) {
   const [offerDate, setOfferDate] = useState("");
   const [closeDate, setCloseDate] = useState("");
   const [groupShowingDate, setGroupShowingDate] = useState("");
-  const [bedroom, setBedroom] = useState(0);
-  const [bathroom, setBathroom] = useState("");
-  const [parking, setParking] = useState("");
+  const [bedroom, setBedroom] = useState(1);
+  const [bathroom, setBathroom] = useState(1);
+  const [parking, setParking] = useState(1);
   const [netOperatingIncome, setNetOperatingIncome] = useState(0);
   const [canCrowdFund, setCanCrowdFund] = useState(true);
   const [description, setDescription] = useState("");
@@ -49,7 +49,7 @@ export default function NewProperty(props) {
     try {
       await createProperty({
         title,
-        tagline, 
+        tagline,
         city,
         address,
         propertyType,
@@ -69,8 +69,9 @@ export default function NewProperty(props) {
         // comparableAddress,
         // comparablePrice,
         // comparableBedroom,
-        // comparableBathroom, 
+        // comparableBathroom,
       });
+      props.history.push("/");
     } catch (e) {
       alert(e);
       setIsLoading(false);
@@ -184,7 +185,7 @@ export default function NewProperty(props) {
                 <ControlLabel>Bathrooms</ControlLabel>
                 <FormControl
                   value={bathroom}
-                  type="text"
+                  type="number"
                   onChange={(e) => setBathroom(e.target.value)}
                 />
               </FormGroup>
@@ -193,7 +194,7 @@ export default function NewProperty(props) {
                 <ControlLabel>Parking</ControlLabel>
                 <FormControl
                   value={parking}
-                  type="text"
+                  type="number"
                   onChange={(e) => setParking(e.target.value)}
                 />
               </FormGroup>
@@ -251,7 +252,6 @@ export default function NewProperty(props) {
                   onChange={(e) => setComparable(e.target.value)}
                 />
               </FormGroup>
-
 
               <br />
               <button
