@@ -29,7 +29,7 @@ export default function EditProperty(props) {
   const [whyThisProperty, setWhyThisProperty] = useState("");
   const [comparable, setComparable] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [propertyOwner, setPropertyOwner] = useState(false);
+  const [propertyOwner, setPropertyOwner] = useState(true);
 
   useEffect(() => {
     function loadProperty() {
@@ -71,7 +71,6 @@ export default function EditProperty(props) {
   }, [props.match.params.id]);
 
   function deleteProperty() {
-    console.log(propertyId);
     return API.del("properties", `/properties/${propertyId}`);
   }
 
@@ -263,7 +262,7 @@ export default function EditProperty(props) {
                 <ControlLabel>Description</ControlLabel>
                 <FormControl
                   value={description}
-                  type="text"
+                  componentClass="textarea"
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </FormGroup>
@@ -272,7 +271,7 @@ export default function EditProperty(props) {
                 <ControlLabel>Property Needs</ControlLabel>
                 <FormControl
                   value={propertyNeeds}
-                  type="text"
+                  componentClass="textarea"
                   onChange={(e) => setPropertyNeeds(e.target.value)}
                 />
               </FormGroup>
@@ -281,7 +280,7 @@ export default function EditProperty(props) {
                 <ControlLabel>Why This Property?</ControlLabel>
                 <FormControl
                   value={whyThisProperty}
-                  type="text"
+                  componentClass="textarea"
                   onChange={(e) => setWhyThisProperty(e.target.value)}
                 />
               </FormGroup>
@@ -290,7 +289,7 @@ export default function EditProperty(props) {
                 <ControlLabel>Comparable Properties</ControlLabel>
                 <FormControl
                   value={comparable}
-                  type="text"
+                  componentClass="textarea"
                   onChange={(e) => setComparable(e.target.value)}
                 />
               </FormGroup>

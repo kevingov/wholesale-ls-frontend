@@ -14,7 +14,6 @@ import React, { useState } from "react";
 import { API } from "aws-amplify";
 import DatePicker from "react-datepicker";
 import Dropdown from "react-dropdown";
-import MdArrowForward from "react-ionicons/lib/MdArrowForward";
 
 export default function NewProperty(props) {
   const [title, setTitle] = useState("");
@@ -35,10 +34,6 @@ export default function NewProperty(props) {
   const [propertyNeeds, setPropertyNeeds] = useState("");
   const [whyThisProperty, setWhyThisProperty] = useState("");
   const [comparable, setComparable] = useState("");
-  // const [comparableAddress, setComparableAddress] = useState("");
-  // const [comparablePrice, setComparablePrice] = useState("");
-  // const [comparableBedroom, setComparableBedroom] = useState("");
-  // const [comparableBathroom, setComparableBathroom] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   function validateForm() {
@@ -70,12 +65,8 @@ export default function NewProperty(props) {
         propertyNeeds,
         whyThisProperty,
         comparable,
-        // comparableAddress,
-        // comparablePrice,
-        // comparableBedroom,
-        // comparableBathroom,
       });
-      props.history.push("/");
+      props.history.push(`/properties`);
     } catch (e) {
       alert(e);
       setIsLoading(false);
@@ -147,12 +138,24 @@ export default function NewProperty(props) {
                   value={propertyType}
                   options={[
                     {
-                      label: "one",
-                      value: "one",
+                      label: "Detached",
+                      value: "detached",
                     },
                     {
-                      label: "two",
-                      value: "two",
+                      label: "Semi-Detached",
+                      value: "Semi-Detached",
+                    },
+                    {
+                      label: "Townhomes",
+                      value: "Townhomes",
+                    },
+                    {
+                      label: "Condos",
+                      value: "Condos",
+                    },
+                    {
+                      label: "Multi-family",
+                      value: "Multi-family",
                     },
                   ]}
                   onChange={updatePropertyType}
@@ -167,12 +170,16 @@ export default function NewProperty(props) {
                   value={status}
                   options={[
                     {
-                      label: "cool",
-                      value: "cool",
+                      label: "Active",
+                      value: "Active",
                     },
                     {
-                      label: "awesome",
-                      value: "awesome",
+                      label: "Pending",
+                      value: "Pending",
+                    },
+                    {
+                      label: "Assigned",
+                      value: "Assigned",
                     },
                   ]}
                   onChange={updateStatus}
@@ -243,8 +250,8 @@ export default function NewProperty(props) {
               </FormGroup>
 
               <FormGroup controlId="canCrowdFund">
-                <ControlLabel>Able to Crowdfund</ControlLabel>
-                <FormControl
+                <ControlLabel>Able to Crowdfund</ControlLabel>{" "}
+                <input
                   type="checkbox"
                   checked={canCrowdFund}
                   onChange={() => setCanCrowdFund(!canCrowdFund)}
@@ -255,7 +262,7 @@ export default function NewProperty(props) {
                 <ControlLabel>Description</ControlLabel>
                 <FormControl
                   value={description}
-                  type="text"
+                  componentClass="textarea"
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </FormGroup>
@@ -264,7 +271,7 @@ export default function NewProperty(props) {
                 <ControlLabel>Property Needs</ControlLabel>
                 <FormControl
                   value={propertyNeeds}
-                  type="text"
+                  componentClass="textarea"
                   onChange={(e) => setPropertyNeeds(e.target.value)}
                 />
               </FormGroup>
@@ -273,7 +280,7 @@ export default function NewProperty(props) {
                 <ControlLabel>Why This Property?</ControlLabel>
                 <FormControl
                   value={whyThisProperty}
-                  type="text"
+                  componentClass="textarea"
                   onChange={(e) => setWhyThisProperty(e.target.value)}
                 />
               </FormGroup>
@@ -282,20 +289,19 @@ export default function NewProperty(props) {
                 <ControlLabel>Comparable Properties</ControlLabel>
                 <FormControl
                   value={comparable}
-                  type="text"
+                  componentClass="textarea"
                   onChange={(e) => setComparable(e.target.value)}
                 />
               </FormGroup>
 
               <br />
               <button
-                className="other-btn pull-right"
+                className="secondary-btn"
                 isloading={isLoading}
                 type="submit"
                 disabled={!validateForm()}
               >
                 Create Property
-                <MdArrowForward fontSize="16px" />
               </button>
             </form>
           </div>
