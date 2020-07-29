@@ -20,7 +20,8 @@ export default function ViewProperty(props) {
     async function onLoad() {
       try {
         const user = await Auth.currentUserInfo();
-        const userId = user["id"];
+        let userId = "none";
+        if (user) userId = user["id"];
         const property = await loadProperty();
         setPropertyOwner(userId === property.userId);
         setProperty(property);
