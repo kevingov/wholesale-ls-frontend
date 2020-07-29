@@ -1,0 +1,20 @@
+.Terms {
+  padding: 50px 0px;
+}
+
+.Terms h1 {
+  font-style: normal;
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 45px;
+  margin-bottom: 30px;
+}
+
+.Terms p {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 23px;
+  margin-bottom: 20px;
+}
