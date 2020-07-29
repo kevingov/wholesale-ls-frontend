@@ -55,19 +55,20 @@ class App extends Component {
           <div className="nav">
             <div className="nav-content container">
               <a href="/" className="logo hidden-xs">
+
                 <p>Uncommon Estate</p>
               {/* <img
                         height="45"
                         alt="conversify logo"
                         src="https://wholesale-ls-marketing.s3.amazonaws.com/UELOGOBLACK.png"
                       /> */}
+     
               </a>
               {this.state.isAuthenticated ? (
                 <div className="links">
                   <a href="/properties/new" className="secondary-btn">
                     New Property
                   </a>
-                  <button onClick={() => this.handleLogout()}>Logout</button>
                 </div>
               ) : (
                 <div className="links">
@@ -117,6 +118,12 @@ class App extends Component {
                     >
                       Community
                     </a>
+                    <span
+                      className="structure-menu-link"
+                      onClick={() => this.handleLogout()}
+                    >
+                      Logout
+                    </span>
                   </Col>
 
                   <Col sm={12} md={2}>

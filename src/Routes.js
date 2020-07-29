@@ -7,17 +7,26 @@ import Home from "./containers/Home";
 import Login from "./containers/Login";
 import NewProperty from "./containers/NewProperty";
 import NotFound from "./containers/NotFound";
+import Privacy from "./containers/Privacy";
+import PrivacyPolicy from "./containers/PrivacyPolicy";
 import Properties from "./containers/Properties";
 import React from "react";
 import Signup from "./containers/Signup";
+import Terms from "./containers/Terms";
 import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
-import ViewProperty from "./containers/ViewProperty";
 import UserDashboard from "./containers/UserDashboard";
-import PrivacyPolicy from "./containers/PrivacyPolicy";
+import ViewProperty from "./containers/ViewProperty";
 
 export default ({ childProps }) => (
   <Switch>
     <AppliedRoute path="/" exact component={Home} props={childProps} />
+    <AppliedRoute path="/terms" exact component={Terms} appProps={childProps} />
+    <AppliedRoute
+      path="/privacy"
+      exact
+      component={Privacy}
+      appProps={childProps}
+    />
     <UnauthenticatedRoute
       path="/login"
       exact

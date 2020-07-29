@@ -1,16 +1,17 @@
 // import "./EditProperty.css";
 
+import { API, Auth } from "aws-amplify";
 import { ControlLabel, FormControl, FormGroup } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
-import { API } from "aws-amplify";
-import IosRefresh from "react-ionicons/lib/IosRefresh";
 import LoaderButton from "../components/LoaderButton";
+import Loading from "./Loading";
 import MdTrash from "react-ionicons/lib/MdTrash";
 
 export default function EditProperty(props) {
   const [title, setTitle] = useState("");
   const [tagline, setTagline] = useState("");
+  const [propertyId, setPropertyId] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [propertyType, setPropertyType] = useState("");
@@ -28,6 +29,7 @@ export default function EditProperty(props) {
   const [whyThisProperty, setWhyThisProperty] = useState("");
   const [comparable, setComparable] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [propertyOwner, setPropertyOwner] = useState(false);
 
   useEffect(() => {
     function loadProperty() {
@@ -36,7 +38,11 @@ export default function EditProperty(props) {
 
     async function onLoad() {
       try {
+        const user = await Auth.currentUserInfo();
+        const userId = user["id"];
         const property = await loadProperty();
+        setPropertyOwner(userId === property.userId);
+        setPropertyId(property.propertyId);
         setTitle(property.title);
         setTagline(property.tagline);
         setCity(property.city);
@@ -65,7 +71,8 @@ export default function EditProperty(props) {
   }, [props.match.params.id]);
 
   function deleteProperty() {
-    return API.del("properties", `/properties/${props.match.params.id}`);
+    console.log(propertyId);
+    return API.del("properties", `/properties/${propertyId}`);
   }
 
   async function handleDelete(event) {
@@ -114,35 +121,37 @@ export default function EditProperty(props) {
     }
   }
   return (
-    <div className="EditProperty">
-      <p className="text-center">
-        <span onClick={handleDelete} className="other-btn">
-          <MdTrash fontSize="14px" />
-          Delete Property
-        </span>
-      </p>
+    <div className="EditProperty container">
+      {propertyOwner ? (
+        <div>
+          <p className="text-center">
+            <span onClick={handleDelete} className="other-btn">
+              <MdTrash fontSize="14px" />
+              Delete Property
+            </span>
+          </p>
 
-      {!isLoading ? (
-        <form onSubmit={handleSubmit}>
-          <FormGroup controlId="title">
-            <ControlLabel>Title</ControlLabel>
-            <FormControl
-              value={title}
-              type="text"
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </FormGroup>
+          {!isLoading ? (
+            <form onSubmit={handleSubmit} className="form-wrapper">
+              <FormGroup controlId="title">
+                <ControlLabel>Title</ControlLabel>
+                <FormControl
+                  value={title}
+                  type="text"
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </FormGroup>
 
-          <FormGroup controlId="tagline">
-            <ControlLabel>Tagline</ControlLabel>
-            <FormControl
-              value={tagline}
-              type="text"
-              onChange={(e) => setTagline(e.target.value)}
-            />
-          </FormGroup>
+              <FormGroup controlId="tagline">
+                <ControlLabel>Tagline</ControlLabel>
+                <FormControl
+                  value={tagline}
+                  type="text"
+                  onChange={(e) => setTagline(e.target.value)}
+                />
+              </FormGroup>
 
-          <FormGroup controlId="city">
+              <FormGroup controlId="city">
                 <ControlLabel>City</ControlLabel>
                 <FormControl
                   value={city}
@@ -286,19 +295,49 @@ export default function EditProperty(props) {
                 />
               </FormGroup>
 
-          <p className="text-right">
-            <LoaderButton
-              type="submit"
-              className="other-btn"
-              isLoading={isLoading}
-              disabled={!validateForm()}
-            >
-              Update Property
-            </LoaderButton>
-          </p>
-        </form>
+              <p className="text-right">
+                <LoaderButton
+                  type="submit"
+                  className="other-btn"
+                  isLoading={isLoading}
+                  disabled={!validateForm()}
+                >
+                  Update Property
+                </LoaderButton>
+              </p>
+            </form>
+          ) : (
+            <Loading />
+          )}
+        </div>
       ) : (
-        <IosRefresh fontSize="60px" color="#0085ef" rotate={true} />
+        <div>
+          <br />
+          <br />
+          <br />
+          <br />
+          <h2 className="text-center">
+            you are not the owner of this property
+          </h2>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+        </div>
       )}
     </div>
   );
