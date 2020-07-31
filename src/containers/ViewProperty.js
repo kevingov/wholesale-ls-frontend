@@ -23,7 +23,6 @@ export default function ViewProperty(props) {
         let userId = "none";
         if (user) userId = user["id"];
         const property = await loadProperty();
-        console.log(property);
         setPropertyOwner(userId === property.userId);
         setProperty(property);
         setIsLoading(true);
