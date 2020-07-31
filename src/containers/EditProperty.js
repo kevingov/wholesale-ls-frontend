@@ -101,7 +101,7 @@ export default function EditProperty(props) {
   }
 
   function saveProperty(property) {
-    return API.put("properties", `/properties/${props.match.params.id}`, {
+    return API.put("properties", `/properties/${propertyId}`, {
       body: property,
     });
   }
