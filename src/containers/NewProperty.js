@@ -46,7 +46,7 @@ export default function NewProperty(props) {
     setIsLoading(true);
 
     try {
-      await createProperty({
+      const property = await createProperty({
         title,
         tagline,
         city,
@@ -66,7 +66,7 @@ export default function NewProperty(props) {
         whyThisProperty,
         comparable,
       });
-      props.history.push(`/properties`);
+      props.history.push(`/properties/${property.propertyId}`);
     } catch (e) {
       alert(e);
       setIsLoading(false);
