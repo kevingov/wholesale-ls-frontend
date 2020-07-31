@@ -9,6 +9,10 @@ import {
   FormGroup,
   Row,
 } from "react-bootstrap";
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-places-autocomplete";
 import React, { useState } from "react";
 
 import { API } from "aws-amplify";
@@ -21,6 +25,7 @@ export default function NewProperty(props) {
   const [tagline, setTagline] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
+  const [geoAddress, setGeoAddress] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [propertyStatus, setPropertyStatus] = useState("");
   const [offerDate, setOfferDate] = useState(new Date());
@@ -35,6 +40,8 @@ export default function NewProperty(props) {
   const [propertyNeeds, setPropertyNeeds] = useState("");
   const [whyThisProperty, setWhyThisProperty] = useState("");
   const [comparable, setComparable] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   function validateForm() {
@@ -66,6 +73,8 @@ export default function NewProperty(props) {
         propertyNeeds,
         whyThisProperty,
         comparable,
+        longitude,
+        latitude,
       });
       props.history.push(`/properties/${property.propertyId}`);
     } catch (e) {
@@ -88,13 +97,27 @@ export default function NewProperty(props) {
     setPropertyType(propertyType);
   }
 
+  async function handleSelect(val) {
+    const results = await geocodeByAddress(val);
+    const result = results[0];
+    const latLng = await getLatLng(result);
+    setCity(
+      result.address_components.filter((component) =>
+        component.types.includes("locality")
+      )[0]["long_name"]
+    );
+    setAddress(result.formatted_address);
+    setLongitude(latLng.lng);
+    setLatitude(latLng.lat);
+    setGeoAddress(result.formatted_address);
+  }
+
   return (
     <div className="NewProperty">
       {!isLoading ? (
         <Row>
           <Col sm={12}>
             <div className="form-wrapper">
-              <h1>{city}</h1>
               <form onSubmit={handleSubmit}>
                 <FormGroup controlId="title">
                   <ControlLabel>Title</ControlLabel>
@@ -114,22 +137,47 @@ export default function NewProperty(props) {
                   />
                 </FormGroup>
 
-                <FormGroup controlId="city">
-                  <ControlLabel>City</ControlLabel>
-                  <FormControl
-                    value={city}
-                    type="text"
-                    onChange={(e) => setCity(e.target.value)}
-                  />
-                </FormGroup>
-
                 <FormGroup controlId="address">
                   <ControlLabel>Address</ControlLabel>
-                  <FormControl
-                    value={address}
-                    type="text"
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
+                  <PlacesAutocomplete
+                    value={geoAddress}
+                    onChange={setGeoAddress}
+                    onSelect={handleSelect}
+                  >
+                    {({
+                      getInputProps,
+                      suggestions,
+                      getSuggestionItemProps,
+                      loading,
+                    }) => (
+                      <div>
+                        <input
+                          {...getInputProps({ placeholder: "Type address" })}
+                        />
+                        <div>
+                          {loading ? <div>...loading</div> : null}
+
+                          {suggestions.map((suggestion, i) => {
+                            const style = {
+                              backgroundColor: suggestion.active
+                                ? "#301afb"
+                                : "$fff",
+                            };
+                            return (
+                              <div
+                                key={i}
+                                {...getSuggestionItemProps(suggestion, {
+                                  style,
+                                })}
+                              >
+                                {suggestion.description}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </PlacesAutocomplete>
                 </FormGroup>
 
                 <FormGroup controlId="propertyType">
