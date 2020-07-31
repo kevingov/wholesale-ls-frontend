@@ -4,6 +4,8 @@ import { API, Auth } from "aws-amplify";
 import { Button, ControlLabel, FormControl, FormGroup } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
+import DatePicker from "react-datepicker";
+import Dropdown from "react-dropdown";
 import LoaderButton from "../components/LoaderButton";
 import Loading from "./Loading";
 import MdTrash from "react-ionicons/lib/MdTrash";
@@ -47,9 +49,9 @@ export default function EditProperty(props) {
         setAddress(property.address);
         setPropertyType(property.propertyType);
         setPropertyStatus(property.propertyStatus);
-        setOfferDate(property.offerDate);
-        setCloseDate(property.closeDate);
-        setGroupShowingDate(property.groupShowingDate);
+        setOfferDate(new Date(property.offerDate));
+        setCloseDate(new Date(property.closeDate));
+        setGroupShowingDate(new Date(property.groupShowingDate));
         setBedroom(property.bedroom);
         setBathroom(property.bathroom);
         setParking(property.parking);
@@ -136,6 +138,15 @@ export default function EditProperty(props) {
       setIsLoading(false);
     }
   }
+
+  function updatePropertyStatus(propertyStatus) {
+    setPropertyStatus(propertyStatus);
+  }
+
+  function updatePropertyType(propertyType) {
+    setPropertyType(propertyType);
+  }
+
   return (
     <div className="EditProperty container">
       {propertyOwner ? (
@@ -187,46 +198,84 @@ export default function EditProperty(props) {
 
               <FormGroup controlId="propertyType">
                 <ControlLabel>Property Type</ControlLabel>
-                <FormControl
+                <br />
+                <br />
+                <Dropdown
                   value={propertyType}
-                  type="text"
-                  onChange={(e) => setPropertyType(e.target.value)}
+                  options={[
+                    {
+                      label: "Detached",
+                      value: "detached",
+                    },
+                    {
+                      label: "Semi-Detached",
+                      value: "Semi-Detached",
+                    },
+                    {
+                      label: "Townhomes",
+                      value: "Townhomes",
+                    },
+                    {
+                      label: "Condos",
+                      value: "Condos",
+                    },
+                    {
+                      label: "Multi-family",
+                      value: "Multi-family",
+                    },
+                  ]}
+                  onChange={updatePropertyType}
                 />
               </FormGroup>
 
               <FormGroup controlId="propertyStatus">
                 <ControlLabel>Property Status</ControlLabel>
-                <FormControl
+                <br />
+                <br />
+                <Dropdown
                   value={propertyStatus}
-                  type="text"
-                  onChange={(e) => setPropertyStatus(e.target.value)}
+                  options={[
+                    {
+                      label: "Active",
+                      value: "Active",
+                    },
+                    {
+                      label: "Pending",
+                      value: "Pending",
+                    },
+                    {
+                      label: "Assigned",
+                      value: "Assigned",
+                    },
+                  ]}
+                  onChange={updatePropertyStatus}
                 />
               </FormGroup>
 
               <FormGroup controlId="offerDate">
                 <ControlLabel>Offer Date</ControlLabel>
-                <FormControl
-                  value={offerDate}
-                  type="text"
-                  onChange={(e) => setOfferDate(e.target.value)}
+                <DatePicker
+                  selected={offerDate}
+                  onChange={(date) => setOfferDate(date)}
+                  dateFormat="MMMM d, yyyy"
                 />
               </FormGroup>
 
               <FormGroup controlId="closeDate">
                 <ControlLabel>Close Date</ControlLabel>
-                <FormControl
-                  value={closeDate}
-                  type="text"
-                  onChange={(e) => setCloseDate(e.target.value)}
+                <DatePicker
+                  selected={closeDate}
+                  onChange={(date) => setCloseDate(date)}
+                  dateFormat="MMMM d, yyyy"
                 />
               </FormGroup>
 
               <FormGroup controlId="groupShowingDate">
                 <ControlLabel>Group Showing Date</ControlLabel>
-                <FormControl
-                  value={groupShowingDate}
-                  type="text"
-                  onChange={(e) => setGroupShowingDate(e.target.value)}
+                <DatePicker
+                  selected={groupShowingDate}
+                  onChange={(date) => setGroupShowingDate(date)}
+                  dateFormat="MMMM d, yyyy"
                 />
               </FormGroup>
 
