@@ -21,7 +21,7 @@ export default function NewProperty(props) {
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [propertyType, setPropertyType] = useState("");
-  const [status, setStatus] = useState("");
+  const [propertyStatus, setPropertyStatus] = useState("");
   const [offerDate, setOfferDate] = useState(new Date());
   const [closeDate, setCloseDate] = useState(new Date());
   const [groupShowingDate, setGroupShowingDate] = useState(new Date());
@@ -52,7 +52,7 @@ export default function NewProperty(props) {
         city,
         address,
         propertyType: propertyType.value,
-        status: status.value,
+        propertyStatus: propertyStatus.value,
         offerDate,
         closeDate,
         groupShowingDate,
@@ -79,8 +79,8 @@ export default function NewProperty(props) {
     });
   }
 
-  function updateStatus(status) {
-    setStatus(status);
+  function updatePropertyStatus(propertyStatus) {
+    setPropertyStatus(propertyStatus);
   }
 
   function updatePropertyType(propertyType) {
@@ -162,12 +162,12 @@ export default function NewProperty(props) {
                 />
               </FormGroup>
 
-              <FormGroup controlId="status">
-                <ControlLabel>Status</ControlLabel>
+              <FormGroup controlId="propertyStatus">
+                <ControlLabel>Property Status</ControlLabel>
                 <br />
                 <br />
                 <Dropdown
-                  value={status}
+                  value={propertyStatus}
                   options={[
                     {
                       label: "Active",
@@ -182,7 +182,7 @@ export default function NewProperty(props) {
                       value: "Assigned",
                     },
                   ]}
-                  onChange={updateStatus}
+                  onChange={updatePropertyStatus}
                 />
               </FormGroup>
 

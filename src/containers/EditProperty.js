@@ -15,7 +15,7 @@ export default function EditProperty(props) {
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [propertyType, setPropertyType] = useState("");
-  const [status, setStatus] = useState("");
+  const [propertyStatus, setPropertyStatus] = useState("");
   const [offerDate, setOfferDate] = useState("");
   const [closeDate, setCloseDate] = useState("");
   const [groupShowingDate, setGroupShowingDate] = useState("");
@@ -46,9 +46,9 @@ export default function EditProperty(props) {
         setTitle(property.title);
         setTagline(property.tagline);
         setCity(property.city);
-        setAddress(property.Address);
-        setPropertyType(property.PropertyType);
-        setStatus(property.status);
+        setAddress(property.address);
+        setPropertyType(property.propertyType);
+        setPropertyStatus(property.propertyStatus);
         setOfferDate(property.offerDate);
         setCloseDate(property.closeDate);
         setGroupShowingDate(property.groupShowingDate);
@@ -177,12 +177,12 @@ export default function EditProperty(props) {
                 />
               </FormGroup>
 
-              <FormGroup controlId="status">
-                <ControlLabel>Status</ControlLabel>
+              <FormGroup controlId="propertyStatus">
+                <ControlLabel>Property Status</ControlLabel>
                 <FormControl
-                  value={status}
+                  value={propertyStatus}
                   type="text"
-                  onChange={(e) => setStatus(e.target.value)}
+                  onChange={(e) => setPropertyStatus(e.target.value)}
                 />
               </FormGroup>
 
