@@ -1,7 +1,7 @@
 import "./EditProperty.css";
 
 import { API, Auth } from "aws-amplify";
-import { ControlLabel, FormControl, FormGroup, Button } from "react-bootstrap";
+import { Button, ControlLabel, FormControl, FormGroup } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 import LoaderButton from "../components/LoaderButton";
@@ -11,7 +11,6 @@ import MdTrash from "react-ionicons/lib/MdTrash";
 export default function EditProperty(props) {
   const [title, setTitle] = useState("");
   const [tagline, setTagline] = useState("");
-  const [propertyId, setPropertyId] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [propertyType, setPropertyType] = useState("");
@@ -42,7 +41,6 @@ export default function EditProperty(props) {
         const userId = user["id"];
         const property = await loadProperty();
         setPropertyOwner(userId === property.userId);
-        setPropertyId(property.propertyId);
         setTitle(property.title);
         setTagline(property.tagline);
         setCity(property.city);
@@ -71,7 +69,7 @@ export default function EditProperty(props) {
   }, [props.match.params.id]);
 
   function deleteProperty() {
-    return API.del("properties", `/properties/${propertyId}`);
+    return API.del("properties", `/properties/${props.match.params.id}`);
   }
 
   async function handleDelete(event) {
@@ -101,7 +99,7 @@ export default function EditProperty(props) {
   }
 
   function saveProperty(property) {
-    return API.put("properties", `/properties/${propertyId}`, {
+    return API.put("properties", `/properties/${props.match.params.id}`, {
       body: property,
     });
   }
@@ -112,7 +110,26 @@ export default function EditProperty(props) {
     setIsLoading(true);
 
     try {
-      await saveProperty({ title });
+      await saveProperty({
+        title,
+        tagline,
+        city,
+        address,
+        propertyType,
+        propertyStatus,
+        offerDate,
+        closeDate,
+        groupShowingDate,
+        bedroom,
+        bathroom,
+        parking,
+        netOperatingIncome,
+        canCrowdFund,
+        description,
+        propertyNeeds,
+        whyThisProperty,
+        comparable,
+      });
       setIsLoading(false);
     } catch (e) {
       alert(e);
@@ -315,13 +332,11 @@ export default function EditProperty(props) {
           <br />
           <br />
           <br />
-          <h2>
-            Sorry, but it doesn't look like you own this listing. 
-          </h2>
-          <h2>
-            Please select one that you own to edit. 
-          </h2>
-          <Button href="/properties" variant="success" className="text-center">Back to Properties</Button>
+          <h2>Sorry, but it doesn't look like you own this listing.</h2>
+          <h2>Please select one that you own to edit.</h2>
+          <Button href="/properties" variant="success" className="text-center">
+            Back to Properties
+          </Button>
           <br />
           <br />
           <br />
