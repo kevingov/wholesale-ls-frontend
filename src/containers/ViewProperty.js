@@ -23,6 +23,7 @@ export default function ViewProperty(props) {
         let userId = "none";
         if (user) userId = user["id"];
         const property = await loadProperty();
+        console.log(property);
         setPropertyOwner(userId === property.userId);
         setProperty(property);
         setIsLoading(true);
@@ -43,7 +44,7 @@ export default function ViewProperty(props) {
               <br />
               <br />
               <a
-                href={`/properties/${property.slug}/edit`}
+                href={`/properties/${property.propertyId}/edit`}
                 className="other-btn"
               >
                 Edit Property
