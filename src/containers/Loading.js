@@ -24,8 +24,8 @@ export default class Loading extends Component {
           className="loading"
           type={"bubbles"}
           color={"#6C63FF"}
-          height={"200px"}
-          width={"200px"}
+          height={"100px"}
+          width={"150px"}
         />
         <br />
         <br />

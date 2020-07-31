@@ -1,7 +1,7 @@
-// import "./EditProperty.css";
+import "./EditProperty.css";
 
 import { API, Auth } from "aws-amplify";
-import { ControlLabel, FormControl, FormGroup } from "react-bootstrap";
+import { ControlLabel, FormControl, FormGroup, Button } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 import LoaderButton from "../components/LoaderButton";
@@ -310,14 +310,18 @@ export default function EditProperty(props) {
           )}
         </div>
       ) : (
-        <div>
+        <div className="text-center">
           <br />
           <br />
           <br />
           <br />
-          <h2 className="text-center">
-            you are not the owner of this property
+          <h2>
+            Sorry, but it doesn't look like you own this listing. 
           </h2>
+          <h2>
+            Please select one that you own to edit. 
+          </h2>
+          <Button href="/properties" variant="success" className="text-center">Back to Properties</Button>
           <br />
           <br />
           <br />

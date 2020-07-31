@@ -10,7 +10,7 @@ import {
 
 
 } from "reactstrap";
-import { Col, Jumbotron, Row, FormControl, FormGroup, Image} from "react-bootstrap";
+import { Col, Row, FormControl, FormGroup, Image} from "react-bootstrap";
 
 import React from "react";
 
@@ -21,7 +21,26 @@ export default function Home(props) {
         props.history.push("/properties")
       ) : (
         <div className="Home">
-          <div className="lander">
+          <div className="clean-lander">
+            <Row>
+              <div className="col-md-4">
+                <h1>
+                  Real Estate Marketplace for Wholesale Properties
+                </h1>
+                <Button variant="success" href="/properties">
+                  Search Properties
+                </Button>
+              </div>
+              <div className="col-md-8">
+              <Image src="https://wholesale-ls-marketing.s3.amazonaws.com/Hands-giving-keys.png" fluid></Image>
+              </div>
+
+            </Row>
+          </div>
+
+
+
+          {/* <div className="lander">
             <Jumbotron>
               <div className="container">
                 <h1>Find your Next Investment Property</h1>
@@ -39,9 +58,9 @@ export default function Home(props) {
                         </Col>
                       </Row>
                     </FormGroup> */}
-              </div>
-            </Jumbotron>
-          </div>
+              {/* </div> */}
+             {/* </Jumbotron> */}
+           {/* </div>  */}
 
           <div className="highlight-container">
             <div className="container">
@@ -219,33 +238,23 @@ export default function Home(props) {
           <div className="about-us-container">
             <Row className="about-us-text">
               <Col xs={6}>
-                <h1>About Us</h1>
+                <h1>First Marketplace for Off-Market Deals.</h1>
                 <h3>
-                  Welcome to the First Real Estate Marketplace for Off-Market
-                  Properties.{" "}
+                  Reach a Wider Audence 
                 </h3>
                 
                 <div class="title-underline"></div>
 
                 <p>
-                  We Work exclusively with Real Estate Wholesalers to find you
-                  undervalued property that are ready to flip in one convenience
-                  platform.{" "}
-                </p>
-                
-                <p>
-                  Wholesaling Property is the act of assigning a contract on a property 
-                  that is ready to close. Wholesalers will market and knock on every door 
-                  to find distressed properties in need of a quick sale. Once found, they 
-                  buy the property, contract it out, and flip the contracts over to Real Estate Investors, such as us!
+                Instead of going to meetups or Facebook group to connect with wholesalers/buyers list, come to one centralized easy location to meet everyone. 
                 </p>
 
                 <p>
-                  Instead of scouring through MLS or your Real Estate Broker for
-                  deals, come browse our selection of private home owners in
-                  need of a quick sale.
+                  Think of this as one giant buyer's list, but on steroids!
                 </p>
-                
+                <Button variant="success" href="/properties">
+                  Search Properties
+                </Button>
               </Col>
               <Col xs={6}>
                 <img
@@ -254,7 +263,49 @@ export default function Home(props) {
                 />
               </Col>
             </Row>
+
+            <Row className="about-us-text">
+              
+              <Col xs={6}>
+                <img
+                  alt="awesome proerty"
+                  src="https://wholesale-ls-marketing.s3.amazonaws.com/Modena-keys2.jpeg"
+                />
+              </Col>
+
+              <Col xs={6}>
+                <h1>First Marketplace for Off-Market Deals.</h1>
+                <h3>
+                  Build Relationships
+                </h3>
+                
+                <div class="title-underline"></div>
+
+                <p>
+                  Connect and chat with other Real Estate Professionals. Whether it's building a connection with a Wholesale/Buyer, or looking for a Mortgage Broker to fund your next project. 
+                </p>
+                
+                <p>
+                  We aim to bring everyone together so foster more Joint Venture Opportunities. 
+                </p>
+                
+                <Button variant="success" href="/properties">
+                  Search Properties
+                </Button>
+
+              </Col>
+            </Row>
+
+
+
+
+
           </div>
+
+
+
+
+
 
           <div className="how-it-works">
             <Row>
