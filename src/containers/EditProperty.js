@@ -1,6 +1,6 @@
 import "./EditProperty.css";
 
-import { API, Auth } from "aws-amplify";
+import { API, Auth, Storage } from "aws-amplify";
 import { Button, ControlLabel, FormControl, FormGroup } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
@@ -9,6 +9,7 @@ import Dropdown from "react-dropdown";
 import LoaderButton from "../components/LoaderButton";
 import Loading from "./Loading";
 import MdTrash from "react-ionicons/lib/MdTrash";
+import config from "../config";
 
 export default function EditProperty(props) {
   const [title, setTitle] = useState("");
@@ -31,6 +32,11 @@ export default function EditProperty(props) {
   const [comparable, setComparable] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [propertyOwner, setPropertyOwner] = useState(true);
+  const [image, setImage] = useState(null);
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [propertyId, setPropertyId] = useState("");
+  const [file, setFile] = useState(false);
 
   useEffect(() => {
     function loadProperty() {
@@ -42,6 +48,7 @@ export default function EditProperty(props) {
         const user = await Auth.currentUserInfo();
         const userId = user["id"];
         const property = await loadProperty();
+        setPropertyId(property.propertyId);
         setPropertyOwner(userId === property.userId);
         setTitle(property.title);
         setTagline(property.tagline);
@@ -61,6 +68,9 @@ export default function EditProperty(props) {
         setPropertyNeeds(property.propertyNeeds);
         setWhyThisProperty(property.whyThisProperty);
         setComparable(property.comparable);
+        setImage(property.image);
+        setLatitude(property.latitude);
+        setLongitude(property.longitude);
         setIsLoading(false);
       } catch (e) {
         alert(e);
@@ -106,12 +116,32 @@ export default function EditProperty(props) {
     });
   }
 
+  function handleFileChange(event) {
+    setFile(event.target.files[0]);
+  }
+
+  async function s3Upload(file) {
+    const filename = `${Date.now()}-${file.name}`;
+
+    try {
+      const stored = await Storage.put(filename, file, {
+        level: "public",
+        contentType: file.type,
+      });
+      return stored.key;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
 
     setIsLoading(true);
 
     try {
+      const newImage = file ? await s3Upload(file) : image;
+      console.log(newImage);
       await saveProperty({
         title,
         tagline,
@@ -131,8 +161,11 @@ export default function EditProperty(props) {
         propertyNeeds,
         whyThisProperty,
         comparable,
+        image: newImage,
+        latitude,
+        longitude,
       });
-      setIsLoading(false);
+      props.history.push(`/properties/${propertyId}`);
     } catch (e) {
       alert(e);
       setIsLoading(false);
@@ -145,6 +178,10 @@ export default function EditProperty(props) {
 
   function updatePropertyType(propertyType) {
     setPropertyType(propertyType);
+  }
+
+  function formatFilename(str) {
+    return str.replace(/^\w+-/, "");
   }
 
   return (
@@ -358,6 +395,26 @@ export default function EditProperty(props) {
                   componentClass="textarea"
                   onChange={(e) => setComparable(e.target.value)}
                 />
+              </FormGroup>
+
+              {image && (
+                <FormGroup>
+                  <ControlLabel>Image</ControlLabel>
+                  <FormControl.Static>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${image}`}
+                      className="pull-left"
+                    >
+                      {formatFilename(image)}
+                    </a>
+                  </FormControl.Static>
+                </FormGroup>
+              )}
+              <FormGroup controlId="file">
+                {!image && <ControlLabel>Attachment</ControlLabel>}
+                <FormControl onChange={handleFileChange} type="file" />
               </FormGroup>
 
               <p className="text-right">

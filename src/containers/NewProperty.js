@@ -2,6 +2,7 @@
 import "react-dropdown/style.css";
 import "react-datepicker/dist/react-datepicker.css";
 
+import { API, Storage } from "aws-amplify";
 import {
   Col,
   ControlLabel,
@@ -15,7 +16,6 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import React, { useState } from "react";
 
-import { API } from "aws-amplify";
 import DatePicker from "react-datepicker";
 import Dropdown from "react-dropdown";
 import Loading from "./Loading";
@@ -43,6 +43,7 @@ export default function NewProperty(props) {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [file, setFile] = useState(false);
 
   function validateForm() {
     return title.length > 5;
@@ -54,6 +55,8 @@ export default function NewProperty(props) {
     setIsLoading(true);
 
     try {
+      const image = file ? await s3Upload(file) : null;
+      console.log(image);
       const property = await createProperty({
         title,
         tagline,
@@ -75,6 +78,7 @@ export default function NewProperty(props) {
         comparable,
         longitude,
         latitude,
+        image,
       });
       props.history.push(`/properties/${property.propertyId}`);
     } catch (e) {
@@ -110,6 +114,24 @@ export default function NewProperty(props) {
     setLongitude(latLng.lng);
     setLatitude(latLng.lat);
     setGeoAddress(result.formatted_address);
+  }
+
+  function handleFileChange(event) {
+    setFile(event.target.files[0]);
+  }
+
+  async function s3Upload(file) {
+    const filename = `${Date.now()}-${file.name}`;
+
+    try {
+      const stored = await Storage.put(filename, file, {
+        level: "public",
+        contentType: file.type,
+      });
+      return stored.key;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return (
@@ -158,17 +180,10 @@ export default function NewProperty(props) {
                           {loading ? <div>...loading</div> : null}
 
                           {suggestions.map((suggestion, i) => {
-                            const style = {
-                              backgroundColor: suggestion.active
-                                ? "#301afb"
-                                : "$fff",
-                            };
                             return (
                               <div
                                 key={i}
-                                {...getSuggestionItemProps(suggestion, {
-                                  style,
-                                })}
+                                {...getSuggestionItemProps(suggestion, {})}
                               >
                                 {suggestion.description}
                               </div>
@@ -342,6 +357,11 @@ export default function NewProperty(props) {
                     componentClass="textarea"
                     onChange={(e) => setComparable(e.target.value)}
                   />
+                </FormGroup>
+
+                <FormGroup controlId="comparable">
+                  <ControlLabel>Property Image</ControlLabel>
+                  <FormControl onChange={handleFileChange} type="file" />
                 </FormGroup>
 
                 <br />
