@@ -1,17 +1,19 @@
 import "./EditProperty.css";
 
-import { API, Auth } from "aws-amplify";
-import { ControlLabel, FormControl, FormGroup, Button } from "react-bootstrap";
+import { API, Auth, Storage } from "aws-amplify";
+import { Button, ControlLabel, FormControl, FormGroup } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
+import DatePicker from "react-datepicker";
+import Dropdown from "react-dropdown";
 import LoaderButton from "../components/LoaderButton";
 import Loading from "./Loading";
 import MdTrash from "react-ionicons/lib/MdTrash";
+import config from "../config";
 
 export default function EditProperty(props) {
   const [title, setTitle] = useState("");
   const [tagline, setTagline] = useState("");
-  const [propertyId, setPropertyId] = useState("");
   const [city, setCity] = useState("");
   const [address, setAddress] = useState("");
   const [propertyType, setPropertyType] = useState("");
@@ -30,6 +32,11 @@ export default function EditProperty(props) {
   const [comparable, setComparable] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [propertyOwner, setPropertyOwner] = useState(true);
+  const [image, setImage] = useState(null);
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [propertyId, setPropertyId] = useState("");
+  const [file, setFile] = useState(false);
 
   useEffect(() => {
     function loadProperty() {
@@ -41,17 +48,17 @@ export default function EditProperty(props) {
         const user = await Auth.currentUserInfo();
         const userId = user["id"];
         const property = await loadProperty();
-        setPropertyOwner(userId === property.userId);
         setPropertyId(property.propertyId);
+        setPropertyOwner(userId === property.userId);
         setTitle(property.title);
         setTagline(property.tagline);
         setCity(property.city);
         setAddress(property.address);
         setPropertyType(property.propertyType);
         setPropertyStatus(property.propertyStatus);
-        setOfferDate(property.offerDate);
-        setCloseDate(property.closeDate);
-        setGroupShowingDate(property.groupShowingDate);
+        setOfferDate(new Date(property.offerDate));
+        setCloseDate(new Date(property.closeDate));
+        setGroupShowingDate(new Date(property.groupShowingDate));
         setBedroom(property.bedroom);
         setBathroom(property.bathroom);
         setParking(property.parking);
@@ -61,6 +68,9 @@ export default function EditProperty(props) {
         setPropertyNeeds(property.propertyNeeds);
         setWhyThisProperty(property.whyThisProperty);
         setComparable(property.comparable);
+        setImage(property.image);
+        setLatitude(property.latitude);
+        setLongitude(property.longitude);
         setIsLoading(false);
       } catch (e) {
         alert(e);
@@ -71,7 +81,7 @@ export default function EditProperty(props) {
   }, [props.match.params.id]);
 
   function deleteProperty() {
-    return API.del("properties", `/properties/${propertyId}`);
+    return API.del("properties", `/properties/${props.match.params.id}`);
   }
 
   async function handleDelete(event) {
@@ -101,9 +111,27 @@ export default function EditProperty(props) {
   }
 
   function saveProperty(property) {
-    return API.put("properties", `/properties/${propertyId}`, {
+    return API.put("properties", `/properties/${props.match.params.id}`, {
       body: property,
     });
+  }
+
+  function handleFileChange(event) {
+    setFile(event.target.files[0]);
+  }
+
+  async function s3Upload(file) {
+    const filename = `${Date.now()}-${file.name}`;
+
+    try {
+      const stored = await Storage.put(filename, file, {
+        level: "public",
+        contentType: file.type,
+      });
+      return stored.key;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async function handleSubmit(event) {
@@ -112,13 +140,50 @@ export default function EditProperty(props) {
     setIsLoading(true);
 
     try {
-      await saveProperty({ title });
-      setIsLoading(false);
+      const newImage = file ? await s3Upload(file) : image;
+      console.log(newImage);
+      await saveProperty({
+        title,
+        tagline,
+        city,
+        address,
+        propertyType,
+        propertyStatus,
+        offerDate,
+        closeDate,
+        groupShowingDate,
+        bedroom,
+        bathroom,
+        parking,
+        netOperatingIncome,
+        canCrowdFund,
+        description,
+        propertyNeeds,
+        whyThisProperty,
+        comparable,
+        image: newImage,
+        latitude,
+        longitude,
+      });
+      props.history.push(`/properties/${propertyId}`);
     } catch (e) {
       alert(e);
       setIsLoading(false);
     }
   }
+
+  function updatePropertyStatus(propertyStatus) {
+    setPropertyStatus(propertyStatus);
+  }
+
+  function updatePropertyType(propertyType) {
+    setPropertyType(propertyType);
+  }
+
+  function formatFilename(str) {
+    return str.replace(/^\w+-/, "");
+  }
+
   return (
     <div className="EditProperty container">
       {propertyOwner ? (
@@ -170,46 +235,84 @@ export default function EditProperty(props) {
 
               <FormGroup controlId="propertyType">
                 <ControlLabel>Property Type</ControlLabel>
-                <FormControl
+                <br />
+                <br />
+                <Dropdown
                   value={propertyType}
-                  type="text"
-                  onChange={(e) => setPropertyType(e.target.value)}
+                  options={[
+                    {
+                      label: "Detached",
+                      value: "detached",
+                    },
+                    {
+                      label: "Semi-Detached",
+                      value: "Semi-Detached",
+                    },
+                    {
+                      label: "Townhomes",
+                      value: "Townhomes",
+                    },
+                    {
+                      label: "Condos",
+                      value: "Condos",
+                    },
+                    {
+                      label: "Multi-family",
+                      value: "Multi-family",
+                    },
+                  ]}
+                  onChange={updatePropertyType}
                 />
               </FormGroup>
 
               <FormGroup controlId="propertyStatus">
                 <ControlLabel>Property Status</ControlLabel>
-                <FormControl
+                <br />
+                <br />
+                <Dropdown
                   value={propertyStatus}
-                  type="text"
-                  onChange={(e) => setPropertyStatus(e.target.value)}
+                  options={[
+                    {
+                      label: "Active",
+                      value: "Active",
+                    },
+                    {
+                      label: "Pending",
+                      value: "Pending",
+                    },
+                    {
+                      label: "Assigned",
+                      value: "Assigned",
+                    },
+                  ]}
+                  onChange={updatePropertyStatus}
                 />
               </FormGroup>
 
               <FormGroup controlId="offerDate">
                 <ControlLabel>Offer Date</ControlLabel>
-                <FormControl
-                  value={offerDate}
-                  type="text"
-                  onChange={(e) => setOfferDate(e.target.value)}
+                <DatePicker
+                  selected={offerDate}
+                  onChange={(date) => setOfferDate(date)}
+                  dateFormat="MMMM d, yyyy"
                 />
               </FormGroup>
 
               <FormGroup controlId="closeDate">
                 <ControlLabel>Close Date</ControlLabel>
-                <FormControl
-                  value={closeDate}
-                  type="text"
-                  onChange={(e) => setCloseDate(e.target.value)}
+                <DatePicker
+                  selected={closeDate}
+                  onChange={(date) => setCloseDate(date)}
+                  dateFormat="MMMM d, yyyy"
                 />
               </FormGroup>
 
               <FormGroup controlId="groupShowingDate">
                 <ControlLabel>Group Showing Date</ControlLabel>
-                <FormControl
-                  value={groupShowingDate}
-                  type="text"
-                  onChange={(e) => setGroupShowingDate(e.target.value)}
+                <DatePicker
+                  selected={groupShowingDate}
+                  onChange={(date) => setGroupShowingDate(date)}
+                  dateFormat="MMMM d, yyyy"
                 />
               </FormGroup>
 
@@ -294,6 +397,26 @@ export default function EditProperty(props) {
                 />
               </FormGroup>
 
+              {image && (
+                <FormGroup>
+                  <ControlLabel>Image</ControlLabel>
+                  <FormControl.Static>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${image}`}
+                      className="pull-left"
+                    >
+                      {formatFilename(image)}
+                    </a>
+                  </FormControl.Static>
+                </FormGroup>
+              )}
+              <FormGroup controlId="file">
+                {!image && <ControlLabel>Attachment</ControlLabel>}
+                <FormControl onChange={handleFileChange} type="file" />
+              </FormGroup>
+
               <p className="text-right">
                 <LoaderButton
                   type="submit"
@@ -315,13 +438,11 @@ export default function EditProperty(props) {
           <br />
           <br />
           <br />
-          <h2>
-            Sorry, but it doesn't look like you own this listing. 
-          </h2>
-          <h2>
-            Please select one that you own to edit. 
-          </h2>
-          <Button href="/properties" variant="success" className="text-center">Back to Properties</Button>
+          <h2>Sorry, but it doesn't look like you own this listing.</h2>
+          <h2>Please select one that you own to edit.</h2>
+          <Button href="/properties" variant="success" className="text-center">
+            Back to Properties
+          </Button>
           <br />
           <br />
           <br />

@@ -55,14 +55,12 @@ class App extends Component {
           <div className="nav">
             <div className="nav-content container">
               <a href="/" className="logo hidden-xs">
-
                 {/* <p>Uncommon Estate</p> */}
               <img
                         height="45"
                         alt="conversify logo"
                         src="https://wholesale-ls-marketing.s3.amazonaws.com/logo/Uncommon+Estate+Black.png"
                       />
-     
               </a>
               {this.state.isAuthenticated ? (
                 <div className="links">
@@ -112,11 +110,8 @@ class App extends Component {
                     <a href="/" className="structure-menu-link">
                       Home
                     </a>
-                    <a
-                      href="https://www.facebook.com/groups/conversify/"
-                      className="structure-menu-link"
-                    >
-                      Community
+                    <a href="/properties" className="structure-menu-link">
+                      Properties
                     </a>
                     <span
                       className="structure-menu-link"

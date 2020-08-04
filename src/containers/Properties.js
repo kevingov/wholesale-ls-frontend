@@ -14,7 +14,6 @@ export default function Properties(props) {
     async function onLoad() {
       try {
         const properties = await loadProperties();
-        console.log(properties);
         setProperties(properties);
       } catch (e) {
         alert(e);
@@ -36,7 +35,7 @@ export default function Properties(props) {
         <Row>
           {properties.map((property, i) => (
             <Col key={i} xs={4}>
-              <a href={`/properties/${property.slug}`}>
+              <a href={`/properties/${property.propertyId}`}>
                 <div className="property">
                   <h3>{property.title}</h3>
                   <p>{property.tagline}</p>

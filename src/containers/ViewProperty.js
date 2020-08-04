@@ -2,10 +2,11 @@ import "./ViewProperty.css";
 
 import { API, Auth } from "aws-amplify";
 import { Card, CardBody, CardTitle } from "reactstrap";
-import { Col, Jumbotron, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 import Loading from "./Loading";
+import config from "../config";
 
 export default function ViewProperty(props) {
   const [property, setProperty] = useState(null);
@@ -43,7 +44,7 @@ export default function ViewProperty(props) {
               <br />
               <br />
               <a
-                href={`/properties/${property.slug}/edit`}
+                href={`/properties/${property.propertyId}/edit`}
                 className="other-btn"
               >
                 Edit Property
@@ -53,7 +54,10 @@ export default function ViewProperty(props) {
             </div>
           ) : null}
           <div className="lander">
-            <Jumbotron></Jumbotron>
+            <img
+              alt={property.title}
+              src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image}`}
+            />
           </div>
           <div>
             <Row>
