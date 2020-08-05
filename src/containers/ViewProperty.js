@@ -79,7 +79,7 @@ export default function ViewProperty(props) {
               <Col sm={4}>
                 <Card>
                   <CardBody>
-                    <CardTitle>Toronto</CardTitle>
+                    <CardTitle>{property.userId}</CardTitle>
                     {/* <CardText tag="p">
                           Automatically create a Drip Campagin of emails/messages designed to start Conversations.
                         </CardText> */}

@@ -156,6 +156,12 @@ class App extends Component {
                     >
                       Facebook
                     </a>
+                    <a
+                      href="https://uncommonestate.slack.com"
+                      className="structure-menu-link"
+                    >
+                      Slack
+                    </a>
                   </Col>
                 </Row>
               </div>
