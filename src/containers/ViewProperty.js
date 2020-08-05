@@ -1,7 +1,6 @@
 import "./ViewProperty.css";
 
 import { API, Auth } from "aws-amplify";
-import { Card, CardBody, CardTitle } from "reactstrap";
 import { Col, Row } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
@@ -12,10 +11,15 @@ export default function ViewProperty(props) {
   const [property, setProperty] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [propertyOwner, setPropertyOwner] = useState(false);
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
     function loadProperty() {
       return API.get("properties", `/properties/${props.match.params.id}`);
+    }
+
+    function loadProfile(userId) {
+      return API.get("profiles", `/profiles/${userId}`);
     }
 
     async function onLoad() {
@@ -24,6 +28,8 @@ export default function ViewProperty(props) {
         let userId = "none";
         if (user) userId = user["id"];
         const property = await loadProperty();
+        const profile = await loadProfile(property.userId);
+        setProfile(profile);
         setPropertyOwner(userId === property.userId);
         setProperty(property);
         setIsLoading(true);
@@ -77,15 +83,11 @@ export default function ViewProperty(props) {
                 <p>{property.description}</p>
               </Col>
               <Col sm={4}>
-                <Card>
-                  <CardBody>
-                    <CardTitle>{property.userId}</CardTitle>
-                    {/* <CardText tag="p">
-                          Automatically create a Drip Campagin of emails/messages designed to start Conversations.
-                        </CardText> */}
-                    {/* <Button variant="primary">See Properties</Button> */}
-                  </CardBody>
-                </Card>
+                <div>{profile.userId}</div>
+                <p>
+                  {profile.firstName} {profile.lastName}
+                </p>
+                <p>{profile.bio}</p>
               </Col>
             </Row>
           </div>
