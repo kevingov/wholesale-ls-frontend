@@ -59,7 +59,7 @@ export default function ViewProperty(props) {
               <br />
             </div>
           ) : null}
-          <div className="lander">
+          <div className="">
             <img
               alt={property.title}
               src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image}`}
