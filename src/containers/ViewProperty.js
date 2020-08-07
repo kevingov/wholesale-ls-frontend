@@ -1,7 +1,7 @@
 import "./ViewProperty.css";
 
 import { API, Auth } from "aws-amplify";
-import { Col, Row } from "react-bootstrap";
+import { Col, Modal, Row } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 import Loading from "./Loading";
@@ -12,6 +12,9 @@ export default function ViewProperty(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [propertyOwner, setPropertyOwner] = useState(false);
   const [profile, setProfile] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
+  const [viewCreateAccountModal, setViewCreateAccountModal] = useState(null);
+  const [infoSent, setInfoSent] = useState(false);
 
   useEffect(() => {
     function loadProperty() {
@@ -27,6 +30,7 @@ export default function ViewProperty(props) {
         const user = await Auth.currentUserInfo();
         let userId = "none";
         if (user) userId = user["id"];
+        if (user) setUserEmail(user.attributes.email);
         const property = await loadProperty();
         const profile = await loadProfile(property.userId);
         setProfile(profile);
@@ -40,6 +44,25 @@ export default function ViewProperty(props) {
 
     onLoad();
   }, [props.match.params.id]);
+
+  async function sendPropertyEmail() {
+    await sendEmail({
+      buyerEmail: userEmail,
+      wholesalerEmail: profile.email,
+      propertyTitle: property.title,
+      buyerFirstName: "test",
+      propertyInfo: property.tagline,
+      wholesalerFirstName: profile.firstName,
+    });
+    setInfoSent(true);
+  }
+
+  function sendEmail(info) {
+    console.log(info);
+    return API.post("properties", "/propertyemail", {
+      body: info,
+    });
+  }
 
   return (
     <div className="ViewProperty container">
@@ -88,6 +111,23 @@ export default function ViewProperty(props) {
                   {profile.firstName} {profile.lastName}
                 </p>
                 <p>{profile.bio}</p>
+                <p>{profile.email}</p>
+                <p>user eamil: {userEmail}</p>
+                {infoSent ? (
+                  <p>info is sent</p>
+                ) : (
+                  <p>
+                    {userEmail ? (
+                      <button onClick={() => sendPropertyEmail()}>
+                        Request more info
+                      </button>
+                    ) : (
+                      <button onClick={() => setViewCreateAccountModal(true)}>
+                        Request more info
+                      </button>
+                    )}
+                  </p>
+                )}
               </Col>
             </Row>
           </div>
@@ -95,6 +135,27 @@ export default function ViewProperty(props) {
       ) : (
         <Loading />
       )}
+      <Modal
+        show={viewCreateAccountModal}
+        onHide={() => setViewCreateAccountModal(false)}
+        dialogClassName="modal-90w"
+      >
+        <Modal.Body>
+          <div className="modal-card text-center">
+            <h1>create account first</h1>
+            <p>
+              You'll have to create an account to get more info on this property
+            </p>
+            <a
+              alt="create account btn"
+              className="secondary-btn"
+              href="/signup"
+            >
+              Create an account
+            </a>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }
