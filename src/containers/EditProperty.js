@@ -37,6 +37,7 @@ export default function EditProperty(props) {
   const [longitude, setLongitude] = useState("");
   const [propertyId, setPropertyId] = useState("");
   const [file, setFile] = useState(false);
+  const [price, setPrice] = useState("");
 
   useEffect(() => {
     function loadProperty() {
@@ -72,6 +73,7 @@ export default function EditProperty(props) {
         setLatitude(property.latitude);
         setLongitude(property.longitude);
         setIsLoading(false);
+        setPrice(property.price);
       } catch (e) {
         alert(e);
       }
@@ -164,6 +166,7 @@ export default function EditProperty(props) {
         image: newImage,
         latitude,
         longitude,
+        price,
       });
       props.history.push(`/properties/${propertyId}`);
     } catch (e) {
@@ -212,6 +215,15 @@ export default function EditProperty(props) {
                   value={tagline}
                   type="text"
                   onChange={(e) => setTagline(e.target.value)}
+                />
+              </FormGroup>
+
+              <FormGroup controlId="price">
+                <ControlLabel>Price</ControlLabel>
+                <FormControl
+                  value={price}
+                  type="text"
+                  onChange={(e) => setPrice(e.target.value)}
                 />
               </FormGroup>
 

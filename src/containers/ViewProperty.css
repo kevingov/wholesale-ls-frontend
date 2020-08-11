@@ -21,18 +21,87 @@
 .p {
     font-family: 'Lato', sans-serif;
     color: #69707b;
-    font-size: 16px;
-    line-height: 25px;
+    color: rgb(34, 34, 34) !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    word-break: break-word !important;
 }
 
-.card {
-    /* background-color: whitesmoke; */
-    transition: all 0.5s ease-in-out;
-    border-radius: 0.5rem;
-    margin: 12px;
-    /* border-color: white; */
-    box-shadow: 5px 10px 20px 1px rgba(0,0,0,0.253) !important;
-    padding: 0px;
-    border-radius: 25px;
+img {
+    max-height: 526px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
 
+.title {
+    /* border-bottom: 1px solid #cbd2de; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.title h1{
+    color: rgb(34, 34, 34) !important;
+    font-family: 'Lato', sans-serif;
+    font-weight: 600 !important;
+    font-size: 22px !important;
+    line-height: 26px !important;
+}
+
+.title p {
+    color: #222222 !important;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+    line-height: 20px !important;
+}
+
+.images {
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.dates {
+    margin-bottom: 50px;
+}
+
+.highlights-container {
+    border-bottom: 1px solid #cbd2de;
+    margin-bottom: 70px;
+}
+
+
+
+    .highlights img {
+        height: 24px;
+        width: 24px;
+        float: left;
+    }
+
+    .highlights p {
+        margin-left: 30px;
+    }
+
+.description {
+    border-top: 1px solid #cbd2de;
+    border-bottom: 1px solid #cbd2de;
+    margin-top: 175px;
+    padding-bottom: 30px
+}
+
+.comparable {
+    border-bottom: 1px solid #cbd2de;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.contact {
+    border: 1px solid #cbd2de;
+    padding: 30px;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    
 }

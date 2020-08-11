@@ -44,6 +44,7 @@ export default function NewProperty(props) {
   const [longitude, setLongitude] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState(false);
+  const [price, setPrice] = useState("");
 
   function validateForm() {
     return title.length > 5;
@@ -79,6 +80,7 @@ export default function NewProperty(props) {
         longitude,
         latitude,
         image,
+        price,
       });
       props.history.push(`/properties/${property.propertyId}`);
     } catch (e) {
@@ -157,6 +159,15 @@ export default function NewProperty(props) {
                     type="text"
                     onChange={(e) => setTagline(e.target.value)}
                   />
+                </FormGroup>
+
+                <FormGroup controlId="price">
+                <ControlLabel>Price</ControlLabel>
+                <FormControl
+                  value={price}
+                  type="text"
+                  onChange={(e) => setPrice(e.target.value)}
+                />
                 </FormGroup>
 
                 <FormGroup controlId="address">
@@ -359,7 +370,7 @@ export default function NewProperty(props) {
                   />
                 </FormGroup>
 
-                <FormGroup controlId="comparable">
+                <FormGroup controlId="image">
                   <ControlLabel>Property Image</ControlLabel>
                   <FormControl onChange={handleFileChange} type="file" />
                 </FormGroup>
