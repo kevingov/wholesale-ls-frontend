@@ -32,6 +32,7 @@ export default function ViewProperty(props) {
         if (user) userId = user["id"];
         if (user) setUserEmail(user.attributes.email);
         const property = await loadProperty();
+        console.log(property);
         const profile = await loadProfile(property.userId);
         setProfile(profile);
         setPropertyOwner(userId === property.userId);
@@ -82,58 +83,46 @@ export default function ViewProperty(props) {
               <br />
             </div>
           ) : null}
-          
-              <div className="title">
-                <h1>{property.title}</h1>
-                  <p>
-                    <b>Wholesale Price: $ {property.price} in {property.city} </b>
-                  </p>
-              </div>
-            <div className="images center">
-            <img
-              alt={property.title}
-              src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image}`}
-            />
+
+          <div className="title">
+            <h1>{property.title}</h1>
+            <p>
+              <b>${property.price}</b> &middot; {property.address}
+            </p>
           </div>
-          <div>
-            <Row>
-              <Col sm={8}>
+          <div
+            style={{
+              backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
+              backgroundSize: "cover",
+              height: "500px",
+              borderRadius: "5px",
+              marginBottom: "5px",
+              marginTop: "24px",
+            }}
+            className="propertyImage"
+          ></div>
+
+          <Row>
+            <Col sm={8}>
               <div className="highlights-container">
-                <Col sm={6}>
-                  <div className="highlights">
-                    <h3>Highlights</h3>
-                      <img alt="bed icon" src={'https://wholesale-ls-marketing.s3.amazonaws.com/Icons/bed.svg'}></img>
-                        <p>{property.bedroom} Bedrooms</p>
-                      <img alt="bathroom icon" src={'https://wholesale-ls-marketing.s3.amazonaws.com/Icons/restroom.svg'}></img>
-                        <p>{property.bathroom} Bathrooms</p>
-                      <img alt="bathroom icon" src={'https://wholesale-ls-marketing.s3.amazonaws.com/Icons/car-parking.svg'}></img>
-                        <p>{property.parking} Parking</p>
-                  </div>
-                </Col>
-                <Col sm={6}>
-                <div className="dates">
-                  <h3>Dates</h3>
-                  <p>Offer Date is {property.offerDate}</p>
-                  <p>Closing Date is {property.closeDate}</p>
-                  </div>
-                </Col>
-                </div>
-                <div className="description">
-                <h3>Description</h3>
+                <h3>
+                  {property.propertyType} posted by {profile.firstName}{" "}
+                  {profile.lastName}
+                </h3>
+                <p>
+                  {property.bedroom} Bedrooms &middot; {property.bathroom}{" "}
+                  Bathrooms &middot; {property.parking} Parking
+                </p>
+                <hr />
                 <p>{property.description}</p>
-                
-                </div>
-                <div className="comparable">
-                  <h3>Why this Property?</h3>
-                  <p>{property.whyThisProperty}</p>
-                  <h3>Comparables</h3>
-                  <p>{property.comparable}</p>
-                  
-                </div>
-              </Col>
-              <Col sm={4}>
-                <div className="contact">
-                
+                <h3>Why this Property?</h3>
+                <p>{property.whyThisProperty}</p>
+                <h3>Comparables</h3>
+                <p>{property.comparable}</p>
+              </div>
+            </Col>
+            <Col sm={4}>
+              <div className="contact">
                 <p>
                   {profile.firstName} {profile.lastName}
                 </p>
@@ -155,10 +144,9 @@ export default function ViewProperty(props) {
                     )}
                   </p>
                 )}
-                </div>
-              </Col>
-            </Row>
-          </div>
+              </div>
+            </Col>
+          </Row>
         </div>
       ) : (
         <Loading />
