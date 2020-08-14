@@ -12,9 +12,6 @@ body {
   background-color: #fff !important;
 }
 
-
-
-
 .App .nav .active {
   color: #6c63ff;
 }
@@ -60,10 +57,10 @@ body {
   -ms-flex: 1;
   flex: 1;
   margin: auto;
+  padding: 0px;
 }
 
 .App .nav .nav-content .logo {
-  width: 110px;
   max-width: 100%;
   display: inline-block;
 }

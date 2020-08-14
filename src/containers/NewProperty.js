@@ -162,12 +162,12 @@ export default function NewProperty(props) {
                 </FormGroup>
 
                 <FormGroup controlId="price">
-                <ControlLabel>Price</ControlLabel>
-                <FormControl
-                  value={price}
-                  type="text"
-                  onChange={(e) => setPrice(e.target.value)}
-                />
+                  <ControlLabel>Price</ControlLabel>
+                  <FormControl
+                    value={price}
+                    type="text"
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
                 </FormGroup>
 
                 <FormGroup controlId="address">
@@ -215,19 +215,19 @@ export default function NewProperty(props) {
                     options={[
                       {
                         label: "Detached",
-                        value: "detached",
+                        value: "Detached",
                       },
                       {
                         label: "Semi-Detached",
                         value: "Semi-Detached",
                       },
                       {
-                        label: "Townhomes",
-                        value: "Townhomes",
+                        label: "Townhome",
+                        value: "Townhome",
                       },
                       {
-                        label: "Condos",
-                        value: "Condos",
+                        label: "Condo",
+                        value: "Condo",
                       },
                       {
                         label: "Multi-family",
