@@ -19,6 +19,7 @@
   line-height: 26px;
   font-weight: 600;
   margin-bottom: 5px;
+  margin-top: 0px;
 }
 
 .ViewProperty p {
@@ -40,33 +41,18 @@
   white-space: pre-wrap;
 }
 
-.highlights img {
-  height: 24px;
-  width: 24px;
-  float: left;
+.ViewProperty .secondary-btn {
+  width: 100%;
 }
 
-.highlights p {
-  margin-left: 30px;
+.contactCard {
+  border: 1px solid rgb(221, 221, 221);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
 }
 
-.description {
-  border-top: 1px solid #cbd2de;
-  border-bottom: 1px solid #cbd2de;
-  margin-top: 175px;
-  padding-bottom: 30px;
-}
-
-.comparable {
-  border-bottom: 1px solid #cbd2de;
-  padding-top: 30px;
-  padding-bottom: 30px;
-}
-
-.contact {
-  border: 1px solid #cbd2de;
-  padding: 30px;
-  position: -webkit-sticky; /* Safari */
-  position: sticky;
-  top: 0;
+.contactCard img {
+  height: 100px;
+  border-radius: 100px;
 }

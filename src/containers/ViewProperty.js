@@ -5,6 +5,7 @@ import { Col, Modal, Row } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 import Loading from "./Loading";
+import Sticky from "react-stickynode";
 import config from "../config";
 
 export default function ViewProperty(props) {
@@ -69,82 +70,97 @@ export default function ViewProperty(props) {
     <div className="ViewProperty container">
       {isLoading ? (
         <div>
-          {propertyOwner ? (
-            <div>
-              <br />
-              <br />
-              <a
-                href={`/properties/${property.propertyId}/edit`}
-                className="other-btn"
-              >
-                Edit Property
-              </a>
-              <br />
-              <br />
-            </div>
-          ) : null}
-
-          <div className="title">
-            <h1>{property.title}</h1>
-            <p>
-              <b>${property.price}</b> &middot; {property.address}
-            </p>
-          </div>
-          <div
-            style={{
-              backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
-              backgroundSize: "cover",
-              height: "500px",
-              borderRadius: "5px",
-              marginBottom: "5px",
-              marginTop: "24px",
-            }}
-            className="propertyImage"
-          ></div>
-
           <Row>
-            <Col sm={8}>
+            <Col sm={7}>
+              {propertyOwner ? (
+                <div>
+                  <br />
+                  <br />
+                  <a
+                    href={`/properties/${property.propertyId}/edit`}
+                    className="other-btn"
+                  >
+                    Edit Property
+                  </a>
+                  <br />
+                  <br />
+                </div>
+              ) : null}
+
+              <div className="title">
+                <h1>{property.title}</h1>
+                <p>
+                  <b>${property.price}</b> &middot; {property.address}
+                </p>
+              </div>
+              <div
+                style={{
+                  backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
+                  backgroundSize: "cover",
+                  height: "300px",
+                  borderRadius: "5px",
+                  marginBottom: "5px",
+                  marginTop: "24px",
+                }}
+                className="propertyImage"
+              ></div>
               <div className="highlights-container">
-                <h3>
-                  {property.propertyType} posted by {profile.firstName}{" "}
-                  {profile.lastName}
-                </h3>
+                <h3>{property.tagline}</h3>
                 <p>
                   {property.bedroom} Bedrooms &middot; {property.bathroom}{" "}
                   Bathrooms &middot; {property.parking} Parking
                 </p>
                 <hr />
                 <p>{property.description}</p>
+                <br />
                 <h3>Why this Property?</h3>
                 <p>{property.whyThisProperty}</p>
+                <br />
                 <h3>Comparables</h3>
                 <p>{property.comparable}</p>
               </div>
             </Col>
+            <Col sm={1}></Col>
             <Col sm={4}>
-              <div className="contact">
-                <p>
-                  {profile.firstName} {profile.lastName}
-                </p>
-                <p>{profile.bio}</p>
-                <p>{profile.email}</p>
-                <p>user eamil: {userEmail}</p>
-                {infoSent ? (
-                  <p>info is sent</p>
-                ) : (
+              <Sticky top="#header" bottomBoundary="#content">
+                <div id="#card" className="contactCard">
                   <p>
-                    {userEmail ? (
-                      <button onClick={() => sendPropertyEmail()}>
-                        Request more info
-                      </button>
-                    ) : (
-                      <button onClick={() => setViewCreateAccountModal(true)}>
-                        Request more info
-                      </button>
-                    )}
+                    <img
+                      alt={`${profile.firstName} ${profile.lastName}'s profile logo`}
+                      src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${profile.image}`}
+                    />
                   </p>
-                )}
-              </div>
+                  <p>
+                    <b>
+                      {property.propertyType} posted by {profile.firstName}{" "}
+                      {profile.lastName}
+                    </b>
+                  </p>
+                  <p>{profile.bio}</p>
+                  <br />
+                  {infoSent ? (
+                    <p>info is sent</p>
+                  ) : (
+                    <p>
+                      {userEmail ? (
+                        <button
+                          className="secondary-btn"
+                          onClick={() => sendPropertyEmail()}
+                        >
+                          Contact {profile.firstName} {profile.lastName}
+                        </button>
+                      ) : (
+                        <button
+                          className="secondary-btn"
+                          onClick={() => setViewCreateAccountModal(true)}
+                        >
+                          Contact {profile.firstName} {profile.lastName}
+                        </button>
+                      )}
+                    </p>
+                  )}
+                </div>
+              </Sticky>
             </Col>
           </Row>
         </div>
