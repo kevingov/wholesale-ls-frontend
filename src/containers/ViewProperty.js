@@ -74,8 +74,6 @@ export default function ViewProperty(props) {
             <Col sm={7}>
               {propertyOwner ? (
                 <div>
-                  <br />
-                  <br />
                   <a
                     href={`/properties/${property.propertyId}/edit`}
                     className="other-btn"
