@@ -58,8 +58,8 @@ class App extends Component {
                 {/* <p>Uncommon Estate</p> */}
               <img
                         height="45"
-                        alt="conversify logo"
-                        src="https://wholesale-ls-marketing.s3.amazonaws.com/logo/Uncommon+Estate+Black.png"
+                        alt="uncommon estate logo"
+                        src="https://wholesale-ls-marketing.s3.amazonaws.com/logo/Looka/Color+logo+-+no+background.png"
                       />
               </a>
               {this.state.isAuthenticated ? (
@@ -97,8 +97,8 @@ class App extends Component {
                     <div>
                       <img
                         height="45"
-                        alt="conversify logo"
-                        src="https://wholesale-ls-marketing.s3.amazonaws.com/logo/Uncommon+Estate+Pure+White.png"
+                        alt="uncommon estate logo"
+                        src="https://wholesale-ls-marketing.s3.amazonaws.com/logo/Looka/White+logo+-+no+background.png"
                       />
                     </div>
                     <br />
