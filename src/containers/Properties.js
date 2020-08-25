@@ -17,7 +17,7 @@ export default function Properties(props) {
   const [properties, setProperties] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filterPropertyType, setFilterPropertyType] = useState("");
-  const [filterPropertyStatus, setFilterPropertyStatus] = useState("");
+  // const [filterPropertyStatus, setFilterPropertyStatus] = useState("");
 
   useEffect(() => {
     async function onLoad() {
@@ -84,7 +84,7 @@ export default function Properties(props) {
                         <br />
                 </FormGroup>
               </Col>
-              <Col xs={3}>
+              {/* <Col xs={3}>
                 <FormGroup controlId="filterPropertyStatus">
                         <ControlLabel>Property Type</ControlLabel>
                         <br />
@@ -118,7 +118,7 @@ export default function Properties(props) {
                         <br />
                         <br />
                 </FormGroup>
-              </Col>
+              </Col> */}
             </Row>
           </div>
           {properties
