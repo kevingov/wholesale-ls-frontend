@@ -10,52 +10,40 @@ import {
 import React, { useEffect, useState } from "react";
 import Loading from "./Loading";
 import LoaderButton from "../components/LoaderButton";
-import { useFormFields } from "../libs/hooksLib";
+import config from "../config";
 
 export default function EditProfile(props) {
-    const [fields, handleFieldChange] = useFormFields({
-        firstName: "",
-        lastName: "",
-        email: "",
-        password: "",
-        phoneNumber: "",
-        confirmPassword: "",
-        confirmationCode: "",
-        bio: "",
-      });
     const [isLoading, setIsLoading] = useState(false);
     const [isBuyer, setIsBuyer] = useState(false);
     const [isWholesaler, setIsWholesaler] = useState(false);
-    const [file, setFile] = useState(false);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [confirmationCode, setConfirmationCode] = useState("");
     const [bio, setBio] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
+    const [profileId, setProfileId] = useState("");
+    const [image, setImage] = useState(null);
+    const [file, setFile] = useState(false);
 
     useEffect(() => {
-    function loadProfile() {
-        return API.get("profiles", `/profiles/${props.match.params.id}`);
-    }
+        function loadProfile(userId) {
+            return API.get("profiles", `/profiles/${userId}`);
+          }
 
     async function onLoad() {
         try {
             const user = await Auth.currentUserInfo();
-            const profile = await loadProfile();
+            console.log(user);
+            const profile = await loadProfile(user["id"]);
+            console.log(profile);
+            setProfileId(profile.profileId);
             setFirstName(profile.firstName);
             setLastName(profile.lastName);
-            setEmail(profile.email);
-            setPassword(profile.password);
             setPhoneNumber(profile.phoneNumber);
-            setConfirmPassword(profile.confirmPassword);
-            setConfirmationCode(profile.confirmationCode);
             setBio(profile.bio);
             setIsBuyer(profile.isBuyer);
             setIsWholesaler(profile.isWholesaler);
-            setFile(profile.groupShowingDate);
+            setImage(profile.image);
+            console.log(profile.image);
         } catch (e) {
             alert(e);
         }
@@ -63,6 +51,16 @@ export default function EditProfile(props) {
 
         onLoad();
     }, [props.match.params.id]);
+
+
+    function validateForm() {
+      return (
+          // email.length > 5 &&
+          // password.length > 5 &&
+          firstName.length > 1 &&
+          lastName.length > 1
+        );
+    }
 
     function saveProfile(profile) {
         return API.put("profiles", `/profiles/${props.match.params.id}`, {
@@ -74,24 +72,16 @@ export default function EditProfile(props) {
         setFile(event.target.files[0]);
       }
     
-    function validateForm() {
-        return (
-            fields.email.length > 5 &&
-            fields.password.length > 5 &&
-            fields.firstName.length > 1 &&
-            fields.lastName.length > 1
-        );
-    }
 
     async function s3Upload(file) {
         const filename = `${Date.now()}-${file.name}`;
         
         try {
-            const stored = await Storage.put(filename, file, {
-                level: "public",
-                contentType: file.type,
-            });
-            return stored.key;
+          const stored = await Storage.put(filename, file, {
+              level: "public",
+              contentType: file.type,
+          });
+          return stored.key;
         } catch (e) {
             console.log(e);
         }
@@ -103,25 +93,27 @@ export default function EditProfile(props) {
         setIsLoading(true);
 
         try {
-            const newImage = file ? await s3Upload(file) : Image;
+            const newImage = file ? await s3Upload(file) : image;
             console.log(newImage);
             await saveProfile({
+                profileId,
                 firstName,
                 lastName,
-                email,
-                password,
                 phoneNumber,
-                confirmPassword,
-                confirmationCode,
                 bio,
                 isBuyer,
                 isWholesaler,
+                image: newImage,
             });
-            props.history.push(`/profiles`);
+            setIsLoading(false);
         } catch (e) {
             alert(e);
             setIsLoading(false);
         }
+    }
+
+    function formatFilename(str) {
+      return str.replace(/^\w+-/, "");
     }
 
     return (
@@ -135,8 +127,8 @@ export default function EditProfile(props) {
                       <FormControl
                         autoFocus
                         type="text"
-                        value={fields.firstName}
-                        onChange={handleFieldChange}
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
                       />
                     </FormGroup>
                   </Col>
@@ -145,8 +137,8 @@ export default function EditProfile(props) {
                       <ControlLabel>Last Name</ControlLabel>
                       <FormControl
                         type="text"
-                        value={fields.lastName}
-                        onChange={handleFieldChange}
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
                       />
                     </FormGroup>
                   </Col>
@@ -155,8 +147,8 @@ export default function EditProfile(props) {
                   <ControlLabel>Phone Number</ControlLabel>
                   <FormControl
                     type="text"
-                    value={fields.phoneNumber}
-                    onChange={handleFieldChange}
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
                   />
                 </FormGroup>
                 <FormGroup controlId="isBuyer" bsSize="large">
@@ -179,38 +171,25 @@ export default function EditProfile(props) {
                   <ControlLabel>Include a Short Bio</ControlLabel>
                   <FormControl
                     type="textarea"
-                    value={fields.bio}
-                    onChange={handleFieldChange}
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
                   />
                 </FormGroup>
-                <FormGroup controlId="email" bsSize="large">
-                  <ControlLabel>Email</ControlLabel>
-                  <FormControl
-                    type="email"
-                    value={fields.email}
-                    onChange={handleFieldChange}
-                  />
+                {image && (
+                <FormGroup>
+                  <ControlLabel>Image</ControlLabel>
+                  <FormControl.Static>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${image}`}
+                      className="pull-left"
+                    >
+                      {formatFilename(image)}
+                    </a>
+                  </FormControl.Static>
                 </FormGroup>
-                <FormGroup controlId="password" bsSize="large">
-                  <ControlLabel>Password</ControlLabel>
-                  <FormControl
-                    type="password"
-                    value={fields.password}
-                    onChange={handleFieldChange}
-                  />
-                </FormGroup>
-                <FormGroup
-                  className="hidden"
-                  controlId="confirmPassword"
-                  bsSize="large"
-                >
-                  <ControlLabel>Confirm Password</ControlLabel>
-                  <FormControl
-                    type="password"
-                    onChange={handleFieldChange}
-                    value={fields.password}
-                  />
-                </FormGroup>
+              )}
                 <FormGroup controlId="file">
                   <ControlLabel>Profile Image</ControlLabel>
                   <FormControl onChange={handleFileChange} type="file" />

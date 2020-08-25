@@ -107,7 +107,7 @@
   line-height: 26px;
   letter-spacing: 0.2px;
   text-transform: none;
-  background: #6c63ff;
+  background: #3ab984;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -133,13 +133,13 @@ textarea {
 .progress-container {
   width: 100%;
   height: 15px;
-  border: 1px solid #6c63ff;
+  border: 1px solid #3ab984;
   max-width: 500px;
   margin: auto;
 }
 
 .progress-bar {
   height: 100%;
-  background-color: #6c63ff;
+  background-color: #3ab984;
   transition: 0.5s all ease;
 }

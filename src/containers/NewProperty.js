@@ -1,4 +1,4 @@
-// import "./NewProperty.css";
+import "./NewProperty.css";
 import "react-dropdown/style.css";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -142,6 +142,7 @@ export default function NewProperty(props) {
         <Row>
           <Col sm={12}>
             <div className="form-wrapper">
+              <h1>New Property</h1>
               <form onSubmit={handleSubmit}>
                 <FormGroup controlId="title">
                   <ControlLabel>Title</ControlLabel>

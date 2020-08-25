@@ -17,6 +17,7 @@ import UnauthenticatedRoute from "./components/UnauthenticatedRoute";
 import UserDashboard from "./containers/UserDashboard";
 import ViewProperty from "./containers/ViewProperty";
 import EditProfile from "./containers/EditProfile";
+import ViewProfile from "./containers/ViewProperty";
 
 export default ({ childProps }) => (
   <Switch>
@@ -77,9 +78,15 @@ export default ({ childProps }) => (
       props={childProps}
     />
     <AuthenticatedRoute
-      path="/editProfile/:id/edit"
+      path="/profile/edit"
       exact
       component={EditProfile}
+      props={childProps}
+    />
+    <AuthenticatedRoute
+      path="/profile"
+      exact
+      component={ViewProfile}
       props={childProps}
     />
     {/* Finally, catch all unmatched routes */}

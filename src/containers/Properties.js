@@ -1,6 +1,12 @@
 import "./Properties.css";
 
-import { Col, Row } from "react-bootstrap";
+import {
+  Col,
+  ControlLabel,
+  FormGroup,
+  Row,
+} from "react-bootstrap";
+import Dropdown from "react-dropdown";
 import React, { useEffect, useState } from "react";
 
 import { API } from "aws-amplify";
@@ -10,6 +16,8 @@ import config from "../config";
 export default function Properties(props) {
   const [properties, setProperties] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filterPropertyType, setFilterPropertyType] = useState("");
+  const [filterPropertyStatus, setFilterPropertyStatus] = useState("");
 
   useEffect(() => {
     async function onLoad() {
@@ -31,10 +39,88 @@ export default function Properties(props) {
     return API.get("properties", "/properties");
   }
 
+  function updateFilterPropertyType(filterPropertyType) {
+    setFilterPropertyType(filterPropertyType);
+  }
+
   return (
     <div className="Properties container">
       {!isLoading ? (
         <Row>
+          <div className="Filters">
+            <Row>
+              <Col xs={3}>
+                <FormGroup controlId="filterPropertyType">
+                        <ControlLabel>Property Type</ControlLabel>
+                        <br />
+                        <br />
+                        <Dropdown
+                          value={filterPropertyType}
+                          options={[
+                            {
+                              label: "Detached",
+                              value: "Detached",
+                            },
+                            {
+                              label: "Semi-Detached",
+                              value: "Semi-Detached",
+                            },
+                            {
+                              label: "Townhome",
+                              value: "Townhome",
+                            },
+                            {
+                              label: "Condo",
+                              value: "Condo",
+                            },
+                            {
+                              label: "Multi-family",
+                              value: "Multi-family",
+                            },
+                          ]}
+                          onChange={updateFilterPropertyType}
+                        />
+                        <br />
+                        <br />
+                </FormGroup>
+              </Col>
+              <Col xs={3}>
+                <FormGroup controlId="filterPropertyStatus">
+                        <ControlLabel>Property Type</ControlLabel>
+                        <br />
+                        <br />
+                        <Dropdown
+                          value={filterPropertyStatus}
+                          options={[
+                            {
+                              label: "Detached",
+                              value: "Detached",
+                            },
+                            {
+                              label: "Semi-Detached",
+                              value: "Semi-Detached",
+                            },
+                            {
+                              label: "Townhome",
+                              value: "Townhome",
+                            },
+                            {
+                              label: "Condo",
+                              value: "Condo",
+                            },
+                            {
+                              label: "Multi-family",
+                              value: "Multi-family",
+                            },
+                          ]}
+                          onChange={updateFilterPropertyType}
+                        />
+                        <br />
+                        <br />
+                </FormGroup>
+              </Col>
+            </Row>
+          </div>
           {properties
             .sort((a, b) => b.createdAt - a.createdAt)
             .map((property, i) => (
