@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Image } from "react-bootstrap";
 import React, { Component } from "react";
 
 import { Auth } from "aws-amplify";
@@ -55,7 +55,6 @@ class App extends Component {
           <div className="nav">
             <div className="nav-content container">
               <a href="/" className="logo hidden-xs">
-                {/* <p>Uncommon Estate</p> */}
               <img
                         height="45"
                         alt="uncommon estate logo"
@@ -64,9 +63,30 @@ class App extends Component {
               </a>
               {this.state.isAuthenticated ? (
                 <div className="links">
-                  <a href="/properties/new" className="secondary-btn">
-                    New Property
-                  </a>
+                  <Col xs={3}>
+                    <a href="/properties/new" className="secondary-btn">
+                      + New Property
+                    </a>
+                  </Col>
+                  <Col xs={1}>
+                    <a href="/profile" className="logo hidden-xs">
+                      <Image
+                                height="30"
+                                alt="Notification Icon"
+                                src="https://wholesale-ls-marketing.s3.amazonaws.com/Icons/notification.svg"
+                              />
+                    </a>
+                  </Col>
+                  <Col xs={1}>
+                    <a href="/profile" className="logo hidden-xs">
+                      <Image
+                                height="45"
+                                alt="Profile Picture"
+                                src="https://wholesale-ls-marketing.s3.amazonaws.com/IMG_3176+5.JPG"
+                                roundedCircle
+                              />
+                    </a>
+                  </Col>
                 </div>
               ) : (
                 <div className="links">
