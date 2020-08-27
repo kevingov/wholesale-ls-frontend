@@ -2,7 +2,6 @@ import "./Properties.css";
 
 import {
   Col,
-  ControlLabel,
   FormGroup,
   Row,
 } from "react-bootstrap";
@@ -42,9 +41,9 @@ export default function Properties(props) {
     setFilterPropertyType(filterPropertyType);
   }
 
-  const filterDropdown = properties.filter(function(result) {
-    return result.propertyType === filterPropertyType;
-  });
+  // const filterDropdown = properties.filter(function(result) {
+  //   return result.propertyType === filterPropertyType;
+  // });
 
   return (
     <div className="Index">
