@@ -4,10 +4,10 @@ import {
   Col,
   FormGroup,
   Row,
+  Breadcrumb,
 } from "react-bootstrap";
 import Dropdown from "react-dropdown";
 import React, { useEffect, useState } from "react";
-
 import { API } from "aws-amplify";
 import Loading from "./Loading";
 import config from "../config";
@@ -47,11 +47,17 @@ export default function Properties(props) {
 
   return (
     <div className="Index">
+    <div className="Breadcrumbs">
+      <div className="Breadcrumbs-items container">
+        <Breadcrumb>
+          <Breadcrumb.Item active>Properties</Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
+    </div>
     <div className="All-Properties container">
       {!isLoading ? (
         <Row>
-          <div className="Filters">
-            <Row>
+            <Row className="Filters">
               <Col xs={3}>
                 <FormGroup controlId="filterPropertyType">
                         <br />
@@ -213,7 +219,6 @@ export default function Properties(props) {
                 </FormGroup>
               </Col>
             </Row>
-          </div>
           {properties
             .sort((a, b) => b.createdAt - a.createdAt)
             .map((property, i) => (
