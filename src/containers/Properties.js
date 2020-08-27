@@ -17,7 +17,6 @@ export default function Properties(props) {
   const [properties, setProperties] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filterPropertyType, setFilterPropertyType] = useState("");
-  // const [filterPropertyStatus, setFilterPropertyStatus] = useState("");
 
   useEffect(() => {
     async function onLoad() {
@@ -43,18 +42,22 @@ export default function Properties(props) {
     setFilterPropertyType(filterPropertyType);
   }
 
+  const filterDropdown = properties.filter(function(result) {
+    return result.propertyType === filterPropertyType;
+  });
+
   return (
-    <div className="Properties container">
+    <div className="Index">
+    <div className="All-Properties container">
       {!isLoading ? (
         <Row>
           <div className="Filters">
             <Row>
               <Col xs={3}>
                 <FormGroup controlId="filterPropertyType">
-                        <ControlLabel>Property Type</ControlLabel>
-                        <br />
                         <br />
                         <Dropdown
+                          placeholder="Search"
                           value={filterPropertyType}
                           options={[
                             {
@@ -84,13 +87,14 @@ export default function Properties(props) {
                         <br />
                 </FormGroup>
               </Col>
-              {/* <Col xs={3}>
-                <FormGroup controlId="filterPropertyStatus">
-                        <ControlLabel>Property Type</ControlLabel>
-                        <br />
+              <Col xs={1}>
+              </Col>
+              <Col xs={2}>
+              <FormGroup controlId="filterPropertyType">
                         <br />
                         <Dropdown
-                          value={filterPropertyStatus}
+                          placeholder="Property Types"
+                          value={filterPropertyType}
                           options={[
                             {
                               label: "Detached",
@@ -118,7 +122,97 @@ export default function Properties(props) {
                         <br />
                         <br />
                 </FormGroup>
-              </Col> */}
+              </Col>
+              <Col xs={2}>
+                <FormGroup controlId="filterPropertyType">
+                          <br />
+                          <Dropdown
+                            placeholder="Bedrooms"
+                            value={filterPropertyType}
+                            options={[
+                              {
+                                label: "Any",
+                                value: "Any",
+                              },
+                              {
+                                label: "2+",
+                                value: "2+",
+                              },
+                              {
+                                label: "3+",
+                                value: "3+",
+                              },
+                              {
+                                label: "4+",
+                                value: "4+",
+                              },
+                            ]}
+                            onChange={updateFilterPropertyType}
+                          />
+                          <br />
+                          <br />
+                </FormGroup>
+              </Col>
+              <Col xs={2}>
+                <FormGroup controlId="filterPropertyType">
+                          <br />
+                          <Dropdown
+                            placeholder="Bathrooms"
+                            value={filterPropertyType}
+                            options={[
+                              {
+                                label: "Any",
+                                value: "Any",
+                              },
+                              {
+                                label: "2+",
+                                value: "2+",
+                              },
+                              {
+                                label: "3+",
+                                value: "3+",
+                              },
+                              {
+                                label: "4+",
+                                value: "4+",
+                              },
+                            ]}
+                            onChange={updateFilterPropertyType}
+                          />
+                          <br />
+                          <br />
+                </FormGroup>
+              </Col>
+              <Col xs={2}>
+              <FormGroup controlId="filterPropertyType">
+                        <br />
+                        <Dropdown
+                          placeholder="Sort By"
+                          value={filterPropertyType}
+                          options={[
+                            {
+                              label: "Newest",
+                              value: "Newest",
+                            },
+                            {
+                              label: "Oldest",
+                              value: "Oldest",
+                            },
+                            {
+                              label: "Price High-Low",
+                              value: "Price High-Low",
+                            },
+                            {
+                              label: "Price Low-High",
+                              value: "Price Low-High",
+                            },
+                          ]}
+                          onChange={updateFilterPropertyType}
+                        />
+                        <br />
+                        <br />
+                </FormGroup>
+              </Col>
             </Row>
           </div>
           {properties
@@ -126,7 +220,7 @@ export default function Properties(props) {
             .map((property, i) => (
               <Col key={i} sm={4}>
                 <a href={`/properties/${property.propertyId}`}>
-                  <div className="property">
+                  <div className="Property">
                     <div
                       style={{
                         backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
@@ -137,17 +231,38 @@ export default function Properties(props) {
                       }}
                       className="propertyImage"
                     ></div>
-                    <p>
-                      <b>
+                    <div className="Property-Title">
+                      <p>
+                          {property.title.length > 45
+                          ? property.title.slice(0, 45) + " ..."
+                          : property.title}
+                      </p>
+                    </div>
+                    {/* <p>
                         {property.propertyType} &middot; {property.city}
-                      </b>
-                    </p>
-                    <p>
-                      {property.title.length > 45
-                        ? property.title.slice(0, 45) + " ..."
-                        : property.title}
-                    </p>
+                    </p> */}
+                    
+                      <div className="Price">
+                        <p>$ {property.price}</p>
+                      </div>
+                    
+                    
+                    <Row className="Row-Highlights">
+                      <Col xs={3} className="Property-Highlights">
+                        <p> {property.bedroom} Bedrooms</p>
+                      </Col>
+                      <Col xs={3} className="Property-Highlights">
+                        <p> {property.bathroom} Bathrooms</p>
+                      </Col>
+                      <Col xs={3} className="Property-Highlights">
+                        <p> {property.propertyType} </p>
+                      </Col>
+                      <Col xs={3} className="Property-Highlights">
+                        <p> {property.city} </p>
+                      </Col>
+                    </Row>
                   </div>
+                  
                 </a>
                 <br />
                 <br />
@@ -157,6 +272,7 @@ export default function Properties(props) {
       ) : (
         <Loading />
       )}
+    </div>
     </div>
   );
 }

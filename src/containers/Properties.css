@@ -1,15 +1,70 @@
-.Properties {
-  padding: 50px 0px;
+.Index {
+  background-color: rgba(248,248,251,1.0)
 }
 
-.Properties a {
+.All-Properties a {
   text-decoration: none;
 }
 
-.Properties .property p {
+.Property p {
   color: #484848;
-  margin: 0px;
-  line-height: 20px;
+  line-height: 23px;
   font-size: 16px;
-  font-weight: 400;
+  font-family: "Roboto-Medium", Helvetica, Arial, serif;
+}
+
+.Property-Title p {
+  margin-top: 10px;
+}
+
+.Price {
+  background-color: rgba(255,255,255,0);
+  border-color: black;
+  border-radius: 2.4px;
+  border-style: solid;
+  border-width: 0.8px;
+  height: 28px;
+  left: 16px;
+  width: 85px;
+}
+
+.Price p {
+  text-align: center !important; 
+  white-space: nowrap !important;
+  font-family: "SourceSansPro-Semibold", Helvetica, Arial, serif !important;
+  font-size: 14.0px !important;
+  color: black !important;
+  margin-top: 0px;
+}
+
+.Property {
+  background: white;
+  border: 2px lightgrey;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.Row-Highlights {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.Property-Highlights {
+  background-color: rgba(243,243,243,1.0);
+  padding: 2px;
+  text-align: center;
+  border-radius: 5px;
+
+
+}
+
+.Property-Highlights p {
+  color: black !important;
+  font-family: "SourceSansPro-Semibold" , Helvetica , Arial , serif !important;
+  font-size: 11.2px !important;
+  letter-spacing: -0.07px !important;
+  line-height: 14.0px !important;
+  margin-top: 10px;
 }
