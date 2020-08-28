@@ -37,13 +37,14 @@ export default function Properties(props) {
     return API.get("properties", "/properties");
   }
 
-  function updateFilterPropertyType(filterPropertyType) {
+  const updateFilterPropertyType = event => {
     setFilterPropertyType(filterPropertyType);
   }
 
-  // const filterDropdown = properties.filter(function(result) {
-  //   return result.propertyType === filterPropertyType;
-  // });
+  const filterDropdown = properties.filter(function(result) {
+    return result.propertyType === filterPropertyType;
+  });
+
 
   return (
     <div className="Index">
@@ -219,6 +220,16 @@ export default function Properties(props) {
                 </FormGroup>
               </Col>
             </Row>
+
+            <p>testing filter</p>
+
+              {filterDropdown.map(properties => (
+                <div key={properties.title}>
+                  {properties.properties}
+                </div>
+              ))}
+
+
           {properties
             .sort((a, b) => b.createdAt - a.createdAt)
             .map((property, i) => (

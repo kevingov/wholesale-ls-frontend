@@ -85,6 +85,11 @@ export default function ViewProperty(props) {
                 </div>
               ) : null}
 
+              <div className="Price">
+                <p>$ {property.price}</p>
+              </div>
+
+
               <div className="title">
                 <h1>{property.title}</h1>
                 <p>

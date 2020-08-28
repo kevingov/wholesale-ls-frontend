@@ -149,8 +149,8 @@ export default function EditProperty(props) {
         tagline,
         city,
         address,
-        propertyType,
-        propertyStatus,
+        propertyType: propertyType.value,
+        propertyStatus: propertyStatus.value,
         offerDate,
         closeDate,
         groupShowingDate,
@@ -254,7 +254,7 @@ export default function EditProperty(props) {
                   options={[
                     {
                       label: "Detached",
-                      value: "detached",
+                      value: "Detached",
                     },
                     {
                       label: "Semi-Detached",
