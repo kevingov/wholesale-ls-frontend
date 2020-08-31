@@ -83,3 +83,7 @@
   </Row>
 </div>
 </div>  
+
+
+// for mid dot 
+//  ${property.price} &middot; {property.address}

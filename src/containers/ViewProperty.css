@@ -1,48 +1,90 @@
 .ViewProperty {
-  padding: 50px 0px;
+  margin: 25px;
+  background-color: white;
 }
 
 .ViewProperty h1 {
-  line-height: 30px;
-  font-family: "Sorts Mill Goudy", sans-serif;
-  color: #484848;
-  font-size: 26px;
+    font-family: 'Source Sans Pro',Helvetica,Arial,serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 20.0px;
+    color: rgba(38,48,62,1.0);
+    text-align: left;
+    letter-spacing: -.13px;
+    line-height: 25.0px;
+}
+
+.ViewProperty h2 {
+  font-family: 'Source Sans Pro',Helvetica,Arial,serif;
   font-weight: 600;
-  margin: 0;
-  margin-bottom: 8px;
+  font-style: normal;
+  font-size: 17.0px;
+  color: rgba(38,48,62,1.0);
+  text-align: left;
+  letter-spacing: -.11px;
+  line-height: 22.0px;
 }
 
 .ViewProperty h3 {
-  font-family: "Sorts Mill Goudy", sans-serif;
-  color: #484848;
-  font-size: 24px;
-  line-height: 26px;
-  font-weight: 600;
-  margin-bottom: 5px;
-  margin-top: 0px;
+  font-family: 'Source Sans Pro',Helvetica,Arial,serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14.0px;
+  color: rgba(38,48,62,1.0);
+  text-align: left;
+  letter-spacing: -.09px;
+  line-height: 18.0px;
 }
 
 .ViewProperty p {
-  font-family: "Lato", sans-serif;
-  color: #717171;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 400;
+  font-family: 'HelveticaNeue',Helvetica,Arial,serif;
+  font-size: 14.0px;
+  color: rgba(107,123,145,1.0);
+  text-align: left;
+  letter-spacing: -.09px;
+  line-height: 21.0px;
   white-space: pre-wrap;
 }
 
-.highlights-container {
-  padding-top: 50px;
+.ViewProperty-Wrapper {
+  margin-top: 50px;
 }
 
-.highlights-container p {
-  font-size: 16px;
-  line-height: 20px;
-  white-space: pre-wrap;
+.Back-Link {
+  margin-bottom: 20px;
+}
+
+.ViewProperty-Title {
+  margin-top: 20px;
+}
+
+.ViewProperty-Details {
+  margin-top: 60px;
 }
 
 .ViewProperty .secondary-btn {
   width: 100%;
+}
+
+.ViewProperty-Highlights {
+  height: 39px;
+  width: 96px;
+  margin-right: 2px;
+  margin-left: 2px;
+  background-color: rgba(243,243,243,1.0);
+  padding: 2px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.ViewProperty-Highlights p {
+  color: black !important;
+  font-family: "SourceSansPro-Semibold" , Helvetica , Arial , serif !important;
+  font-size: 11.2px !important;
+  letter-spacing: -0.07px !important;
+  line-height: 14.0px !important;
+  margin-top: 10px;
+  text-align: center;
 }
 
 .contactCard {
@@ -50,9 +92,13 @@
   border-radius: 12px;
   padding: 24px;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
+  width: 515px;
+  margin-top: 30px;
+  text-align: center;
 }
 
 .contactCard img {
   height: 100px;
   border-radius: 100px;
+  text-align: center;
 }

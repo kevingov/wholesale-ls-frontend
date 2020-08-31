@@ -1,7 +1,7 @@
 import "./ViewProperty.css";
 
 import { API, Auth } from "aws-amplify";
-import { Col, Modal, Row } from "react-bootstrap";
+import { Col, Modal, Row, Breadcrumb } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 import Loading from "./Loading";
@@ -67,7 +67,18 @@ export default function ViewProperty(props) {
   }
 
   return (
-    <div className="ViewProperty container">
+    <div className="Index">
+      <div className="Breadcrumbs">
+        <div className="Breadcrumbs-items container">
+          <Breadcrumb>
+            <Breadcrumb.Item href="/properties">Properties</Breadcrumb.Item>
+            <Breadcrumb.Item active>View Property</Breadcrumb.Item>
+          </Breadcrumb>
+        </div>
+      </div>
+    <div className="ViewProperty">
+      <div className="container">
+      <div className="ViewProperty-Wrapper">
       {isLoading ? (
         <div>
           <Row>
@@ -85,46 +96,90 @@ export default function ViewProperty(props) {
                 </div>
               ) : null}
 
+              <div className="Back-Link">
+                <a href={`/properties`}>
+                    Back to List
+                </a>
+              </div>
+
               <div className="Price">
                 <p>$ {property.price}</p>
               </div>
 
 
-              <div className="title">
+              <div className="ViewProperty-Title">
                 <h1>{property.title}</h1>
                 <p>
-                  <b>${property.price}</b> &middot; {property.address}
+                  {property.address}
                 </p>
               </div>
+
+              <Row className="Row-Highlights">
+                      <Col xs={3} className="ViewProperty-Highlights">
+                        <p> {property.bedroom} Bedrooms</p>
+                      </Col>
+                      <Col xs={3} className="ViewProperty-Highlights">
+                        <p> {property.bathroom} Bathrooms</p>
+                      </Col>
+                      <Col xs={3} className="ViewProperty-Highlights">
+                        <p> {property.propertyType} </p>
+                      </Col>
+                      <Col xs={3} className="ViewProperty-Highlights">
+                        <p> {property.city} </p>
+                      </Col>
+              </Row>
+              
+
+              
+
+              <div className="ViewProperty-Details">
+                <h2>Property Details</h2>
+                <hr />
+                <p>{property.description}</p>
+                <br />
+                <br />
+              <Row>
+                <Col sm={6}>
+                  <h3>Bedrooms</h3>
+                  <h3>Bathrooms</h3>
+                  <h3>Parking Type</h3>
+                  <h3>Building Type</h3>
+                </Col>
+                <Col sm={6}>
+                  <br />
+                  <p>{property.bedroom}</p>
+                  <p>{property.bathroom}</p>
+                  <p>{property.parking}</p>
+                  <p>{property.propertyType}</p>
+                </Col>
+              </Row>
+                <br />
+                <br />
+
+                <h2>Why this Property?</h2>
+                <p>{property.whyThisProperty}</p>
+                <br />
+                <h2>Comparables</h2>
+                <p>{property.comparable}</p>
+              </div>
+            </Col>
+            {/* <Col sm={1}></Col> */}
+            <Col sm={5}>
+
               <div
                 style={{
                   backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
                   backgroundSize: "cover",
-                  height: "300px",
+                  height: "344px",
+                  width: "515px",
                   borderRadius: "5px",
                   marginBottom: "5px",
                   marginTop: "24px",
+                  // marginLeft: "-78px",
                 }}
                 className="propertyImage"
               ></div>
-              <div className="highlights-container">
-                <h3>{property.tagline}</h3>
-                <p>
-                  {property.bedroom} Bedrooms &middot; {property.bathroom}{" "}
-                  Bathrooms &middot; {property.parking} Parking
-                </p>
-                <hr />
-                <p>{property.description}</p>
-                <br />
-                <h3>Why this Property?</h3>
-                <p>{property.whyThisProperty}</p>
-                <br />
-                <h3>Comparables</h3>
-                <p>{property.comparable}</p>
-              </div>
-            </Col>
-            <Col sm={1}></Col>
-            <Col sm={4}>
+
               <Sticky top="#header" bottomBoundary="#content">
                 <div id="#card" className="contactCard">
                   <p>
@@ -191,6 +246,10 @@ export default function ViewProperty(props) {
           </div>
         </Modal.Body>
       </Modal>
+          
+        </div>
+      </div>
+    </div>
     </div>
   );
 }
