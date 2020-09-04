@@ -36,7 +36,6 @@ export default function NewProperty(props) {
   const [bathroom, setBathroom] = useState(1);
   const [parking, setParking] = useState(1);
   const [netOperatingIncome, setNetOperatingIncome] = useState(0);
-  const [canCrowdFund, setCanCrowdFund] = useState(true);
   const [description, setDescription] = useState("");
   const [propertyNeeds, setPropertyNeeds] = useState("");
   const [whyThisProperty, setWhyThisProperty] = useState("");
@@ -73,7 +72,6 @@ export default function NewProperty(props) {
         bathroom,
         parking,
         netOperatingIncome,
-        canCrowdFund,
         description,
         propertyNeeds,
         whyThisProperty,
