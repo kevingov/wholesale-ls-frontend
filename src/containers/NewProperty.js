@@ -9,6 +9,7 @@ import {
   FormControl,
   FormGroup,
   Row,
+  Breadcrumb,
 } from "react-bootstrap";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -137,260 +138,314 @@ export default function NewProperty(props) {
   }
 
   return (
-    <div className="NewProperty">
-      {!isLoading ? (
-        <Row>
-          <Col sm={12}>
-            <div className="form-wrapper">
-              <h1>New Property</h1>
-              <form onSubmit={handleSubmit}>
-                <FormGroup controlId="title">
-                  <ControlLabel>Title</ControlLabel>
-                  <FormControl
-                    value={title}
-                    type="text"
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                </FormGroup>
+    <div className="Index">
+      <div className="Breadcrumbs">
+        <div className="Breadcrumbs-items container">
+            <Breadcrumb>
+              <Breadcrumb.Item href="/properties">Properties</Breadcrumb.Item>
+              <Breadcrumb.Item active>New Property</Breadcrumb.Item>
+            </Breadcrumb>
+        </div>
+      </div>
+        <div className="ViewProperty">
+          <div className="container">
+          <div className="ViewProperty-Wrapper">
+          {!isLoading ? (
+            <Row>
+              <Col sm={7}>
+                <div className="Back-Link">
+                  <a href={`/properties`}>
+                      Back to List
+                  </a>
+                </div>
+                <div>
+                  <h1>New Property</h1>
+                  <p>Please Add a title and Description</p>
+                  <form onSubmit={handleSubmit}>
+                    <FormGroup controlId="title">
+                      <ControlLabel>Title</ControlLabel>
+                      <FormControl
+                        value={title}
+                        type="text"
+                        placeholder="Beautiful detached house in downtown London"
+                        onChange={(e) => setTitle(e.target.value)}
+                      />
+                    </FormGroup>
 
-                <FormGroup controlId="tagline">
-                  <ControlLabel>Tagline</ControlLabel>
-                  <FormControl
-                    value={tagline}
-                    type="text"
-                    onChange={(e) => setTagline(e.target.value)}
-                  />
-                </FormGroup>
+                    <FormGroup controlId="tagline">
+                      <ControlLabel>Tagline</ControlLabel>
+                      <FormControl
+                        value={tagline}
+                        type="text"
+                        placeholder="I.e. $30k under Market Value"
+                        onChange={(e) => setTagline(e.target.value)}
+                      />
+                    </FormGroup>
+                    <Row>
+                      <Col xs={6}>
+                        <FormGroup controlId="price">
+                          <ControlLabel>Price</ControlLabel>
+                          <FormControl
+                            value={price}
+                            type="text"
+                            onChange={(e) => setPrice(e.target.value)}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <FormGroup controlId="address">
+                      <ControlLabel>Address</ControlLabel>
+                        <PlacesAutocomplete
+                          value={geoAddress}
+                          onChange={setGeoAddress}
+                          onSelect={handleSelect}
+                        >
+                          {({
+                            getInputProps,
+                            suggestions,
+                            getSuggestionItemProps,
+                            loading,
+                          }) => (
+                            <div>
+                              <input className="AutoComplete"
+                                {...getInputProps({ placeholder: "Type address" })}
+                              />
+                              <div>
+                                {loading ? <div className="AutoComplete">...loading</div> : null}
 
-                <FormGroup controlId="price">
-                  <ControlLabel>Price</ControlLabel>
-                  <FormControl
-                    value={price}
-                    type="text"
-                    onChange={(e) => setPrice(e.target.value)}
-                  />
-                </FormGroup>
-
-                <FormGroup controlId="address">
-                  <ControlLabel>Address</ControlLabel>
-                  <PlacesAutocomplete
-                    value={geoAddress}
-                    onChange={setGeoAddress}
-                    onSelect={handleSelect}
-                  >
-                    {({
-                      getInputProps,
-                      suggestions,
-                      getSuggestionItemProps,
-                      loading,
-                    }) => (
-                      <div>
-                        <input
-                          {...getInputProps({ placeholder: "Type address" })}
-                        />
-                        <div>
-                          {loading ? <div>...loading</div> : null}
-
-                          {suggestions.map((suggestion, i) => {
-                            return (
-                              <div
-                                key={i}
-                                {...getSuggestionItemProps(suggestion, {})}
-                              >
-                                {suggestion.description}
+                                {suggestions.map((suggestion, i) => {
+                                  return (
+                                    <div className="AutoComplete-Suggestions"
+                                      key={i}
+                                      {...getSuggestionItemProps(suggestion, {})}
+                                    >
+                                      {suggestion.description}
+                                    </div>
+                                  );
+                                })}
                               </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  </PlacesAutocomplete>
-                </FormGroup>
+                            </div>
+                          )}
+                      </PlacesAutocomplete>
+                    </FormGroup>
+                    <Row>    
+                      <Col xs={6}>
+                        <FormGroup controlId="propertyType">
+                          <ControlLabel>Property Type</ControlLabel>
+                          <br />
+                          <br />
+                          <Dropdown
+                            value={propertyType}
+                            options={[
+                              {
+                                label: "Detached",
+                                value: "Detached",
+                              },
+                              {
+                                label: "Semi-Detached",
+                                value: "Semi-Detached",
+                              },
+                              {
+                                label: "Townhome",
+                                value: "Townhome",
+                              },
+                              {
+                                label: "Condo",
+                                value: "Condo",
+                              },
+                              {
+                                label: "Multi-family",
+                                value: "Multi-family",
+                              },
+                            ]}
+                            onChange={updatePropertyType}
+                          />
+                        </FormGroup>
+                      </Col>  
+                      <Col xs={6}>
+                        <FormGroup controlId="propertyStatus">
+                          <ControlLabel>Property Status</ControlLabel>
+                          <br />
+                          <br />
+                          <Dropdown
+                            value={propertyStatus}
+                            options={[
+                              {
+                                label: "Active",
+                                value: "Active",
+                              },
+                              {
+                                label: "Pending",
+                                value: "Pending",
+                              },
+                              {
+                                label: "Assigned",
+                                value: "Assigned",
+                              },
+                            ]}
+                            onChange={updatePropertyStatus}
+                          />
+                        </FormGroup>
+                      </Col>        
+                    </Row> 
+                    <Row>
+                      <Col xs={4}>
+                        <FormGroup controlId="offerDate">
+                          <ControlLabel>Offer Date</ControlLabel>
+                          <DatePicker className="AutoComplete"
+                            selected={offerDate}
+                            onChange={(date) => setOfferDate(date)}
+                            dateFormat="MMMM d, yyyy"
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col xs={4}>
+                        <FormGroup controlId="closeDate">
+                          <ControlLabel>Close Date</ControlLabel>
+                          <DatePicker className="AutoComplete"
+                            selected={closeDate}
+                            onChange={(date) => setCloseDate(date)}
+                            dateFormat="MMMM d, yyyy"
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col xs={4}>
+                        <FormGroup controlId="groupShowingDate">
+                          <ControlLabel>Group Showing Date</ControlLabel>
+                          <DatePicker className="AutoComplete"
+                            selected={groupShowingDate}
+                            onChange={(date) => setGroupShowingDate(date)}
+                            dateFormat="MMMM d, yyyy"
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs={4}>
+                        <FormGroup controlId="bedroom">
+                          <ControlLabel>Bedrooms</ControlLabel>
+                          <FormControl
+                            value={bedroom}
+                            type="number"
+                            placeholder="0"
+                            onChange={(e) => setBedroom(e.target.value)}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col xs={4}>
+                        <FormGroup controlId="bathroom">
+                          <ControlLabel>Bathrooms</ControlLabel>
+                          <FormControl
+                            value={bathroom}
+                            type="number"
+                            placeholder="0"
+                            onChange={(e) => setBathroom(e.target.value)}
+                          />
+                        </FormGroup>
+                      </Col>
+                      <Col xs={4}>
+                        <FormGroup controlId="parking">
+                          <ControlLabel>Parking</ControlLabel>
+                          <FormControl
+                            value={parking}
+                            type="number"
+                            placeholder="0"
+                            onChange={(e) => setParking(e.target.value)}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <FormGroup controlId="netOperatingIncome">
+                      <ControlLabel>Net Operating Income</ControlLabel>
+                      <FormControl
+                        value={netOperatingIncome}
+                        type="text"
+                        onChange={(e) => setNetOperatingIncome(e.target.value)}
+                      />
+                    </FormGroup>
+                    <FormGroup controlId="description">
+                      <ControlLabel>Description</ControlLabel>
+                      <FormControl
+                        value={description}
+                        componentClass="textarea"
+                        placeholder="Enter the description"
+                        onChange={(e) => setDescription(e.target.value)}
+                      />
+                    </FormGroup>
 
-                <FormGroup controlId="propertyType">
-                  <ControlLabel>Property Type</ControlLabel>
-                  <br />
-                  <br />
-                  <Dropdown
-                    value={propertyType}
-                    options={[
-                      {
-                        label: "Detached",
-                        value: "Detached",
-                      },
-                      {
-                        label: "Semi-Detached",
-                        value: "Semi-Detached",
-                      },
-                      {
-                        label: "Townhome",
-                        value: "Townhome",
-                      },
-                      {
-                        label: "Condo",
-                        value: "Condo",
-                      },
-                      {
-                        label: "Multi-family",
-                        value: "Multi-family",
-                      },
-                    ]}
-                    onChange={updatePropertyType}
-                  />
-                </FormGroup>
+                    <FormGroup controlId="propertyNeeds">
+                      <ControlLabel>Property Needs</ControlLabel>
+                      <FormControl
+                        value={propertyNeeds}
+                        componentClass="textarea"
+                        placeholder="Enter the Property Needs"
+                        onChange={(e) => setPropertyNeeds(e.target.value)}
+                      />
+                    </FormGroup>
 
-                <FormGroup controlId="propertyStatus">
-                  <ControlLabel>Property Status</ControlLabel>
-                  <br />
-                  <br />
-                  <Dropdown
-                    value={propertyStatus}
-                    options={[
-                      {
-                        label: "Active",
-                        value: "Active",
-                      },
-                      {
-                        label: "Pending",
-                        value: "Pending",
-                      },
-                      {
-                        label: "Assigned",
-                        value: "Assigned",
-                      },
-                    ]}
-                    onChange={updatePropertyStatus}
-                  />
-                </FormGroup>
+                    <FormGroup controlId="whyThisProperty">
+                      <ControlLabel>Why This Property?</ControlLabel>
+                      <FormControl
+                        value={whyThisProperty}
+                        componentClass="textarea"
+                        placeholder="Enter Why This Property"
+                        onChange={(e) => setWhyThisProperty(e.target.value)}
+                      />
+                    </FormGroup>
 
-                <FormGroup controlId="offerDate">
-                  <ControlLabel>Offer Date</ControlLabel>
-                  <DatePicker
-                    selected={offerDate}
-                    onChange={(date) => setOfferDate(date)}
-                    dateFormat="MMMM d, yyyy"
-                  />
-                </FormGroup>
+                    <FormGroup controlId="comparable">
+                      <ControlLabel>Comparable Properties</ControlLabel>
+                      <FormControl
+                        value={comparable}
+                        componentClass="textarea"
+                        placeholder="Enter the Comparables"
+                        onChange={(e) => setComparable(e.target.value)}
+                      />
+                    </FormGroup>
 
-                <FormGroup controlId="closeDate">
-                  <ControlLabel>Close Date</ControlLabel>
-                  <DatePicker
-                    selected={closeDate}
-                    onChange={(date) => setCloseDate(date)}
-                    dateFormat="MMMM d, yyyy"
-                  />
-                </FormGroup>
+                   
 
-                <FormGroup controlId="groupShowingDate">
-                  <ControlLabel>Group Showing Date</ControlLabel>
-                  <DatePicker
-                    selected={groupShowingDate}
-                    onChange={(date) => setGroupShowingDate(date)}
-                    dateFormat="MMMM d, yyyy"
-                  />
-                </FormGroup>
-
-                <FormGroup controlId="bedroom">
-                  <ControlLabel>Bedrooms</ControlLabel>
-                  <FormControl
-                    value={bedroom}
-                    type="number"
-                    onChange={(e) => setBedroom(e.target.value)}
-                  />
-                </FormGroup>
-
-                <FormGroup controlId="bathroom">
-                  <ControlLabel>Bathrooms</ControlLabel>
-                  <FormControl
-                    value={bathroom}
-                    type="number"
-                    onChange={(e) => setBathroom(e.target.value)}
-                  />
-                </FormGroup>
-
-                <FormGroup controlId="address">
-                  <ControlLabel>Parking</ControlLabel>
-                  <FormControl
-                    value={parking}
-                    type="number"
-                    onChange={(e) => setParking(e.target.value)}
-                  />
-                </FormGroup>
-
-                <FormGroup controlId="netOperatingIncome">
-                  <ControlLabel>Net Operating Income</ControlLabel>
-                  <FormControl
-                    value={netOperatingIncome}
-                    type="text"
-                    onChange={(e) => setNetOperatingIncome(e.target.value)}
-                  />
-                </FormGroup>
-
-                <FormGroup controlId="canCrowdFund">
-                  <ControlLabel>Able to Crowdfund</ControlLabel>{" "}
-                  <input
-                    type="checkbox"
-                    checked={canCrowdFund}
-                    onChange={() => setCanCrowdFund(!canCrowdFund)}
-                  />
-                </FormGroup>
-
-                <FormGroup controlId="description">
-                  <ControlLabel>Description</ControlLabel>
-                  <FormControl
-                    value={description}
-                    componentClass="textarea"
-                    onChange={(e) => setDescription(e.target.value)}
-                  />
-                </FormGroup>
-
-                <FormGroup controlId="propertyNeeds">
-                  <ControlLabel>Property Needs</ControlLabel>
-                  <FormControl
-                    value={propertyNeeds}
-                    componentClass="textarea"
-                    onChange={(e) => setPropertyNeeds(e.target.value)}
-                  />
-                </FormGroup>
-
-                <FormGroup controlId="whyThisProperty">
-                  <ControlLabel>Why This Property?</ControlLabel>
-                  <FormControl
-                    value={whyThisProperty}
-                    componentClass="textarea"
-                    onChange={(e) => setWhyThisProperty(e.target.value)}
-                  />
-                </FormGroup>
-
-                <FormGroup controlId="comparable">
-                  <ControlLabel>Comparable Properties</ControlLabel>
-                  <FormControl
-                    value={comparable}
-                    componentClass="textarea"
-                    onChange={(e) => setComparable(e.target.value)}
-                  />
-                </FormGroup>
-
-                <FormGroup controlId="image">
-                  <ControlLabel>Property Image</ControlLabel>
-                  <FormControl onChange={handleFileChange} type="file" />
-                </FormGroup>
-
-                <br />
-                <button
-                  className="secondary-btn"
-                  type="submit"
-                  disabled={!validateForm()}
-                >
-                  Create Property
-                </button>
-              </form>
+                    <br />
+                    <Col xs={4}>
+                      <button
+                        className="secondary-btn"
+                        type="submit"
+                        disabled={!validateForm()}
+                      >
+                        Create Property
+                      </button>
+                    </Col>
+                  </form>
+                </div>
+              </Col>
+              <Col sm={5}>
+              <div
+                style={{
+                  // backgroundImage: `url(https://wholesale-ls-marketing.s3.amazonaws.com/Icons/upload.svg)`,
+                  backgroundSize: "cover",
+                  height: "344px",
+                  width: "515px",
+                  borderRadius: "5px",
+                  marginBottom: "5px",
+                  marginTop: "24px",
+                  backgroundColor: "rgba(243,243,243,1.0)",
+                  // marginLeft: "-78px",
+                }}
+                // className="propertyImage"
+              >
+              </div>
+               <FormGroup controlId="image">
+                      <ControlLabel>Property Image</ControlLabel>
+                      <FormControl onChange={handleFileChange} type="file" />
+              </FormGroup>
+              </Col>
+            </Row>
+          ) : (
+            <Loading />
+          )}
             </div>
-          </Col>
-        </Row>
-      ) : (
-        <Loading />
-      )}
+          </div>
+        </div>
     </div>
   );
 }

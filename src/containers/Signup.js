@@ -251,15 +251,17 @@ export default function Signup(props) {
   }
 
   return (
-    <div className="Signup container text-center">
-      <Row>
-        <Col sm={8} smOffset={2}>
-          <br />
-          <div className="form-wrapper">
-            {newUser === null ? accountForm() : renderConfirmationForm()}
-          </div>
-        </Col>
-      </Row>
+    <div className="Index">
+      <div className="Signup container text-center">
+        <Row>
+          <Col sm={8} smOffset={2}>
+            <br />
+            <div className="form-wrapper">
+              {newUser === null ? accountForm() : renderConfirmationForm()}
+            </div>
+          </Col>
+        </Row>
+      </div>
     </div>
   );
 }
