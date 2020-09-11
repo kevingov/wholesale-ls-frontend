@@ -20,14 +20,14 @@ export default function Properties(props) {
   const [filterBedrooms, setFilterBedrooms] = useState("");
   const [filterBathrooms, setFilterBathrooms] = useState("");
   const [filterSort, setFilterSort] = useState("");
-  // const [filter, setFilter] = useState('');
 
   useEffect(() => {
     async function onLoad() {
       try {
         const properties = await loadProperties();
-        console.log(properties);
         setProperties(properties);
+        setFilterBedrooms(0);
+        setFilterBathrooms(0);
       } catch (e) {
         alert(e);
       }
@@ -42,10 +42,6 @@ export default function Properties(props) {
     return API.get("properties", "/properties");
   }
 
-  // const updateFilter = event => {
-  //   setFilter(event.value);
-  //   console.log(event.value);
-  // }
 
   const updateFilterPropertyType = event => {
     setFilterPropertyType(event.value);
@@ -64,31 +60,16 @@ export default function Properties(props) {
   }
 
   
-  const filterDropdown = properties.filter( results => {                              
-    return results.propertyType === filterPropertyType
-        // && results.bedroom === filterBedrooms
-        // && results.bathroom === filterBathrooms
+  const filterDropdown = properties.filter( results => {         
+    console.log(filterPropertyType);
+    if (filterPropertyType === "") {
+      return results
+    } else {
+      return (results.propertyType === filterPropertyType
+        && results.bedroom > filterBedrooms
+        && results.bathroom > filterBathrooms)
+    }
     });
-
-  // const filterBathroom = filterDropdown.filter( results => {
-  //   return results.bathroom === filterBathrooms
-  //   });
-
-  // const filterBedroom = filterBathroom.filter( results => {
-  //   return results.bedroom === filterBedrooms
-  //   });
-
-  // const filter = [filterPropertyType, filterBathrooms, filterBedrooms]
-
-  // const filteredProperties = properties.filter(function(result) {
-  //   for (var key in filter) {
-  //     for (var key2 in key) {
-  //       if (result[key2] === undefined || result[key2] !== filter[key2])
-  //       return false;
-  //   }}
-  //   return true;
-  // });
-
 
   return (
     <div className="Index">
@@ -161,19 +142,19 @@ export default function Properties(props) {
                             options={[
                               {
                                 label: "Any",
-                                value: "1",
+                                value: 0,
                               },
                               {
                                 label: "2+",
-                                value: "2+",
+                                value: 2,
                               },
                               {
                                 label: "3+",
-                                value: "3+",
+                                value: 3,
                               },
                               {
                                 label: "4+",
-                                value: "4+",
+                                value: 4,
                               },
                             ]}
                             onChange={updateFilterBedrooms}
@@ -191,19 +172,19 @@ export default function Properties(props) {
                             options={[
                               {
                                 label: "Any",
-                                value: "Any",
+                                value: 0,
                               },
                               {
                                 label: "2+",
-                                value: "2+",
+                                value: 2,
                               },
                               {
                                 label: "3+",
-                                value: "3+",
+                                value: 3,
                               },
                               {
                                 label: "4+",
-                                value: "4+",
+                                value: 4,
                               },
                             ]}
                             onChange={updateFilterBathrooms}

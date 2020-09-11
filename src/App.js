@@ -3,7 +3,7 @@ import "./App.css";
 import { Col, Row, Image } from "react-bootstrap";
 import React, { Component } from "react";
 
-import { Auth } from "aws-amplify";
+import { API, Auth } from "aws-amplify";
 import Routes from "./Routes";
 import { withRouter } from "react-router-dom";
 
@@ -14,6 +14,7 @@ class App extends Component {
     this.state = {
       isAuthenticated: false,
       isAuthenticating: true,
+      profile: "",
     };
   }
 
@@ -21,6 +22,10 @@ class App extends Component {
     try {
       await Auth.currentSession();
       this.userHasAuthenticated(true);
+      // const user = await Auth.currentUserInfo();
+      // let userId="none";
+      // if (user) userId = user["id"];
+      // const profile= await loadProfile(userId);
     } catch (e) {
       if (e !== "No current user") {
         alert(e);
@@ -33,6 +38,10 @@ class App extends Component {
   userHasAuthenticated = (authenticated) => {
     this.setState({ isAuthenticated: authenticated });
   };
+
+  // function loadProfile(userId) {
+  //   return API.get("profiles", `/profiles/${userId}`);
+  // };
 
   handleLogout = async (event) => {
     await Auth.signOut();

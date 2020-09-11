@@ -1,6 +1,10 @@
 import "./Signup.css";
 
-import { API, Auth, Storage } from "aws-amplify";
+import { 
+  API, 
+  Auth, 
+  // Storage,
+} from "aws-amplify";
 import {
   Col,
   ControlLabel,
@@ -29,45 +33,61 @@ export default function Signup(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isBuyer, setIsBuyer] = useState(false);
   const [isWholesaler, setIsWholesaler] = useState(false);
-  const [file, setFile] = useState(false);
+  // const [file, setFile] = useState(false);
 
   useEffect(() => {}, []);
 
-  function handleFileChange(event) {
-    setFile(event.target.files[0]);
-  }
+  // function handleFileChange(event) {
+  //   setFile(event.target.files[0]);
+  // }
 
-  async function s3Upload(file) {
-    const filename = `${Date.now()}-${file.name}`;
+  // async function s3Upload(file) {
+  //   const filename = `${Date.now()}-${file.name}`;
 
-    try {
-      const stored = await Storage.put(filename, file, {
-        level: "public",
-        contentType: file.type,
-      });
-      return stored.key;
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  //   try {
+  //     const stored = await Storage.put(filename, file, {
+  //       level: "public",
+  //       contentType: file.type,
+  //     });
+  //     return stored.key;
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
 
   function accountForm() {
     return (
       <div>
         <form onSubmit={handleSubmit}>
-          <Row>
-            <Col xs={6}>
+          <Col xs={7}>
+
+          </Col>
+          <Col xs={5}>
+              <FormGroup controlId="isBuyer" bsSize="large">
+                <ControlLabel>Are you a buyer?</ControlLabel>
+                  <input
+                    type="checkbox"
+                    checked={isBuyer}
+                    onChange={() => setIsBuyer(!isBuyer)}
+                  />
+            </FormGroup>
+            <FormGroup controlId="isWholesaler" bsSize="large">
+              <ControlLabel>Are you a wholesaler?</ControlLabel>
+                <input
+                  type="checkbox"
+                  checked={isWholesaler}
+                  onChange={() => setIsWholesaler(!isWholesaler)}
+                />
+            </FormGroup>
               <FormGroup controlId="firstName" bsSize="large">
                 <ControlLabel>First Name</ControlLabel>
-                <FormControl
-                  autoFocus
-                  type="text"
-                  value={fields.firstName}
-                  onChange={handleFieldChange}
-                />
+                  <FormControl
+                    autoFocus
+                    type="text"
+                    value={fields.firstName}
+                    onChange={handleFieldChange}
+                  />
               </FormGroup>
-            </Col>
-            <Col xs={6}>
               <FormGroup controlId="lastName" bsSize="large">
                 <ControlLabel>Last Name</ControlLabel>
                 <FormControl
@@ -76,37 +96,11 @@ export default function Signup(props) {
                   onChange={handleFieldChange}
                 />
               </FormGroup>
-            </Col>
-          </Row>
           <FormGroup controlId="phoneNumber" bsSize="large">
             <ControlLabel>Phone Number</ControlLabel>
             <FormControl
               type="text"
               value={fields.phoneNumber}
-              onChange={handleFieldChange}
-            />
-          </FormGroup>
-          <FormGroup controlId="isBuyer" bsSize="large">
-            <ControlLabel>Are you a buyer?</ControlLabel>
-            <input
-              type="checkbox"
-              checked={isBuyer}
-              onChange={() => setIsBuyer(!isBuyer)}
-            />
-          </FormGroup>
-          <FormGroup controlId="isWholesaler" bsSize="large">
-            <ControlLabel>Are you a wholesaler?</ControlLabel>
-            <input
-              type="checkbox"
-              checked={isWholesaler}
-              onChange={() => setIsWholesaler(!isWholesaler)}
-            />
-          </FormGroup>
-          <FormGroup controlId="bio" bsSize="large">
-            <ControlLabel>Include a Short Bio</ControlLabel>
-            <FormControl
-              type="textarea"
-              value={fields.bio}
               onChange={handleFieldChange}
             />
           </FormGroup>
@@ -138,10 +132,10 @@ export default function Signup(props) {
               value={fields.password}
             />
           </FormGroup>
-          <FormGroup controlId="file">
+          {/* <FormGroup controlId="file">
             <ControlLabel>Profile Image</ControlLabel>
             <FormControl onChange={handleFileChange} type="file" />
-          </FormGroup>
+          </FormGroup> */}
           <LoaderButton
             className="btn-primary"
             type="submit"
@@ -151,6 +145,7 @@ export default function Signup(props) {
           >
             Signup
           </LoaderButton>
+          </Col>
         </form>
       </div>
     );
@@ -192,7 +187,7 @@ export default function Signup(props) {
   }
 
   async function createProfile() {
-    const image = file ? await s3Upload(file) : null;
+    // const image = file ? await s3Upload(file) : null;
     return API.post("profiles", "/profiles", {
       body: {
         email: fields.email,
@@ -201,7 +196,7 @@ export default function Signup(props) {
         phoneNumber: fields.phoneNumber,
         isWholesaler,
         isBuyer,
-        image,
+        // image,
       },
     });
   }
@@ -252,16 +247,16 @@ export default function Signup(props) {
 
   return (
     <div className="Index">
-      <div className="Signup container text-center">
+      {/* <div className="Signup container text-center"> */}
         <Row>
           <Col sm={8} smOffset={2}>
             <br />
-            <div className="form-wrapper">
+            {/* <div className="form-wrapper"> */}
               {newUser === null ? accountForm() : renderConfirmationForm()}
-            </div>
+            {/* </div> */}
           </Col>
         </Row>
-      </div>
+      {/* </div> */}
     </div>
   );
 }
