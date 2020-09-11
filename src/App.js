@@ -3,7 +3,10 @@ import "./App.css";
 import { Col, Row, Image } from "react-bootstrap";
 import React, { Component } from "react";
 
-import { API, Auth } from "aws-amplify";
+import { 
+  // API, 
+  Auth, 
+} from "aws-amplify";
 import Routes from "./Routes";
 import { withRouter } from "react-router-dom";
 
