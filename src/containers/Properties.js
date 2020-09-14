@@ -5,7 +5,7 @@ import {
   FormGroup,
   Row,
   Breadcrumb,
-  // FormControl,
+  FormControl,
 } from "react-bootstrap";
 import Dropdown from "react-dropdown";
 import React, { useEffect, useState } from "react";
@@ -20,6 +20,7 @@ export default function Properties(props) {
   const [filterBedrooms, setFilterBedrooms] = useState("");
   const [filterBathrooms, setFilterBathrooms] = useState("");
   const [filterSort, setFilterSort] = useState("");
+  const [filterText, setFilterText] = useState("");
 
   useEffect(() => {
     async function onLoad() {
@@ -42,7 +43,6 @@ export default function Properties(props) {
     return API.get("properties", "/properties");
   }
 
-
   const updateFilterPropertyType = event => {
     setFilterPropertyType(event.value);
   }
@@ -58,18 +58,6 @@ export default function Properties(props) {
   const updateFilterSort = event => {
     setFilterSort(event.value);
   }
-
-  // function sortProperties (filterSort) {
-  //   if (filterSort === "Newest") {
-  //     return sort((a, b) => b.createdAt - a.createdAt)
-  //   } else if (filterSort === "Oldest") {
-  //     return sort((a, b) => a.createdAt - b.createdAt)
-  //   } else if (filterSort === "Price High-Low") {
-  //     return sort((a, b) => a.price - b.price) 
-  //   } else {
-  //     return sort((a, b) => b.price - a.price)
-  //     }
-  //   }
   
   const resultsFilteredByDropdown = properties.filter(results => {         
     console.log(filterPropertyType);
@@ -93,6 +81,19 @@ export default function Properties(props) {
     sortedProperties = resultsFilteredByDropdown.sort((a, b) => Number(b.price) - Number(a.price))
   }
 
+  // let searchProperties;
+  // if (filterText === "") {
+  //   searchProperties = sortedProperties
+  // } else {
+  //   searchProperties = sortedProperties.filter(results => {
+  //     return results.title.toLowerCase().includes( filterText.toLowerCase() )
+  //   })
+  // }
+  
+  const searchProperties = sortedProperties.filter(results => {
+    return results.title.toLowerCase().includes( filterText.toLowerCase() )
+  })
+
   return (
     <div className="Index">
     <div className="Breadcrumbs">
@@ -109,11 +110,11 @@ export default function Properties(props) {
               <Col xs={3}>
                 <FormGroup controlId="filterPropertyType">
                   <br />
-                  {/* <FormControl 
+                  <FormControl 
                     type="text" 
                     placeholder="Search" 
-                    onChange={ e => setFilter(e.target.value)}>
-                  </FormControl> */}
+                    onChange={ e => setFilterText(e.target.value)}>
+                  </FormControl>
                   <br />
                   <br />
                 </FormGroup>
@@ -247,7 +248,7 @@ export default function Properties(props) {
               </Col>
             </Row>
 
-            {sortedProperties 
+            {searchProperties 
             .map((property, i) => (
               <Col key={i} sm={4}>
               <a href={`/properties/${property.propertyId}`}>
@@ -297,16 +298,13 @@ export default function Properties(props) {
             </Col>
             ))}
 
-Everything Above here should be a filter
 
-            <br />
-            <br />
             
 
 
 
 
-            {properties
+            {/* {properties
               .sort((a, b) => b.createdAt - a.createdAt)
               .map((property, i) => (
                 <Col key={i} sm={4}>
@@ -329,9 +327,7 @@ Everything Above here should be a filter
                             : property.title}
                         </p>
                       </div>
-                      {/* <p>
-                          {property.propertyType} &middot; {property.city}
-                      </p> */}
+                     
                       
                       <div className="Price">
                         <p>$ {property.price}</p>
@@ -358,7 +354,7 @@ Everything Above here should be a filter
                   <br />
                   <br />
                 </Col>
-          ))}
+          ))} */}
         </Row>
       ) : (
         <Loading />
