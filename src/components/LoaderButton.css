@@ -2,6 +2,7 @@
   margin-right: 7px;
   top: 2px;
   animation: spin 1s infinite linear;
+  color: #3ab984;
 }
 @keyframes spin {
   from { transform: scale(1) rotate(0deg); }

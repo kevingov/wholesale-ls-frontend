@@ -4,11 +4,12 @@ import { Col, Row, Image } from "react-bootstrap";
 import React, { Component } from "react";
 
 import { 
-  // API, 
+  API, 
   Auth, 
 } from "aws-amplify";
 import Routes from "./Routes";
 import { withRouter } from "react-router-dom";
+import config from "./config";
 
 class App extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class App extends Component {
     this.state = {
       isAuthenticated: false,
       isAuthenticating: true,
-      profile: "",
+      profile: null,
     };
   }
 
@@ -25,10 +26,13 @@ class App extends Component {
     try {
       await Auth.currentSession();
       this.userHasAuthenticated(true);
-      // const user = await Auth.currentUserInfo();
-      // let userId="none";
-      // if (user) userId = user["id"];
-      // const profile= await loadProfile(userId);
+      const user = await Auth.currentUserInfo();
+      let userId = "none";
+      if(user) userId = user["id"];
+      const userProfile = await this.loadProfile(userId);
+      this.setState({ profile: userProfile});
+      console.log(userProfile);
+      // console.log(profile);
     } catch (e) {
       if (e !== "No current user") {
         alert(e);
@@ -42,9 +46,9 @@ class App extends Component {
     this.setState({ isAuthenticated: authenticated });
   };
 
-  // function loadProfile(userId) {
-  //   return API.get("profiles", `/profiles/${userId}`);
-  // };
+  loadProfile = (userId) => {
+    return API.get("profiles", `/profiles/${userId}`);
+  };
 
   handleLogout = async (event) => {
     await Auth.signOut();
@@ -93,9 +97,9 @@ class App extends Component {
                     <a href="/profile" className="logo hidden-xs">
                       <Image
                                 height="45"
-                                alt="Profile Picture"
-                                src="https://wholesale-ls-marketing.s3.amazonaws.com/IMG_3176+5.JPG"
-                                roundedCircle
+                                alt={`${this.state.profile.firstName} ${this.state.profile.lastName}'s profile logo`}
+                                src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${this.state.profile.image}`}
+                                roundedcircle="true"
                               />
                     </a>
                   </Col>

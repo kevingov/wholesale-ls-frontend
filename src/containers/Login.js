@@ -1,4 +1,4 @@
-import "./Login.css";
+import "./Signup.css";
 
 import {
   Col,
@@ -6,6 +6,7 @@ import {
   FormControl,
   FormGroup,
   Row,
+  Image,
 } from "react-bootstrap";
 import React, { useState } from "react";
 
@@ -41,9 +42,24 @@ export default function Login(props) {
   return (
     <div className="Login container">
       <Row>
-        <Col sm={8} smOffset={2}>
-          <div className="form-wrapper">
+        {/* <Col sm={8} smOffset={2}> */}
+          <Col xs={7} className="signup-left">
+              <Image 
+                  src="https://wholesale-ls-marketing.s3.amazonaws.com/Christian/Signup-Characters.png" 
+                  fluid sizes="(max-width: 380px) 100vw, 380px"
+                  className="center login-picture"
+                  >
+
+              </Image>
+            </Col>
+          
             <form onSubmit={handleSubmit}>
+            <Col xs={5}>
+              <div className="signup-form">
+
+                <h1>Login</h1>
+                <p>Welcome Back</p>
+
               <FormGroup controlId="email" bsSize="large">
                 <ControlLabel>Email</ControlLabel>
                 <FormControl
@@ -70,9 +86,11 @@ export default function Login(props) {
               >
                 Login
               </LoaderButton>
+              </div>
+              </Col>
             </form>
-          </div>
-        </Col>
+          
+        {/* </Col> */}
       </Row>
     </div>
   );

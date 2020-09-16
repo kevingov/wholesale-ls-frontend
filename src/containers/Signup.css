@@ -1,4 +1,94 @@
-.Signup h1 {
+.Signup {
+  background-color: rgba(255, 255, 255, 1.0);
+}
+
+.signup-left {
+  /* background-image: url(https://wholesale-ls-marketing.s3.amazonaws.com/Christian/Signup-Gradient.png); */
+  margin-top: 250px;
+}
+
+.signup-left .login-picture {
+  margin-top: -75px;
+}
+
+
+
+.signup-form {
+  margin-top: 150px;
+  margin-bottom: 150px;
+}
+
+.signup-form h1 {
+  font-size: 25px;
+}
+
+.signup-form p {
+  font-size: 12px !important;
+  font-family: 'Source Sans Pro',Helvetica,Arial,serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 14.0px;
+  color: rgba(106,119,137,1.0);
+  line-height: 18.0px;
+  margin-bottom: 7px;
+  margin-top: 15px;
+}
+
+.signup-form .form-control {
+  max-height: 20px !important;
+  border: 1px solid #d2dae2 !important;
+}
+
+.signup-form .form-group {
+  margin-bottom: 0px !important;
+}
+
+.signup-form .control-label {
+  font-size: 12px !important;
+}
+
+.col-highlights {
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.signup-buttons {
+    border-radius: 0px !important;
+    background-color: rgba(255,255,255,0.0) !important;
+    height: 82px !important;
+    width: 177px !important;
+    padding-top: 0 !important;
+    color: rgba(27, 27, 27, 1.0) !important;
+    font-family: 'Roboto', Helvetica, Arial, serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    font-size: 14.0px !important;
+    line-height: 16.0px !important;
+    border-color: lightgrey !important;
+    padding:15px;
+}
+
+.signup-buttons:focus {
+  outline: #3ab984;
+}
+
+.signup-bottons:visited {
+  outline: blue;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* .Signup h1 {
   font-family: "TradeGothic";
   text-transform: uppercase;
   font-style: normal;
@@ -142,4 +232,4 @@ textarea {
   height: 100%;
   background-color: #3ab984;
   transition: 0.5s all ease;
-}
+} */

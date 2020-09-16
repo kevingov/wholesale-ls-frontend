@@ -12,6 +12,8 @@ import {
   FormGroup,
   HelpBlock,
   Row,
+  Button,
+  Image
 } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
@@ -58,95 +60,112 @@ export default function Signup(props) {
   function accountForm() {
     return (
       <div>
-        <form onSubmit={handleSubmit}>
-          <Col xs={7}>
+          <Col xs={7} className="signup-left">
+            <Image 
+                src="https://wholesale-ls-marketing.s3.amazonaws.com/Christian/Signup-Characters.png" 
+                fluid sizes="(max-width: 380px) 100vw, 380px"
+                className="center"
+                >
 
+            </Image>
           </Col>
-          <Col xs={5}>
-              <FormGroup controlId="isBuyer" bsSize="large">
-                <ControlLabel>Are you a buyer?</ControlLabel>
-                  <input
-                    type="checkbox"
-                    checked={isBuyer}
-                    onChange={() => setIsBuyer(!isBuyer)}
-                  />
-            </FormGroup>
-            <FormGroup controlId="isWholesaler" bsSize="large">
-              <ControlLabel>Are you a wholesaler?</ControlLabel>
-                <input
-                  type="checkbox"
-                  checked={isWholesaler}
-                  onChange={() => setIsWholesaler(!isWholesaler)}
-                />
-            </FormGroup>
-              <FormGroup controlId="firstName" bsSize="large">
-                <ControlLabel>First Name</ControlLabel>
+          <form onSubmit={handleSubmit}>
+            <Col xs={5}>
+              <div className="signup-form">
+
+                <h1>Sign Up</h1>
+                <p>I'm signing up for (Select all that Apply)</p>
+
+                <Col xs={6} className="col-highlights">
+                  <Button className="signup-buttons"
+                      variant="outline-secondary"
+                      onClick={() => setIsWholesaler(!isWholesaler)}
+                    >
+                      Wholesaler
+                  </Button>
+                </Col>
+                {/* <Col xs={2}></Col> */}
+                <Col xs={6} className="col-highlights">
+                  <Button className="signup-buttons"
+                      variant="outline-secondary"
+                      onClick={() => setIsBuyer(!isBuyer)}
+                    >
+                      Buyer
+                  </Button>
+                </Col>
+                <Col xs={6} className="col-highlights">
+                <FormGroup controlId="firstName" bsSize="large">
+                  <ControlLabel>First Name</ControlLabel>
+                    <FormControl
+                      autoFocus
+                      type="text"
+                      value={fields.firstName}
+                      onChange={handleFieldChange}
+                    />
+                </FormGroup>
+                </Col>
+                <Col xs={6} className="col-highlights">
+                <FormGroup controlId="lastName" bsSize="large">
+                  <ControlLabel>Last Name</ControlLabel>
                   <FormControl
-                    autoFocus
                     type="text"
-                    value={fields.firstName}
+                    value={fields.lastName}
                     onChange={handleFieldChange}
                   />
-              </FormGroup>
-              <FormGroup controlId="lastName" bsSize="large">
-                <ControlLabel>Last Name</ControlLabel>
-                <FormControl
-                  type="text"
-                  value={fields.lastName}
-                  onChange={handleFieldChange}
-                />
-              </FormGroup>
-          <FormGroup controlId="phoneNumber" bsSize="large">
-            <ControlLabel>Phone Number</ControlLabel>
-            <FormControl
-              type="text"
-              value={fields.phoneNumber}
-              onChange={handleFieldChange}
-            />
-          </FormGroup>
-          <FormGroup controlId="email" bsSize="large">
-            <ControlLabel>Email</ControlLabel>
-            <FormControl
-              type="email"
-              value={fields.email}
-              onChange={handleFieldChange}
-            />
-          </FormGroup>
-          <FormGroup controlId="password" bsSize="large">
-            <ControlLabel>Password</ControlLabel>
-            <FormControl
-              type="password"
-              value={fields.password}
-              onChange={handleFieldChange}
-            />
-          </FormGroup>
-          <FormGroup
-            className="hidden"
-            controlId="confirmPassword"
-            bsSize="large"
-          >
-            <ControlLabel>Confirm Password</ControlLabel>
-            <FormControl
-              type="password"
-              onChange={handleFieldChange}
-              value={fields.password}
-            />
-          </FormGroup>
-          {/* <FormGroup controlId="file">
-            <ControlLabel>Profile Image</ControlLabel>
-            <FormControl onChange={handleFileChange} type="file" />
-          </FormGroup> */}
-          <LoaderButton
-            className="btn-primary"
-            type="submit"
-            bsSize="large"
-            isLoading={isLoading}
-            disabled={!validateForm()}
-          >
-            Signup
-          </LoaderButton>
-          </Col>
-        </form>
+                </FormGroup>
+                </Col>
+            <FormGroup controlId="phoneNumber" bsSize="large">
+              <ControlLabel>Phone Number</ControlLabel>
+              <FormControl
+                type="text"
+                value={fields.phoneNumber}
+                onChange={handleFieldChange}
+              />
+            </FormGroup>
+            <FormGroup controlId="email" bsSize="large">
+              <ControlLabel>Email</ControlLabel>
+              <FormControl
+                type="email"
+                value={fields.email}
+                onChange={handleFieldChange}
+              />
+            </FormGroup>
+            <FormGroup controlId="password" bsSize="large">
+              <ControlLabel>Password</ControlLabel>
+              <FormControl
+                type="password"
+                value={fields.password}
+                onChange={handleFieldChange}
+              />
+            </FormGroup>
+            <FormGroup
+              className="hidden"
+              controlId="confirmPassword"
+              bsSize="large"
+            >
+              <ControlLabel>Confirm Password</ControlLabel>
+              <FormControl
+                type="password"
+                onChange={handleFieldChange}
+                value={fields.password}
+              />
+            </FormGroup>
+            {/* <FormGroup controlId="file">
+              <ControlLabel>Profile Image</ControlLabel>
+              <FormControl onChange={handleFileChange} type="file" />
+            </FormGroup> */}
+            <LoaderButton
+              className="btn-primary"
+              type="submit"
+              bsSize="large"
+              isLoading={isLoading}
+              disabled={!validateForm()}
+            >
+              Signup
+            </LoaderButton>
+            </div>
+            </Col>
+          </form>
       </div>
     );
   }
@@ -246,7 +265,7 @@ export default function Signup(props) {
   }
 
   return (
-    <div className="Index">
+    <div className="Signup">
       {/* <div className="Signup container text-center"> */}
         <Row>
           <Col sm={8} smOffset={2}>
