@@ -17,8 +17,8 @@ export default function Properties(props) {
   const [properties, setProperties] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filterPropertyType, setFilterPropertyType] = useState("");
-  const [filterBedrooms, setFilterBedrooms] = useState("");
-  const [filterBathrooms, setFilterBathrooms] = useState("");
+  const [filterBedrooms, setFilterBedrooms] = useState(0);
+  const [filterBathrooms, setFilterBathrooms] = useState(0);
   const [filterSort, setFilterSort] = useState("");
   const [filterText, setFilterText] = useState("");
 
@@ -39,8 +39,17 @@ export default function Properties(props) {
     onLoad();
   }, [props.isAuthenticated]);
 
+  // function loadProperties() {
+  //   return API.get("properties", "/properties");
+  // }
+
   function loadProperties() {
-    return API.get("properties", "/properties");
+    return API.get('properties', '/properties', {
+      'queryStringParameters': {
+        'filterBedrooms': filterBedrooms,
+        'filterBathrooms': filterBathrooms,
+      }
+    })
   }
 
   const updateFilterPropertyType = event => {
