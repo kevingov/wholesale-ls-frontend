@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { API } from "aws-amplify";
 import Loading from "./Loading";
 import config from "../config";
+import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 
 export default function Properties(props) {
   const [properties, setProperties] = useState([]);
@@ -21,6 +22,7 @@ export default function Properties(props) {
   const [filterBathrooms, setFilterBathrooms] = useState(0);
   const [filterSort, setFilterSort] = useState("");
   const [filterText, setFilterText] = useState("");
+ 
 
   useEffect(() => {
     async function onLoad() {
@@ -39,9 +41,9 @@ export default function Properties(props) {
     onLoad();
   }, [props.isAuthenticated]);
 
-  // function loadProperties() {
-  //   return API.get("properties", "/properties");
-  // }
+  const Map = ReactMapboxGl({
+    accessToken: "pk.eyJ1IjoiZmlyZWhvYm8iLCJhIjoiY2s5aXdwOHQyMWUzZTNlcXQyejRzNTI1cyJ9.Mm2EY__EgXVLkeIcXnv1AQ"
+  });
 
   function loadProperties() {
     return API.get('properties', '/properties', {
@@ -115,6 +117,7 @@ export default function Properties(props) {
     <div className="All-Properties container">
       {!isLoading ? (
         <Row>
+          <Col xs={6}>
             <Row className="Filters">
               <Col xs={3}>
                 <FormGroup controlId="filterPropertyType">
@@ -306,65 +309,28 @@ export default function Properties(props) {
               <br />
             </Col>
             ))}
+          </Col>
+          <Col xs={6}> 
 
-
-            
-
-
-
-
-            {/* {properties
-              .sort((a, b) => b.createdAt - a.createdAt)
-              .map((property, i) => (
-                <Col key={i} sm={4}>
-                  <a href={`/properties/${property.propertyId}`}>
-                    <div className="Property">
-                      <div
-                        style={{
-                          backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
-                          backgroundSize: "cover",
-                          height: "200px",
-                          borderRadius: "5px",
-                          marginBottom: "5px",
-                        }}
-                        className="propertyImage"
-                      ></div>
-                      <div className="Property-Title">
-                        <p>
-                            {property.title.length > 45
-                            ? property.title.slice(0, 45) + " ..."
-                            : property.title}
-                        </p>
-                      </div>
-                     
-                      
-                      <div className="Price">
-                        <p>$ {property.price}</p>
-                      </div>
-                      
-                      
-                      <Row className="Row-Highlights">
-                        <Col xs={3} className="Property-Highlights">
-                          <p> {property.bedroom} Bedrooms</p>
-                        </Col>
-                        <Col xs={3} className="Property-Highlights">
-                          <p> {property.bathroom} Bathrooms</p>
-                        </Col>
-                        <Col xs={3} className="Property-Highlights">
-                          <p> {property.propertyType} </p>
-                        </Col>
-                        <Col xs={3} className="Property-Highlights">
-                          <p> {property.city} </p>
-                        </Col>
-                      </Row>
-                    </div>
-                    
-                  </a>
-                  <br />
-                  <br />
-                </Col>
-          ))} */}
+            <Map
+              style="mapbox://styles/mapbox/streets-v11"
+              containerStyle={{
+                height: "100vh",
+                width: "100vw"
+              }}
+            >
+              <Layer
+                type="symbol"
+                id="marker"
+                layout={{ "icon-image": "marker-15" }}
+              >
+                <Feature coordinates={[-0.481747846041145, 51.3233379650232]}/>
+              </Layer>
+            </Map>
+          </Col>
         </Row>
+
+
       ) : (
         <Loading />
       )}
