@@ -8,11 +8,14 @@ import {
   FormControl,
 } from "react-bootstrap";
 import Dropdown from "react-dropdown";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { API } from "aws-amplify";
 import Loading from "./Loading";
 import config from "../config";
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import MapGL, {GeolocateControl, NavigationControl, Marker } from 'react-map-gl';
+// import ReactMapGL, { Marker } from "react-map-gl";
+import Geocoder from 'react-map-gl-geocoder';
+import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
 export default function Properties(props) {
   const [properties, setProperties] = useState([]);
@@ -22,7 +25,51 @@ export default function Properties(props) {
   const [filterBathrooms, setFilterBathrooms] = useState(0);
   const [filterSort, setFilterSort] = useState("");
   const [filterText, setFilterText] = useState("");
+  const [viewport, setViewport] = useState({
+    width: "40vw",
+    height: "100vh",
+    latitude: 43.6532,
+    longitude: -79.3832,
+    zoom: 8,
+    searchResultLayer: null,
+  });
+  const geocoderContainerRef = useRef();
+  const mapRef = useRef();
+  const handleViewportChange = useCallback(
+    (newViewport) => setViewport(newViewport),
+    []
+  );
+  const handleGeocoderViewportChange = useCallback(
+    (newViewport) => {
+      const geocoderDefaultOverrides = { transitionDuration: 1000 };
  
+      return handleViewportChange({
+        ...newViewport,
+        ...geocoderDefaultOverrides
+      });
+    },
+    []
+  );
+  const TOKEN="pk.eyJ1IjoiZmlyZWhvYm8iLCJhIjoiY2s5aXdwOHQyMWUzZTNlcXQyejRzNTI1cyJ9.Mm2EY__EgXVLkeIcXnv1AQ"
+  const geolocateStyle = {
+    float: 'right',
+    margin: '10px',
+    padding: '10px'
+  };
+
+  const loadPropertyMarkers = () => {
+    return properties.map(spot => {
+      return (
+        <Marker
+           key={spot.objectid}
+           latitude={parseFloat(spot.latitude)}
+           longitude={parseFloat(spot.longitude)}
+        >
+          <img src="https://wholesale-ls-marketing.s3.amazonaws.com/Icons/bed.svg" alt="" />
+        </Marker>
+      );
+    });
+  };
 
   useEffect(() => {
     async function onLoad() {
@@ -31,6 +78,7 @@ export default function Properties(props) {
         setProperties(properties);
         setFilterBedrooms(0);
         setFilterBathrooms(0);
+        console.log(properties);
       } catch (e) {
         alert(e);
       }
@@ -41,9 +89,6 @@ export default function Properties(props) {
     onLoad();
   }, [props.isAuthenticated]);
 
-  const Map = ReactMapboxGl({
-    accessToken: "pk.eyJ1IjoiZmlyZWhvYm8iLCJhIjoiY2s5aXdwOHQyMWUzZTNlcXQyejRzNTI1cyJ9.Mm2EY__EgXVLkeIcXnv1AQ"
-  });
 
   function loadProperties() {
     return API.get('properties', '/properties', {
@@ -310,23 +355,45 @@ export default function Properties(props) {
             </Col>
             ))}
           </Col>
-          <Col xs={6}> 
 
-            <Map
-              style="mapbox://styles/mapbox/streets-v11"
-              containerStyle={{
-                height: "100vh",
-                width: "100vw"
-              }}
-            >
-              <Layer
-                type="symbol"
-                id="marker"
-                layout={{ "icon-image": "marker-15" }}
+          <Col xs={6}>
+            <div 
+              ref={geocoderContainerRef}
+              style={{ position: "absolute", top:20, left: 20, zIndex: 1}}
+              />
+          <MapGL
+            ref={mapRef}
+            {...viewport}
+            mapboxApiAccessToken={TOKEN}
+            mapStyle="mapbox://styles/mapbox/navigation-preview-day-v2"
+            onViewportChange={handleViewportChange}
+          >
+            <Geocoder 
+              mapRef={mapRef}
+              onViewportChange={handleGeocoderViewportChange}
+              mapboxApiAccessToken={TOKEN}
+              position="top-left"
+            />
+            <GeolocateControl
+              style={geolocateStyle}
+              positionOptions={{enableHighAccuracy: true}}
+              trackUserLocation={true}
+              position="top-right"
+            />
+            <NavigationControl />
+
+            {/* {Object.keys(properties).length !== 0 ? (
+              <Marker 
+                latitude={properties.latitude}
+                longitude={properties.longitude}
               >
-                <Feature coordinates={[-0.481747846041145, 51.3233379650232]}/>
-              </Layer>
-            </Map>
+                <div>Properties</div>
+              </Marker>
+            ) : (
+              <div>Empty</div> 
+            )} */}
+            {loadPropertyMarkers}
+          </MapGL>
           </Col>
         </Row>
 
