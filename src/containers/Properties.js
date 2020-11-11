@@ -12,7 +12,7 @@ import React, { useEffect, useState, useRef, useCallback } from "react";
 import { API } from "aws-amplify";
 import Loading from "./Loading";
 import config from "../config";
-import MapGL, {GeolocateControl, NavigationControl, Marker } from 'react-map-gl';
+import MapGL, {GeolocateControl, NavigationControl, Marker, Popup } from 'react-map-gl';
 // import ReactMapGL, { Marker } from "react-map-gl";
 import Geocoder from 'react-map-gl-geocoder';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
@@ -28,8 +28,8 @@ export default function Properties(props) {
   const [viewport, setViewport] = useState({
     width: "40vw",
     height: "100vh",
-    latitude: 43.6532,
-    longitude: -79.3832,
+    latitude: 45.4215,
+    longitude: -75.6972,
     zoom: 8,
     searchResultLayer: null,
   });
@@ -56,6 +56,7 @@ export default function Properties(props) {
     margin: '10px',
     padding: '10px'
   };
+  const [selectedProperties, setSelectedProperties] = useState(null);
 
   const loadPropertyMarkers = () => {
     return properties.map(spot => {
@@ -65,7 +66,12 @@ export default function Properties(props) {
            latitude={parseFloat(spot.latitude)}
            longitude={parseFloat(spot.longitude)}
         >
-          <img src="https://wholesale-ls-marketing.s3.amazonaws.com/Icons/bed.svg" alt="" />
+          <img 
+          onClick={() => {
+            setSelectedProperties(spot);
+          }}
+          src="https://wholesale-ls-marketing.s3.amazonaws.com/Icons/bed.svg" 
+          alt="" />
         </Marker>
       );
     });
@@ -97,6 +103,10 @@ export default function Properties(props) {
         'filterBathrooms': filterBathrooms,
       }
     })
+  }
+
+  const closePopup = () => {
+    setSelectedProperties(null)
   }
 
   const updateFilterPropertyType = event => {
@@ -381,18 +391,16 @@ export default function Properties(props) {
               position="top-right"
             />
             <NavigationControl />
-
-            {/* {Object.keys(properties).length !== 0 ? (
-              <Marker 
-                latitude={properties.latitude}
-                longitude={properties.longitude}
+            {loadPropertyMarkers()}
+            {selectedProperties !== null ? (
+              <Popup
+                latitude={parseFloat(selectedProperties.latitude)}
+                longitude={parseFloat(selectedProperties.longitude)}
+                onClose={closePopup}
               >
-                <div>Properties</div>
-              </Marker>
-            ) : (
-              <div>Empty</div> 
-            )} */}
-            {loadPropertyMarkers}
+                <p>HotSpot Information</p>
+              </Popup>
+              ) : null}
           </MapGL>
           </Col>
         </Row>
