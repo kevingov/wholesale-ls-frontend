@@ -18,73 +18,80 @@ import UserDashboard from "./containers/UserDashboard";
 import ViewProperty from "./containers/ViewProperty";
 import EditProfile from "./containers/EditProfile";
 import ViewProfile from "./containers/ViewProperty";
+import SearchProperties from "./containers/SearchProperties";
 
 export default ({ childProps }) => (
   <Switch>
-    <AppliedRoute path="/" exact component={Home} props={childProps} />
-    <AppliedRoute path="/terms" exact component={Terms} appProps={childProps} />
+    <AppliedRoute path='/' exact component={Home} props={childProps} />
+    <AppliedRoute path='/terms' exact component={Terms} appProps={childProps} />
     <AppliedRoute
-      path="/privacy"
+      path='/privacy'
       exact
       component={Privacy}
       appProps={childProps}
     />
     <UnauthenticatedRoute
-      path="/login"
+      path='/login'
       exact
       component={Login}
       props={childProps}
     />
     <UnauthenticatedRoute
-      path="/signup"
+      path='/signup'
       exact
       component={Signup}
       props={childProps}
     />
     <AuthenticatedRoute
-      path="/properties/new"
+      path='/properties/new'
       exact
       component={NewProperty}
       props={childProps}
     />
     <AuthenticatedRoute
-      path="/properties/:id/edit"
+      path='/properties/:id/edit'
       exact
       component={EditProperty}
       props={childProps}
     />
     <AppliedRoute
-      path="/properties"
+      path='/searchproperties'
+      exact
+      component={SearchProperties}
+      props={childProps}
+    />
+    <AppliedRoute
+      path='/properties'
       exact
       component={Properties}
       props={childProps}
     />
     <AppliedRoute
-      path="/properties/:id"
+      path='/properties/:id'
       exact
       component={ViewProperty}
       props={childProps}
     />
     <AuthenticatedRoute
-      path="/dashboard"
+      path='/dashboard'
       exact
       component={UserDashboard}
       props={childProps}
     />
     <AppliedRoute
-      path="/privacy"
+      path='/privacy'
       exact
       component={PrivacyPolicy}
       props={childProps}
     />
     <AuthenticatedRoute
-      path="/profile/edit"
+      path='/profile/edit'
       exact
       component={EditProfile}
       props={childProps}
     />
     <AuthenticatedRoute
-      path="/profile"
+      path='/profile'
       exact
       component={ViewProfile}
       props={childProps}

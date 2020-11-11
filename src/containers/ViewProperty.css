@@ -1,104 +1,304 @@
+/* General Styling */
+
+h1,
+h2,
+h3,
+p {
+  font-family: "Open Sans", Helvetica, Arial, serif;
+}
+
+a {
+  color: #7f8fa4;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+b {
+  font-weight: 600;
+}
+
+p {
+  font-size: 14px;
+  color: #27313e;
+  text-align: left;
+  margin: 0;
+}
+
+.backLink img {
+  height: 13px;
+  margin-right: 13px;
+}
+
+.lightText {
+  color: #6c7b91;
+  font-family: "Helvetica Neue";
+}
+
+.midBold {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* View Property Styling */
+
 .ViewProperty {
-  margin: 25px;
+  margin: 18px;
   background-color: white;
 }
 
-.ViewProperty h1 {
-    font-family: 'Source Sans Pro',Helvetica,Arial,serif;
-    font-weight: 600;
-    font-style: normal;
-    font-size: 20.0px;
-    color: rgba(38,48,62,1.0);
-    text-align: left;
-    letter-spacing: -.13px;
-    line-height: 25.0px;
+.ViewProperty .row {
+  margin-top: 40px;
 }
 
-.ViewProperty h2 {
-  font-family: 'Source Sans Pro',Helvetica,Arial,serif;
+/******* Top Section *******/
+
+.ViewProperty__Wrapper {
+  margin-top: 45px;
+}
+
+.ViewProperty__Header {
+  margin-top: 40px;
+}
+
+.ViewProperty__Header h2 {
+  color: #27313e;
+  font-size: 20px;
   font-weight: 600;
-  font-style: normal;
-  font-size: 17.0px;
-  color: rgba(38,48,62,1.0);
-  text-align: left;
-  letter-spacing: -.11px;
-  line-height: 22.0px;
+  letter-spacing: -0.13px;
 }
 
-.ViewProperty h3 {
-  font-family: 'Source Sans Pro',Helvetica,Arial,serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 14.0px;
-  color: rgba(38,48,62,1.0);
-  text-align: left;
-  letter-spacing: -.09px;
-  line-height: 18.0px;
+.ViewProperty__Header p {
+  color: #27313e;
+  font-size: 15px;
+  letter-spacing: -0.09px;
 }
 
-.ViewProperty p {
-  font-family: 'HelveticaNeue',Helvetica,Arial,serif;
-  font-size: 14.0px;
-  color: rgba(107,123,145,1.0);
-  text-align: left;
-  letter-spacing: -.09px;
-  line-height: 21.0px;
-  white-space: pre-wrap;
+.ViewProperty__Address {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 15px;
 }
 
-.ViewProperty-Wrapper {
-  margin-top: 50px;
+.ViewProperty__Address > img {
+  height: 13px;
+  margin-right: 13px;
 }
 
-.Back-Link {
-  margin-bottom: 20px;
+.ViewProperty__Address > p {
+  font-size: 15px;
 }
 
-.ViewProperty-Title {
-  margin-top: 20px;
+.ViewProperty__Row-Highlights {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 22px;
 }
 
-.ViewProperty-Details {
-  margin-top: 60px;
+.ViewProperty__Row-Highlights > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 9px;
+  border-radius: 4px;
+  padding: 8px 15px;
+  background-color: #eff3fa;
+  font-size: 14px;
+  font-weight: 600;
+  color: #27313e;
 }
 
-.ViewProperty .secondary-btn {
+/******* View Property Card - Left Panel *******/
+
+.ViewPropertyCard {
+  width: 100%;
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.ViewPropertyCard__Separator {
+  background-color: #e6e6e6;
+  margin: 0 0 0 25px;
+}
+
+.ViewPropertyCard__Image-Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.ViewPropertyCard__Image-Container img {
+  max-height: 340px;
+  min-width: 100%;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  object-fit: contain;
+}
+
+.ViewPropertyCard__Image-Highlight {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  padding: 7px 12px;
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 17px;
+  background-color: #ffffff;
+}
+
+.ViewPropertyCard__Details {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 0 11px 5px rgba(234, 234, 234, 0.5);
+  width: 100%;
+  text-align: center;
+}
+
+.ViewPropertyCard__Details .CardContainer {
+  padding: 25px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ViewPropertyCard__Contact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ViewPropertyCard__ContactProfilePic {
+  border-radius: 50%;
+  border: 5px solid #efefef;
+  width: 65px;
+  height: 65px;
+  object-fit: cover;
+  float: left;
+}
+
+.ViewPropertyCard__ContactProfile {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.ViewPropertyCard__ContactButton {
+  background-color: #34901b;
+  padding: 8px 35px;
+}
+
+.ViewPropertyCard__ContactInfo {
+  font-size: 16px;
+  margin-left: 15px;
+}
+.ViewPropertyCard__PriceBreakdown {
   width: 100%;
 }
 
-.ViewProperty-Highlights {
-  height: 39px;
-  width: 96px;
-  margin-right: 2px;
-  margin-left: 2px;
-  background-color: rgba(243,243,243,1.0);
-  padding: 2px;
-  text-align: center;
-  border-radius: 5px;
+.ViewPropertyCard__PriceBreakdown tr > td:first-child {
+  color: #909dad;
+  font-size: 15px;
+  text-align: left;
+}
+
+.ViewPropertyCard__PriceBreakdown tr > td:last-child {
+  font-size: 17px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.ViewPropertyCard__PriceBreakdown tr:not(:last-child) td {
+  padding-bottom: 10px;
+}
+
+.ViewPropertyCard__EstimatedReturns {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.ViewPropertyCard__EstimatedReturns p {
+  color: #fe6500;
+}
+
+.ViewPropertyCard__PercentageReturns {
+  font-size: 14px;
+  border-radius: 2.5px;
+  background-color: #fe6500;
+  color: #fff;
+  padding: 2px 12px;
+  margin-right: 22px;
+  font-weight: 600;
+}
+
+/******* View Property Details - Right Panel *******/
+
+.ViewProperty__Details h3 {
+  font-family: "Source Sans Pro", Helvetica, Arial, serif;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 17px;
+  margin: 0 0 30px 0;
+}
+
+.ViewProperty__DetailsTable {
+  width: 100%;
+  margin: 30px 0;
+}
+
+.ViewProperty__DetailsTable tr > td {
+  padding-bottom: 15px;
+}
+
+.ViewProperty__DetailsTable tr > td:last-child {
+  color: #6c7b91;
+}
+
+.ViewProperty__Title {
+  margin-top: 20px;
 }
 
 .ViewProperty-Highlights p {
   color: black !important;
-  font-family: "SourceSansPro-Semibold" , Helvetica , Arial , serif !important;
+  font-family: "SourceSansPro-Semibold", Helvetica, Arial, serif !important;
   font-size: 11.2px !important;
   letter-spacing: -0.07px !important;
-  line-height: 14.0px !important;
+  line-height: 14px !important;
   margin-top: 10px;
   text-align: center;
 }
 
-.contactCard {
-  border: 1px solid rgb(221, 221, 221);
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
-  width: 515px;
-  margin-top: 30px;
-  text-align: center;
+/******* Media Queries (Responsive) *******/
+@media only screen and (min-width: 992px) {
+  .row.equal {
+    display: flex;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+    padding-bottom: 80px;
+  }
+
+  .ViewPropertyCard {
+    width: 90%;
+    position: sticky;
+    top: 40px;
+  }
 }
 
-.contactCard img {
-  height: 100px;
-  border-radius: 100px;
-  text-align: center;
+/* @media only screen and (min-width: 768px) {
+  .container {
+    width: 840px;
+  }
 }
+@media only screen and (min-width: 992px) {
+  .container {
+    width: 1150px;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .container {
+    width: 1380px;
+  }
+} */

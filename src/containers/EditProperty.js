@@ -49,6 +49,7 @@ export default function EditProperty(props) {
         const user = await Auth.currentUserInfo();
         const userId = user["id"];
         const property = await loadProperty();
+        // console.log("property:", property);
         setPropertyId(property.propertyId);
         setPropertyOwner(userId === property.userId);
         setTitle(property.title);
@@ -188,64 +189,64 @@ export default function EditProperty(props) {
   }
 
   return (
-    <div className="EditProperty container">
+    <div className='EditProperty container'>
       {propertyOwner ? (
         <div>
-          <p className="text-center">
-            <span onClick={handleDelete} className="other-btn">
-              <MdTrash fontSize="14px" />
+          <p className='text-center'>
+            <span onClick={handleDelete} className='other-btn'>
+              <MdTrash fontSize='14px' />
               Delete Property
             </span>
           </p>
 
           {!isLoading ? (
-            <form onSubmit={handleSubmit} className="form-wrapper">
-              <FormGroup controlId="title">
+            <form onSubmit={handleSubmit} className='form-wrapper'>
+              <FormGroup controlId='title'>
                 <ControlLabel>Title</ControlLabel>
                 <FormControl
                   value={title}
-                  type="text"
+                  type='text'
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="tagline">
+              <FormGroup controlId='tagline'>
                 <ControlLabel>Tagline</ControlLabel>
                 <FormControl
                   value={tagline}
-                  type="text"
+                  type='text'
                   onChange={(e) => setTagline(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="price">
+              <FormGroup controlId='price'>
                 <ControlLabel>Price</ControlLabel>
                 <FormControl
                   value={price}
-                  type="text"
+                  type='text'
                   onChange={(e) => setPrice(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="city">
+              <FormGroup controlId='city'>
                 <ControlLabel>City</ControlLabel>
                 <FormControl
                   value={city}
-                  type="text"
+                  type='text'
                   onChange={(e) => setCity(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="address">
+              <FormGroup controlId='address'>
                 <ControlLabel>Address</ControlLabel>
                 <FormControl
                   value={address}
-                  type="text"
+                  type='text'
                   onChange={(e) => setAddress(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="propertyType">
+              <FormGroup controlId='propertyType'>
                 <ControlLabel>Property Type</ControlLabel>
                 <br />
                 <br />
@@ -277,7 +278,7 @@ export default function EditProperty(props) {
                 />
               </FormGroup>
 
-              <FormGroup controlId="propertyStatus">
+              <FormGroup controlId='propertyStatus'>
                 <ControlLabel>Property Status</ControlLabel>
                 <br />
                 <br />
@@ -301,110 +302,110 @@ export default function EditProperty(props) {
                 />
               </FormGroup>
 
-              <FormGroup controlId="offerDate">
+              <FormGroup controlId='offerDate'>
                 <ControlLabel>Offer Date</ControlLabel>
                 <DatePicker
                   selected={offerDate}
                   onChange={(date) => setOfferDate(date)}
-                  dateFormat="MMMM d, yyyy"
+                  dateFormat='MMMM d, yyyy'
                 />
               </FormGroup>
 
-              <FormGroup controlId="closeDate">
+              <FormGroup controlId='closeDate'>
                 <ControlLabel>Close Date</ControlLabel>
                 <DatePicker
                   selected={closeDate}
                   onChange={(date) => setCloseDate(date)}
-                  dateFormat="MMMM d, yyyy"
+                  dateFormat='MMMM d, yyyy'
                 />
               </FormGroup>
 
-              <FormGroup controlId="groupShowingDate">
+              <FormGroup controlId='groupShowingDate'>
                 <ControlLabel>Group Showing Date</ControlLabel>
                 <DatePicker
                   selected={groupShowingDate}
                   onChange={(date) => setGroupShowingDate(date)}
-                  dateFormat="MMMM d, yyyy"
+                  dateFormat='MMMM d, yyyy'
                 />
               </FormGroup>
 
-              <FormGroup controlId="bedroom">
+              <FormGroup controlId='bedroom'>
                 <ControlLabel>Bedrooms</ControlLabel>
                 <FormControl
                   value={bedroom}
-                  type="number"
+                  type='number'
                   onChange={(e) => setBedroom(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="bathroom">
+              <FormGroup controlId='bathroom'>
                 <ControlLabel>Bathrooms</ControlLabel>
                 <FormControl
                   value={bathroom}
-                  type="text"
+                  type='text'
                   onChange={(e) => setBathroom(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="address">
+              <FormGroup controlId='address'>
                 <ControlLabel>Parking</ControlLabel>
                 <FormControl
                   value={parking}
-                  type="text"
+                  type='text'
                   onChange={(e) => setParking(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="netOperatingIncome">
+              <FormGroup controlId='netOperatingIncome'>
                 <ControlLabel>Net Operating Income</ControlLabel>
                 <FormControl
                   value={netOperatingIncome}
-                  type="text"
+                  type='text'
                   onChange={(e) => setNetOperatingIncome(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="canCrowdFund">
+              <FormGroup controlId='canCrowdFund'>
                 <ControlLabel>Able to Crowdfund</ControlLabel>
                 <FormControl
-                  type="checkbox"
+                  type='checkbox'
                   checked={canCrowdFund}
                   onChange={() => setCanCrowdFund(!canCrowdFund)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="description">
+              <FormGroup controlId='description'>
                 <ControlLabel>Description</ControlLabel>
                 <FormControl
                   value={description}
-                  componentClass="textarea"
+                  componentClass='textarea'
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="propertyNeeds">
+              <FormGroup controlId='propertyNeeds'>
                 <ControlLabel>Property Needs</ControlLabel>
                 <FormControl
                   value={propertyNeeds}
-                  componentClass="textarea"
+                  componentClass='textarea'
                   onChange={(e) => setPropertyNeeds(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="whyThisProperty">
+              <FormGroup controlId='whyThisProperty'>
                 <ControlLabel>Why This Property?</ControlLabel>
                 <FormControl
                   value={whyThisProperty}
-                  componentClass="textarea"
+                  componentClass='textarea'
                   onChange={(e) => setWhyThisProperty(e.target.value)}
                 />
               </FormGroup>
 
-              <FormGroup controlId="comparable">
+              <FormGroup controlId='comparable'>
                 <ControlLabel>Comparable Properties</ControlLabel>
                 <FormControl
                   value={comparable}
-                  componentClass="textarea"
+                  componentClass='textarea'
                   onChange={(e) => setComparable(e.target.value)}
                 />
               </FormGroup>
@@ -414,25 +415,25 @@ export default function EditProperty(props) {
                   <ControlLabel>Image</ControlLabel>
                   <FormControl.Static>
                     <a
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      target='_blank'
+                      rel='noopener noreferrer'
                       href={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${image}`}
-                      className="pull-left"
+                      className='pull-left'
                     >
                       {formatFilename(image)}
                     </a>
                   </FormControl.Static>
                 </FormGroup>
               )}
-              <FormGroup controlId="file">
+              <FormGroup controlId='file'>
                 {!image && <ControlLabel>Attachment</ControlLabel>}
-                <FormControl onChange={handleFileChange} type="file" />
+                <FormControl onChange={handleFileChange} type='file' />
               </FormGroup>
 
-              <p className="text-right">
+              <p className='text-right'>
                 <LoaderButton
-                  type="submit"
-                  className="other-btn"
+                  type='submit'
+                  className='other-btn'
                   isLoading={isLoading}
                   disabled={!validateForm()}
                 >
@@ -445,14 +446,14 @@ export default function EditProperty(props) {
           )}
         </div>
       ) : (
-        <div className="text-center">
+        <div className='text-center'>
           <br />
           <br />
           <br />
           <br />
           <h2>Sorry, but it doesn't look like you own this listing.</h2>
           <h2>Please select one that you own to edit.</h2>
-          <Button href="/properties" variant="success" className="text-center">
+          <Button href='/properties' variant='success' className='text-center'>
             Back to Properties
           </Button>
           <br />

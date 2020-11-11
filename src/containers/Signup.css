@@ -74,17 +74,16 @@
 }
 
 .signup-selector:focus {
-  /* outline: #3ab984 !important; */
   outline: none !important;
   border-color: #3ab984;
 }
 
 .signup-selector:hover {
-  border: 1.5px solid rgb(231, 231, 231);
+  border: 2px solid rgb(231, 231, 231);
 }
 
 .signup-selector-active {
-  border: 1.5px solid #3ab984;
+  border: 2px solid #3ab984;
 }
 
 .signup-button {
