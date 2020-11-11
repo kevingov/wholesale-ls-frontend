@@ -13,7 +13,6 @@ import { API } from "aws-amplify";
 import Loading from "./Loading";
 import config from "../config";
 import MapGL, {GeolocateControl, NavigationControl, Marker, Popup } from 'react-map-gl';
-// import ReactMapGL, { Marker } from "react-map-gl";
 import Geocoder from 'react-map-gl-geocoder';
 import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 
@@ -67,6 +66,7 @@ export default function Properties(props) {
            longitude={parseFloat(spot.longitude)}
         >
           <img 
+          class="markerImage"
           onClick={() => {
             setSelectedProperties(spot);
           }}

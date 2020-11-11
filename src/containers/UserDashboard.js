@@ -35,6 +35,14 @@ export default function UserDashboard () {
    
 
         return (
+            <div className="Index">
+                <div className="Breadcrumbs">
+                    <div className="Breadcrumbs-items container">
+                        <Breadcrumb>
+                            <Breadcrumb.Item active>Properties</Breadcrumb.Item>
+                        </Breadcrumb>
+                    </div>
+                </div>
             <div className="Properties container">
             {!isLoading ? (
                 <Row>
@@ -74,6 +82,7 @@ export default function UserDashboard () {
             ) : (
                 <Loading />
             )}
+            </div>
             </div>
         );
 }
