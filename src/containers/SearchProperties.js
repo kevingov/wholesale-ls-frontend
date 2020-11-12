@@ -1,12 +1,13 @@
 import { FormGroup, FormControl } from "react-bootstrap";
 import Dropdown from "react-dropdown";
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState } from "react";
 import { API } from "aws-amplify";
 
 import Loading from "./Loading";
 import config from "../config";
 import "./SearchProperties.css";
 import mapPinIcon from "../assets/map-pin-icon.png";
+import SearchPropertiesMap from "../components/SearchPropertiesMap";
 
 export default function Properties(props) {
   const [properties, setProperties] = useState([]);
@@ -33,10 +34,6 @@ export default function Properties(props) {
 
     onLoad();
   }, [props.isAuthenticated]);
-
-  // function loadProperties() {
-  //   return API.get("properties", "/properties");
-  // }
 
   function loadProperties() {
     return API.get("properties", "/properties", {
@@ -241,14 +238,6 @@ export default function Properties(props) {
                   href={`/properties/${property.propertyId}`}
                   className='SearchPropertiesCard__Image-Container'
                 >
-                  {/* <div
-                    style={{
-                      backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
-                      width: "280px",
-                      height: "180px",
-                    }}
-                    // className='SearchPropertiesCard__Image'
-                  ></div> */}
                   <img
                     alt={`${property.address} - Focus Property`}
                     src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image}`}
@@ -290,61 +279,9 @@ export default function Properties(props) {
               </div>
             ))}
           </div>
-          <div>
-            <div className='SearchProperties__MapContainer' />
+          <div className='SearchProperties__MapContainer'>
+            <SearchPropertiesMap properties={properties} />
           </div>
-
-          {/* {properties
-              .sort((a, b) => b.createdAt - a.createdAt)
-              .map((property, i) => (
-                <Col key={i} sm={4}>
-                  <a href={`/properties/${property.propertyId}`}>
-                    <div className="Property">
-                      <div
-                        style={{
-                          backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
-                          backgroundSize: "cover",
-                          height: "200px",
-                          borderRadius: "5px",
-                          marginBottom: "5px",
-                        }}
-                        className="propertyImage"
-                      ></div>
-                      <div className="Property-Title">
-                        <p>
-                            {property.title.length > 45
-                            ? property.title.slice(0, 45) + " ..."
-                            : property.title}
-                        </p>
-                      </div>
-                     
-                      
-                      <div className="Price">
-                        <p>$ {property.price}</p>
-                      </div>
-                      
-                      
-                      <Row className="Row-Highlights">
-                        <Col xs={3} className="Property-Highlights">
-                          <p> {property.bedroom} Bedrooms</p>
-                        </Col>
-                        <Col xs={3} className="Property-Highlights">
-                          <p> {property.bathroom} Bathrooms</p>
-                        </Col>
-                        <Col xs={3} className="Property-Highlights">
-                          <p> {property.propertyType} </p>
-                        </Col>
-                        <Col xs={3} className="Property-Highlights">
-                          <p> {property.city} </p>
-                        </Col>
-                      </Row>
-                    </div>
-                    
-                  </a>
-                  <br />
-                  <br />
-                </Col>
-          ))} */}
         </div>
       ) : (
         <Loading />

@@ -84,3 +84,13 @@
   line-height: 14.0px !important;
   margin-top: 10px;
 }
+
+.mapboxgl-ctrl-group {
+  width: 30px;
+  margin: 10px 0 0 10px;
+}
+
+.markerImage {
+  width: 30px;
+  height: 30px
+}

@@ -75,7 +75,7 @@
 }
 
 .SearchPropertiesCard__Image-Container {
-  height: 180px;
+  height: 170px;
   width: 280px;
   display: flex;
   justify-content: center;
@@ -90,8 +90,8 @@
 }
 
 .SearchPropertiesCard__Details {
-  height: 180px;
-  width: 330px;
+  height: 170px;
+  width: 320px;
   padding-left: 12px;
   object-fit: cover;
 }
@@ -100,7 +100,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: 15px;
+  margin-top: 13px;
 }
 
 .SearchPropertiesCard__Address > img {
@@ -116,7 +116,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: 15px;
+  margin-top: 16px;
 }
 
 .SearchProperties__Row-Highlights > div {
@@ -136,13 +136,13 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: 15px;
+  margin-top: 13px;
 }
 
 .SearchProperties__Row-Pricing-Item {
   margin-right: 9px;
   border-radius: 2px;
-  padding: 10px 15px;
+  padding: 8px 14px;
   font-size: 10px;
   font-weight: 600;
   color: #27313e;

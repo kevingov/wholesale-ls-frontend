@@ -1,4 +1,4 @@
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Breadcrumb } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import Loading from "./Loading";
 import config from "../config";
@@ -31,49 +31,78 @@ export default function UserDashboard () {
         return API.get("properties","/userproperties");
     }
     
+    
 
    
 
         return (
-            <div className="Properties container">
+            <div className="Index">
+                <div className="Breadcrumbs">
+                    <div className="Breadcrumbs-items container">
+                        <Breadcrumb>
+                            <Breadcrumb.Item active>Properties</Breadcrumb.Item>
+                        </Breadcrumb>
+                    </div>
+                </div>
+            <div className="All-Properties container">
             {!isLoading ? (
                 <Row>
-                {properties
-                    .sort((a, b) => b.createdAt - a.createdAt)
+                    <div> {Object.keys(properties).length} Search Results</div>
+                    <div>My Saved Properties</div>
+                {properties 
                     .map((property, i) => (
                     <Col key={i} sm={4}>
-                        <a href={`/properties/${property.propertyId}`}>
-                        <div className="property">
-                            <div
+                    <a href={`/properties/${property.propertyId}`}>
+                        <div className="Property">
+                        <div
                             style={{
-                                backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
-                                backgroundSize: "cover",
-                                height: "200px",
-                                borderRadius: "5px",
-                                marginBottom: "5px",
+                            backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
+                            backgroundSize: "cover",
+                            height: "200px",
+                            borderRadius: "5px",
+                            marginBottom: "5px",
                             }}
                             className="propertyImage"
-                            ></div>
+                        ></div>
+                        <div className="Property-Title">
                             <p>
-                            <b>
-                                {property.propertyType} &middot; {property.city}
-                            </b>
-                            </p>
-                            <p>
-                            {property.title.length > 45
+                                {property.title.length > 45
                                 ? property.title.slice(0, 45) + " ..."
                                 : property.title}
                             </p>
                         </div>
-                        </a>
-                        <br />
-                        <br />
-                    </Col>
-                    ))}
+                        
+                            <div className="Price">
+                            <p>$ {property.price}</p>
+                            </div>
+                        
+                        
+                        <Row className="Row-Highlights">
+                            <Col xs={3} className="Property-Highlights">
+                            <p> {property.bedroom} Bedrooms</p>
+                            </Col>
+                            <Col xs={3} className="Property-Highlights">
+                            <p> {property.bathroom} Bathrooms</p>
+                            </Col>
+                            <Col xs={3} className="Property-Highlights">
+                            <p> {property.propertyType} </p>
+                            </Col>
+                            <Col xs={3} className="Property-Highlights">
+                            <p> {property.city} </p>
+                            </Col>
+                        </Row>
+                        </div>
+                        
+                    </a>
+                    <br />
+                    <br />
+            </Col>
+            ))}
                 </Row>
             ) : (
                 <Loading />
             )}
+            </div>
             </div>
         );
 }
