@@ -18,7 +18,6 @@ import UserDashboard from "./containers/UserDashboard";
 import ViewProperty from "./containers/ViewProperty";
 import EditProfile from "./containers/EditProfile";
 import ViewProfile from "./containers/ViewProperty";
-import SearchProperties from "./containers/SearchProperties";
 
 export default ({ childProps }) => (
   <Switch>
@@ -52,12 +51,6 @@ export default ({ childProps }) => (
       path='/properties/:id/edit'
       exact
       component={EditProperty}
-      props={childProps}
-    />
-    <AppliedRoute
-      path='/searchproperties'
-      exact
-      component={SearchProperties}
       props={childProps}
     />
     <AppliedRoute

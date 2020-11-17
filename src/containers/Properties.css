@@ -1,96 +1,173 @@
+/* General Styling */
+
 .Index {
-  background-color: rgba(248,248,251,1.0)
+  background-color: rgba(248, 248, 251, 1);
 }
 
-.Breadcrumbs {
+/******* Filter Bar Section *******/
+
+.SearchProperties__Filter {
   background-color: #fff;
   border-top: 1px solid lightgrey;
   border-bottom: 0.5px solid lightgrey;
-
 }
 
-.breadcrumb {
-  background-color: #fff !important;
-  margin: 0px;
-  padding: 15px 15px;
+.SearchProperties__Filter-Container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0;
 }
 
-.All-Properties a {
-  text-decoration: none;
+.SearchProperties__Filter-Container .form-group {
+  margin: 12px 25px 12px 0;
 }
 
-.Filters {
-  margin-left: -10px;
-  margin-right: -10px;
+.FilterContainer__Search-Bar {
+  border-radius: 3px;
+  width: 380px;
 }
 
-.Property p {
-  color: #484848;
-  line-height: 23px;
-  font-size: 16px;
-  font-family: "Roboto-Medium", Helvetica, Arial, serif;
+.SearchProperties__Filter-Container .Dropdown-control {
+  border: 1px solid #ced0da;
+  border-radius: 4px;
+  background: linear-gradient(0deg, #f2f4f7 0%, #ffffff 100%);
+  font-weight: 600;
 }
 
-.Property-Title p {
-  margin-top: 10px;
+/******* Property Search List *******/
+
+.SearchProperties {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 700px;
 }
 
-.Price {
-  background-color: rgba(255,255,255,0);
-  border-color: black;
-  border-radius: 2.4px;
-  border-style: solid;
-  border-width: 0.8px;
-  height: 28px;
-  left: 16px;
-  width: 85px;
+.SearchProperties__Results {
+  padding: 0 15px;
+  flex: 1 0 630px;
+  height: 100%;
+  overflow-y: scroll;
 }
 
-.Price p {
-  text-align: center !important; 
-  white-space: nowrap !important;
-  font-family: "SourceSansPro-Semibold", Helvetica, Arial, serif !important;
-  font-size: 14.0px !important;
-  color: black !important;
-  margin-top: 0px;
-}
-
-.Property {
-  background: white;
-  border: 2px lightgrey;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.Row-Highlights {
-  margin-left: 0px;
-  margin-right: 0px;
+.SearchProperties__Results-Found {
   margin-top: 20px;
-  margin-bottom: 15px;
+  color: #7f8fa4;
+  font-size: 13px;
 }
 
-.Property-Highlights {
-  background-color: rgba(243,243,243,1.0);
-  padding: 2px;
-  text-align: center;
+.SearchProperties h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 35px;
+}
+
+.SearchPropertiesCard {
+  margin: 27px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.SearchPropertiesCard__Details {
+  height: 180px;
+  width: 320px;
+  padding-left: 12px;
+}
+
+.SearchPropertiesCard__Title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 0;
+}
+
+.SearchPropertiesCard__Image-Container {
+  height: 180px;
+  width: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.SearchPropertiesCard__Image-Container > img {
   border-radius: 5px;
+  height: auto;
+  width: 100%;
 }
 
-.Property-Highlights p {
-  color: black !important;
-  font-family: "SourceSansPro-Semibold" , Helvetica , Arial , serif !important;
-  font-size: 11.2px !important;
-  letter-spacing: -0.07px !important;
-  line-height: 14.0px !important;
-  margin-top: 10px;
+.SearchPropertiesCard__Address {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 12px;
 }
 
-.mapboxgl-ctrl-group {
-  width: 30px;
-  margin: 10px 0 0 10px;
+.SearchPropertiesCard__Address > img {
+  height: 13px;
+  margin-right: 8px;
 }
 
-.markerImage {
-  width: 30px;
-  height: 30px
+.SearchPropertiesCard__Address > p {
+  font-size: 14px;
+}
+
+.SearchProperties__Row-Highlights {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 14px;
+}
+
+.SearchProperties__Row-Highlights > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 9px;
+  border-radius: 4px;
+  padding: 6px 12px;
+  background-color: #eff3fa;
+  font-size: 12px;
+  font-weight: 600;
+  color: #27313e;
+}
+
+.SearchProperties__Row-Pricing {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 12px;
+}
+
+.SearchProperties__Row-Pricing-Item {
+  margin-right: 9px;
+  border-radius: 2px;
+  padding: 8px 14px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #27313e;
+  background-color: #f1f1f1;
+}
+
+.SearchProperties__Row-Pricing-Item p:first-child {
+  color: #7f8fa4;
+}
+
+.SearchProperties__Row-Pricing-Item--Profit {
+  background-color: #ffe8d9;
+}
+
+.SearchProperties__Row-Pricing-Item--Profit p:first-child {
+  color: #fe6500;
+}
+
+/******* Map Container *******/
+
+.SearchProperties__MapContainer {
+  width: 100%;
+  height: 700px;
+  background-color: gray;
 }

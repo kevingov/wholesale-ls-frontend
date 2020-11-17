@@ -8,7 +8,7 @@ import MapGL, {
 import Geocoder from "react-map-gl-geocoder";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
-export const SearchPropertiesMap = ({ properties }) => {
+export const PropertiesMap = ({ properties }) => {
   const geocoderContainerRef = useRef();
   const mapRef = useRef();
   const [selectedProperties, setSelectedProperties] = useState(null);
@@ -51,12 +51,12 @@ export const SearchPropertiesMap = ({ properties }) => {
       return properties.map((spot) => {
         return (
           <Marker
-            key={spot.objectid}
+            key={spot.propertyId}
             latitude={parseFloat(spot.latitude)}
             longitude={parseFloat(spot.longitude)}
           >
             <img
-              class='markerImage'
+              className='markerImage'
               onClick={() => {
                 setSelectedProperties(spot);
               }}
@@ -110,4 +110,4 @@ export const SearchPropertiesMap = ({ properties }) => {
   );
 };
 
-export default SearchPropertiesMap;
+export default PropertiesMap;

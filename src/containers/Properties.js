@@ -1,30 +1,30 @@
-import "./Properties.css";
-import { Col, FormGroup, Row, Breadcrumb, FormControl } from "react-bootstrap";
+import { FormGroup, FormControl } from "react-bootstrap";
 import Dropdown from "react-dropdown";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { API } from "aws-amplify";
+
 import Loading from "./Loading";
 import config from "../config";
-import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
-import SearchPropertiesMap from "../components/SearchPropertiesMap";
+import "./Properties.css";
+import mapPinIcon from "../assets/map-pin-icon.png";
+import PropertiesMap from "../components/PropertiesMap";
 
 export default function Properties(props) {
   const [properties, setProperties] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [filterPropertyType, setFilterPropertyType] = useState("");
-  const [filterBedrooms, setFilterBedrooms] = useState(0);
-  const [filterBathrooms, setFilterBathrooms] = useState(0);
-  const [filterSort, setFilterSort] = useState("");
-  const [filterText, setFilterText] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [filterPropertyType, setFilterPropertyType] = useState({
+    value: "All",
+  });
+  const [filterBedrooms, setFilterBedrooms] = useState({ value: 0 });
+  const [filterBathrooms, setFilterBathrooms] = useState({ value: 0 });
+  const [filterSort, setFilterSort] = useState({ value: "" });
 
   useEffect(() => {
     async function onLoad() {
       try {
         const properties = await loadProperties();
         setProperties(properties);
-        setFilterBedrooms(0);
-        setFilterBathrooms(0);
-        console.log(properties);
       } catch (e) {
         alert(e);
       }
@@ -44,37 +44,33 @@ export default function Properties(props) {
     });
   }
 
-  // const closePopup = () => {
-  //   setSelectedProperties(null);
-  // };
-
   const updateFilterPropertyType = (event) => {
-    setFilterPropertyType(event.value);
+    setFilterPropertyType(event);
   };
 
   const updateFilterBedrooms = (event) => {
-    setFilterBedrooms(event.value);
+    setFilterBedrooms(event);
   };
 
   const updateFilterBathrooms = (event) => {
-    setFilterBathrooms(event.value);
+    setFilterBathrooms(event);
   };
 
   const updateFilterSort = (event) => {
-    setFilterSort(event.value);
+    setFilterSort(event);
   };
 
   const resultsFilteredByDropdown = properties.filter((results) => {
-    console.log(filterPropertyType);
-    if (filterPropertyType === "") {
-      return results;
-    } else {
-      return (
-        results.propertyType === filterPropertyType &&
-        results.bedroom > filterBedrooms &&
-        results.bathroom > filterBathrooms
-      );
-    }
+    let isPropertyType =
+      filterPropertyType.value === "All"
+        ? true
+        : results.propertyType == filterPropertyType.value;
+
+    return (
+      isPropertyType &&
+      results.bedroom >= filterBedrooms.value &&
+      results.bathroom >= filterBathrooms.value
+    );
   });
 
   let sortedProperties;
@@ -105,219 +101,217 @@ export default function Properties(props) {
   //   })
   // }
 
-  const searchProperties = sortedProperties.filter((results) => {
-    return results.title.toLowerCase().includes(filterText.toLowerCase());
-  });
+  // const searchProperties = sortedProperties.filter((results) => {
+  //   return results.title.toLowerCase().includes(filterText.toLowerCase());
+  // });
+
+  const searchProperties = sortedProperties;
 
   return (
     <div className='Index'>
-      <div className='Breadcrumbs'>
-        <div className='Breadcrumbs-items container'>
-          <Breadcrumb>
-            <Breadcrumb.Item active>Properties</Breadcrumb.Item>
-          </Breadcrumb>
+      <div className='SearchProperties__Filter'>
+        <div className='SearchProperties__Filter-Container container'>
+          <FormGroup
+            controlId='filterPropertyType'
+            className='FilterContainer__Search-Bar'
+          >
+            <FormControl
+              type='text'
+              placeholder='Search'
+              value={searchInput}
+              onChange={(input) => setSearchInput(input.value)}
+            ></FormControl>
+          </FormGroup>
+          <FormGroup controlId='filterPropertyType'>
+            <Dropdown
+              placeholder='Property Types'
+              value={filterPropertyType.label}
+              options={[
+                {
+                  label: "All",
+                  value: "All",
+                },
+                {
+                  label: "Detached",
+                  value: "Detached",
+                },
+                {
+                  label: "Semi-Detached",
+                  value: "Semi-Detached",
+                },
+                {
+                  label: "Townhome",
+                  value: "Townhome",
+                },
+                {
+                  label: "Condo",
+                  value: "Condo",
+                },
+                {
+                  label: "Multi-family",
+                  value: "Multi-family",
+                },
+              ]}
+              onChange={updateFilterPropertyType}
+            />
+          </FormGroup>
+          <FormGroup controlId='filterBedrooms'>
+            <Dropdown
+              placeholder='Bedrooms'
+              value={filterBedrooms.label}
+              options={[
+                {
+                  label: "Any",
+                  value: 0,
+                },
+                {
+                  label: "2+",
+                  value: 2,
+                },
+                {
+                  label: "3+",
+                  value: 3,
+                },
+                {
+                  label: "4+",
+                  value: 4,
+                },
+              ]}
+              onChange={updateFilterBedrooms}
+            />
+          </FormGroup>
+          <FormGroup controlId='filterBathrooms'>
+            <Dropdown
+              placeholder='Bathrooms'
+              value={filterBathrooms.label}
+              options={[
+                {
+                  label: "Any",
+                  value: 0,
+                },
+                {
+                  label: "2+",
+                  value: 2,
+                },
+                {
+                  label: "3+",
+                  value: 3,
+                },
+                {
+                  label: "4+",
+                  value: 4,
+                },
+              ]}
+              onChange={updateFilterBathrooms}
+            />
+          </FormGroup>
+          <FormGroup controlId='filterSort'>
+            <Dropdown
+              placeholder='Sort By'
+              value={filterSort.label}
+              options={[
+                {
+                  label: "Newest",
+                  value: "Newest",
+                },
+                {
+                  label: "Oldest",
+                  value: "Oldest",
+                },
+                {
+                  label: "Price High-Low",
+                  value: "Price High-Low",
+                },
+                {
+                  label: "Price Low-High",
+                  value: "Price Low-High",
+                },
+              ]}
+              onChange={updateFilterSort}
+            />
+          </FormGroup>
         </div>
       </div>
-      <div className='All-Properties container'>
-        {!isLoading ? (
-          <Row>
-            <Col xs={6}>
-              <Row className='Filters'>
-                <Col xs={3}>
-                  <FormGroup controlId='filterPropertyType'>
-                    <br />
-                    <FormControl
-                      type='text'
-                      placeholder='Search'
-                      onChange={(e) => setFilterText(e.target.value)}
-                    ></FormControl>
-                    <br />
-                    <br />
-                  </FormGroup>
-                </Col>
-                <Col xs={1}></Col>
-                <Col xs={2}>
-                  <FormGroup controlId='filterPropertyType'>
-                    <br />
-                    <Dropdown
-                      placeholder='Property Types'
-                      value={filterPropertyType}
-                      options={[
-                        {
-                          label: "Detached",
-                          value: "Detached",
-                        },
-                        {
-                          label: "Semi-Detached",
-                          value: "Semi-Detached",
-                        },
-                        {
-                          label: "Townhome",
-                          value: "Townhome",
-                        },
-                        {
-                          label: "Condo",
-                          value: "Condo",
-                        },
-                        {
-                          label: "Multi-family",
-                          value: "Multi-family",
-                        },
-                      ]}
-                      onChange={updateFilterPropertyType}
-                    />
-                    <br />
-                    <br />
-                  </FormGroup>
-                </Col>
-                <Col xs={2}>
-                  <FormGroup controlId='filterBedrooms'>
-                    <br />
-                    <Dropdown
-                      placeholder='Bedrooms'
-                      value={filterBedrooms}
-                      options={[
-                        {
-                          label: "Any",
-                          value: 0,
-                        },
-                        {
-                          label: "2+",
-                          value: 2,
-                        },
-                        {
-                          label: "3+",
-                          value: 3,
-                        },
-                        {
-                          label: "4+",
-                          value: 4,
-                        },
-                      ]}
-                      onChange={updateFilterBedrooms}
-                    />
-                    <br />
-                    <br />
-                  </FormGroup>
-                </Col>
-                <Col xs={2}>
-                  <FormGroup controlId='filterBathrooms'>
-                    <br />
-                    <Dropdown
-                      placeholder='Bathrooms'
-                      value={filterBathrooms}
-                      options={[
-                        {
-                          label: "Any",
-                          value: 0,
-                        },
-                        {
-                          label: "2+",
-                          value: 2,
-                        },
-                        {
-                          label: "3+",
-                          value: 3,
-                        },
-                        {
-                          label: "4+",
-                          value: 4,
-                        },
-                      ]}
-                      onChange={updateFilterBathrooms}
-                    />
-                    <br />
-                    <br />
-                  </FormGroup>
-                </Col>
-                <Col xs={2}>
-                  <FormGroup controlId='filterSort'>
-                    <br />
-                    <Dropdown
-                      placeholder='Sort By'
-                      value={filterSort}
-                      options={[
-                        {
-                          label: "Newest",
-                          value: "Newest",
-                        },
-                        {
-                          label: "Oldest",
-                          value: "Oldest",
-                        },
-                        {
-                          label: "Price High-Low",
-                          value: "Price High-Low",
-                        },
-                        {
-                          label: "Price Low-High",
-                          value: "Price Low-High",
-                        },
-                      ]}
-                      onChange={updateFilterSort}
-                    />
-                    <br />
-                    <br />
-                  </FormGroup>
-                </Col>
-              </Row>
-
-              {searchProperties.map((property, i) => (
-                <Col key={i} sm={4}>
-                  <a href={`/properties/${property.propertyId}`}>
-                    <div className='Property'>
-                      <div
-                        style={{
-                          backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
-                          backgroundSize: "cover",
-                          height: "200px",
-                          borderRadius: "5px",
-                          marginBottom: "5px",
-                        }}
-                        className='propertyImage'
-                      ></div>
-                      <div className='Property-Title'>
-                        <p>
-                          {property.title.length > 45
-                            ? property.title.slice(0, 45) + " ..."
-                            : property.title}
+      {!isLoading ? (
+        <div className='SearchProperties'>
+          <div className='SearchProperties__Results'>
+            <p className='SearchProperties__Results-Found'>
+              {searchProperties.length} Properties found
+            </p>
+            {searchProperties.length > 0 ? (
+              <Fragment>
+                <h2>Properties in Markham</h2>
+                {searchProperties.map((property, index) => (
+                  <div
+                    key={("Property", index)}
+                    className='SearchPropertiesCard'
+                  >
+                    <a
+                      href={`/properties/${property.propertyId}`}
+                      className='SearchPropertiesCard__Image-Container'
+                    >
+                      <img
+                        alt={`${property.address} - Focus Property`}
+                        src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image}`}
+                      />
+                    </a>
+                    <div className='SearchPropertiesCard__Details'>
+                      <h3 className='SearchPropertiesCard__Title'>
+                        {property.title.length > 45
+                          ? property.title.slice(0, 45) + " ..."
+                          : property.title}
+                      </h3>
+                      <div className='SearchPropertiesCard__Address'>
+                        <img src={mapPinIcon} alt='Map Pin Icon' />
+                        {/* <p>{property.address}</p> */}
+                        <p className='lightText'>
+                          1025 Sesame Street, Aurora ON
                         </p>
                       </div>
-
-                      <div className='Price'>
-                        <p>$ {property.price}</p>
+                      <div className='SearchProperties__Row-Highlights'>
+                        {property.bedroom && (
+                          <div>{property.bedroom} Bedrooms</div>
+                        )}
+                        {property.bathroom && (
+                          <div>{property.bathroom} Bathrooms</div>
+                        )}
+                        {property.propertType && (
+                          <div>{property.propertyType}</div>
+                        )}
                       </div>
-
-                      <Row className='Row-Highlights'>
-                        <Col xs={3} className='Property-Highlights'>
-                          <p> {property.bedroom} Bedrooms</p>
-                        </Col>
-                        <Col xs={3} className='Property-Highlights'>
-                          <p> {property.bathroom} Bathrooms</p>
-                        </Col>
-                        <Col xs={3} className='Property-Highlights'>
-                          <p> {property.propertyType} </p>
-                        </Col>
-                        <Col xs={3} className='Property-Highlights'>
-                          <p> {property.city} </p>
-                        </Col>
-                      </Row>
+                      <div className='SearchProperties__Row-Pricing'>
+                        <div className='SearchProperties__Row-Pricing-Item'>
+                          <p>Asking</p>
+                          <p>$500,000</p>
+                        </div>
+                        <div className='SearchProperties__Row-Pricing-Item'>
+                          <p>Nearby</p>
+                          <p>$620,000</p>
+                        </div>
+                        <div className='SearchProperties__Row-Pricing-Item SearchProperties__Row-Pricing-Item--Profit'>
+                          <p>Est. Profit</p>
+                          <p>$120,000</p>
+                        </div>
+                      </div>
                     </div>
-                  </a>
-                  <br />
-                  <br />
-                </Col>
-              ))}
-            </Col>
+                  </div>
+                ))}
+              </Fragment>
+            ) : (
+              <Fragment>
+                <h2>No Properties Found</h2>
+                <p>Search again or adjust filter options</p>
+              </Fragment>
+            )}
+          </div>
 
-            <Col xs={6}>
-              <SearchPropertiesMap properties={properties} />
-            </Col>
-          </Row>
-        ) : (
-          <Loading />
-        )}
-      </div>
+          <div className='SearchProperties__MapContainer'>
+            <PropertiesMap properties={properties} />
+          </div>
+        </div>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }

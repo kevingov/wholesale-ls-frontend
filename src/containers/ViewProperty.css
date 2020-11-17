@@ -129,12 +129,11 @@ p {
   overflow: hidden;
 }
 
-.ViewPropertyCard__Image-Container img {
-  max-height: 340px;
-  min-width: 100%;
+.ViewPropertyCard__Image-Container #slider {
+  height: 340px;
+  width: 100%;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  object-fit: cover;
 }
 
 .ViewPropertyCard__Image-Highlight {
@@ -145,6 +144,7 @@ p {
   border-radius: 3px;
   font-weight: 600;
   font-size: 17px;
+  z-index: 1;
   background-color: #ffffff;
 }
 
