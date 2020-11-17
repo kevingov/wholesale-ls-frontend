@@ -7,6 +7,8 @@ import MapGL, {
 } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import config from "../config";
+import mapPinIcon from "../assets/map-pin-icon.png";
 
 export const SearchPropertiesMap = ({ properties }) => {
   const geocoderContainerRef = useRef();
@@ -15,8 +17,8 @@ export const SearchPropertiesMap = ({ properties }) => {
   const [viewport, setViewport] = useState({
     width: "100%",
     height: "100%",
-    latitude: 45.4215,
-    longitude: -75.6972,
+    latitude: 43.6532,
+    longitude: -79.3832,
     zoom: 8,
     searchResultLayer: null,
   });
@@ -102,7 +104,52 @@ export const SearchPropertiesMap = ({ properties }) => {
             longitude={parseFloat(selectedProperties.longitude)}
             onClose={closePopup}
           >
-            <p>HotSpot Information</p>
+            <div className='SearchPropertiesCard'>
+                <a
+                  href={`/properties/${selectedProperties.propertyId}`}
+                  className='SearchPropertiesCard__Image-Container'
+                >
+                  <img
+                    alt={`${selectedProperties.address} - Focus Property`}
+                    src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${selectedProperties.image}`}
+                  />
+                </a>
+                <div className='SearchPropertiesCard__Details'>
+                  <h3 className='SearchPropertiesCard__Title'>
+                    {selectedProperties.title.length > 45
+                      ? selectedProperties.title.slice(0, 45) + " ..."
+                      : selectedProperties.title}
+                  </h3>
+                  <div className='SearchPropertiesCard__Address'>
+                    <img src={mapPinIcon} alt='Map Pin Icon' />
+                    {/* <p>{property.address}</p> */}
+                    <p className='lightText'>1025 Sesame Street, Aurora ON</p>
+                  </div>
+                  <div className='SearchProperties__Row-Highlights'>
+                    {selectedProperties.bedroom && <div>{selectedProperties.bedroom} Bedrooms</div>}
+                    {selectedProperties.bathroom && (
+                      <div>{selectedProperties.bathroom} Bathrooms</div>
+                    )}
+                    {selectedProperties.propertType && <div>{selectedProperties.propertyType}</div>}
+                  </div>
+                  <div className='SearchProperties__Row-Pricing'>
+                    <div className='SearchProperties__Row-Pricing-Item'>
+                      <p>Asking</p>
+                      <p>$500,000</p>
+                    </div>
+                    <div className='SearchProperties__Row-Pricing-Item'>
+                      <p>Nearby</p>
+                      <p>$620,000</p>
+                    </div>
+                    <div className='SearchProperties__Row-Pricing-Item SearchProperties__Row-Pricing-Item--Profit'>
+                      <p>Est. Profit</p>
+                      <p>$120,000</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
           </Popup>
         ) : null}
       </MapGL>

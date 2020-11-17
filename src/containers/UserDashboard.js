@@ -2,6 +2,8 @@ import { Row, Col, Breadcrumb } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import Loading from "./Loading";
 import config from "../config";
+import mapPinIcon from "../assets/map-pin-icon.png";
+import "./SearchProperties.css";
 
 
 import { API } from "aws-amplify";
@@ -46,59 +48,66 @@ export default function UserDashboard () {
                 </div>
             <div className="All-Properties container">
             {!isLoading ? (
-                <Row>
-                    <div> {Object.keys(properties).length} Search Results</div>
-                    <div>My Saved Properties</div>
+                
+                 <div className='SearchProperties'>
+                    <div className='SearchProperties__Results'>
+                        <p className='SearchProperties__Results-Found'>
+                        {Object.keys(properties).length} Properties found
+                        </p>
+                        <h1>Properties in Markham</h1>
                 {properties 
                     .map((property, i) => (
                     <Col key={i} sm={4}>
-                    <a href={`/properties/${property.propertyId}`}>
-                        <div className="Property">
-                        <div
-                            style={{
-                            backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
-                            backgroundSize: "cover",
-                            height: "200px",
-                            borderRadius: "5px",
-                            marginBottom: "5px",
-                            }}
-                            className="propertyImage"
-                        ></div>
-                        <div className="Property-Title">
-                            <p>
-                                {property.title.length > 45
-                                ? property.title.slice(0, 45) + " ..."
-                                : property.title}
-                            </p>
-                        </div>
-                        
-                            <div className="Price">
-                            <p>$ {property.price}</p>
-                            </div>
-                        
-                        
-                        <Row className="Row-Highlights">
-                            <Col xs={3} className="Property-Highlights">
-                            <p> {property.bedroom} Bedrooms</p>
-                            </Col>
-                            <Col xs={3} className="Property-Highlights">
-                            <p> {property.bathroom} Bathrooms</p>
-                            </Col>
-                            <Col xs={3} className="Property-Highlights">
-                            <p> {property.propertyType} </p>
-                            </Col>
-                            <Col xs={3} className="Property-Highlights">
-                            <p> {property.city} </p>
-                            </Col>
-                        </Row>
-                        </div>
-                        
-                    </a>
+                    <div key={("Property", i)} className='SearchPropertiesCard'>
+                <a
+                  href={`/properties/${property.propertyId}`}
+                  className='SearchPropertiesCard__Image-Container'
+                >
+                  <img
+                    alt={`${property.address} - Focus Property`}
+                    src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image}`}
+                  />
+                </a>
+                <div className='SearchPropertiesCard__Details'>
+                  <h3 className='SearchPropertiesCard__Title'>
+                    {property.title.length > 45
+                      ? property.title.slice(0, 45) + " ..."
+                      : property.title}
+                  </h3>
+                  <div className='SearchPropertiesCard__Address'>
+                    <img src={mapPinIcon} alt='Map Pin Icon' />
+                    {/* <p>{property.address}</p> */}
+                    <p className='lightText'>1025 Sesame Street, Aurora ON</p>
+                  </div>
+                  <div className='SearchProperties__Row-Highlights'>
+                    {property.bedroom && <div>{property.bedroom} Bedrooms</div>}
+                    {property.bathroom && (
+                      <div>{property.bathroom} Bathrooms</div>
+                    )}
+                    {property.propertType && <div>{property.propertyType}</div>}
+                  </div>
+                  <div className='SearchProperties__Row-Pricing'>
+                    <div className='SearchProperties__Row-Pricing-Item'>
+                      <p>Asking</p>
+                      <p>$500,000</p>
+                    </div>
+                    <div className='SearchProperties__Row-Pricing-Item'>
+                      <p>Nearby</p>
+                      <p>$620,000</p>
+                    </div>
+                    <div className='SearchProperties__Row-Pricing-Item SearchProperties__Row-Pricing-Item--Profit'>
+                      <p>Est. Profit</p>
+                      <p>$120,000</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
                     <br />
                     <br />
             </Col>
             ))}
-                </Row>
+                </div>
+                </div>
             ) : (
                 <Loading />
             )}
