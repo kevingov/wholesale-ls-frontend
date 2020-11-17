@@ -62,8 +62,8 @@ export const SearchPropertiesMap = ({ properties }) => {
               onClick={() => {
                 setSelectedProperties(spot);
               }}
-              src='https://wholesale-ls-marketing.s3.amazonaws.com/Icons/bed.svg'
-              alt=''
+              src={mapPinIcon} 
+              alt='Map Pin Icon'
             />
           </Marker>
         );

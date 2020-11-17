@@ -19,6 +19,7 @@ export default function UserDashboard () {
             try {
                 const properties = await loadProperties();
                 setProperties(properties);
+                console.log(properties);
             } catch (e) {
                 alert(e);
             }
