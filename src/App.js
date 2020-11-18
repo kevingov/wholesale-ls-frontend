@@ -77,6 +77,23 @@ class App extends Component {
               </a>
               {this.state.isAuthenticated ? (
                 <div className='links'>
+                  <Col xs={1}>
+                    <a href='/properties'>
+                      Search
+                    </a>
+                  </Col>
+                  <Col xs={1}>
+                    <a href='/dashboard'>
+                      My Properties
+                    </a>
+                  </Col>
+                  <Col xs={1}>
+                    <a href='/messages'>
+                      Messages
+                    </a>
+                  </Col>
+                  <Col xs={4}>
+                  </Col>
                   <Col xs={3}>
                     <a href='/properties/new' className='secondary-btn'>
                       + New Property

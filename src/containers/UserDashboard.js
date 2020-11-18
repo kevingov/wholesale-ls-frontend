@@ -1,108 +1,113 @@
-import { Row, Col, Breadcrumb } from "react-bootstrap";
+import { Col, Breadcrumb } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import Loading from "./Loading";
 import config from "../config";
-
+import mapPinIcon from "../assets/map-pin-icon.png";
+import "./UserDashboard.css";
+import { numberWithCommas } from "../helper";
 
 import { API } from "aws-amplify";
 
+export default function UserDashboard() {
+  const [properties, setProperties] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-export default function UserDashboard () {
-    const [properties, setProperties] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    async function onLoad() {
+      try {
+        const properties = await loadProperties();
+        setProperties(properties);
+        console.log(properties);
+      } catch (e) {
+        alert(e);
+      }
 
-
-    useEffect(() => {
-        async function onLoad() {
-            try {
-                const properties = await loadProperties();
-                setProperties(properties);
-            } catch (e) {
-                alert(e);
-            }
-
-            setIsLoading(false);
-        }
-
-        onLoad();
-    }, []);
-
-    function loadProperties() {
-        return API.get("properties","/userproperties");
+      setIsLoading(false);
     }
-    
-    
 
-   
+    onLoad();
+  }, []);
 
-        return (
-            <div className="Index">
-                <div className="Breadcrumbs">
-                    <div className="Breadcrumbs-items container">
-                        <Breadcrumb>
-                            <Breadcrumb.Item active>Properties</Breadcrumb.Item>
-                        </Breadcrumb>
+  function loadProperties() {
+    return API.get("properties", "/allproperties");
+  }
+  console.log(properties);
+  return (
+    <div className='Index'>
+      <div className='Breadcrumbs'>
+        <div className='Breadcrumbs-items container'>
+          <Breadcrumb>
+            <Breadcrumb.Item active>Properties</Breadcrumb.Item>
+          </Breadcrumb>
+        </div>
+      </div>
+      <div className='container'>
+        {!isLoading ? (
+          <div className='Dashboard'>
+            <p className='Dashboard__Results-Found'>
+              {Object.keys(properties).length} Properties found
+            </p>
+            <h1>My Saved Properties</h1>
+            {properties.map((property, i) => (
+              <Col key={i} md={4}>
+                <div
+                  key={("Property", i)}
+                  className='PropertiesCard PropertiesCard--Dashboard'
+                >
+                  <a
+                    href={`/properties/${property.propertyId}`}
+                    className='PropertiesCard__Image-Container PropertiesCard__Image-Container--Dashboard'
+                  >
+                    <img
+                      alt={`${property.address} - Focus Property`}
+                      src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image}`}
+                    />
+                  </a>
+                  <div className='PropertiesCard__Details PropertiesCard__Details--Dashboard'>
+                    <h3 className='PropertiesCard__Title'>
+                      {property.title.length > 75
+                        ? property.title.slice(0, 75) + " ..."
+                        : property.title}
+                    </h3>
+                    <div className='PropertiesCard__Address'>
+                      <img src={mapPinIcon} alt='Map Pin Icon' />
+                      {/* <p>{property.address}</p> */}
+                      <p className='lightText'>1025 Sesame Street, Aurora ON</p>
                     </div>
+                    <div className='PropertiesCard__Row-Highlights'>
+                      {property.bedroom && (
+                        <div>{property.bedroom} Bedrooms</div>
+                      )}
+                      {property.bathroom && (
+                        <div>{property.bathroom} Bathrooms</div>
+                      )}
+                      {property.propertType && (
+                        <div>{property.propertyType}</div>
+                      )}
+                    </div>
+                    <div className='PropertiesCard__Row-Pricing'>
+                      <div className='PropertiesCard__Row-Pricing-Item'>
+                        <p>Asking</p>
+                        <p>${numberWithCommas(property.price)}</p>
+                      </div>
+                      <div className='PropertiesCard__Row-Pricing-Item'>
+                        <p>Nearby</p>
+                        <p>${numberWithCommas(property.nearbyPrice)}</p>
+                      </div>
+                      <div className='PropertiesCard__Row-Pricing-Item PropertiesCard__Row-Pricing-Item--Profit'>
+                        <p>Est. Profit</p>
+                        <p>$120,000</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-            <div className="All-Properties container">
-            {!isLoading ? (
-                <Row>
-                    <div> {Object.keys(properties).length} Search Results</div>
-                    <div>My Saved Properties</div>
-                {properties 
-                    .map((property, i) => (
-                    <Col key={i} sm={4}>
-                    <a href={`/properties/${property.propertyId}`}>
-                        <div className="Property">
-                        <div
-                            style={{
-                            backgroundImage: `url(https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image})`,
-                            backgroundSize: "cover",
-                            height: "200px",
-                            borderRadius: "5px",
-                            marginBottom: "5px",
-                            }}
-                            className="propertyImage"
-                        ></div>
-                        <div className="Property-Title">
-                            <p>
-                                {property.title.length > 45
-                                ? property.title.slice(0, 45) + " ..."
-                                : property.title}
-                            </p>
-                        </div>
-                        
-                            <div className="Price">
-                            <p>$ {property.price}</p>
-                            </div>
-                        
-                        
-                        <Row className="Row-Highlights">
-                            <Col xs={3} className="Property-Highlights">
-                            <p> {property.bedroom} Bedrooms</p>
-                            </Col>
-                            <Col xs={3} className="Property-Highlights">
-                            <p> {property.bathroom} Bathrooms</p>
-                            </Col>
-                            <Col xs={3} className="Property-Highlights">
-                            <p> {property.propertyType} </p>
-                            </Col>
-                            <Col xs={3} className="Property-Highlights">
-                            <p> {property.city} </p>
-                            </Col>
-                        </Row>
-                        </div>
-                        
-                    </a>
-                    <br />
-                    <br />
-            </Col>
+              </Col>
             ))}
-                </Row>
-            ) : (
-                <Loading />
-            )}
-            </div>
-            </div>
-        );
+          </div>
+        ) : (
+          <Loading />
+        )}
+      </div>
+    </div>
+  );
 }

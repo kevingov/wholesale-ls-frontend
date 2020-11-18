@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { css, jsx } from "@emotion/react";
 import Slide from "./Slide";
 import SliderContent from "./SliderContent";
@@ -23,9 +23,8 @@ const Slider = (props) => {
   useEffect(() => {
     if (sliderRef.current) {
       setSliderWidth(sliderRef.current.offsetWidth);
-      console.log(sliderRef.current.offsetWidth);
     }
-  }, [sliderRef.current]);
+  }, []);
 
   const nextSlide = () => {
     if (activeIndex === props.slides.length - 1) {

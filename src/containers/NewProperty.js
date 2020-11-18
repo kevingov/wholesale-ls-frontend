@@ -45,6 +45,8 @@ export default function NewProperty(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState(false);
   const [price, setPrice] = useState("");
+  const [nearbyPrice, setNearbyPrice] = useState("");
+  const [arvPrice, setArvPrice] = useState("");
 
   function validateForm() {
     return title.length > 5;
@@ -80,6 +82,8 @@ export default function NewProperty(props) {
         latitude,
         image,
         price,
+        nearbyPrice,
+        arvPrice,
       });
       props.history.push(`/properties/${property.propertyId}`);
     } catch (e) {
@@ -189,6 +193,28 @@ export default function NewProperty(props) {
                             onChange={(e) => setPrice(e.target.value)}
                           />
                         </FormGroup>
+                      </Col>
+                      <Col xs={6}>
+                        <FormGroup controlId="nearbyPrice">
+                          <ControlLabel>Nearby Price</ControlLabel>
+                          <FormControl
+                            value={nearbyPrice}
+                            type="text"
+                            onChange={(e) => setNearbyPrice(e.target.value)}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs={6}>
+                          <FormGroup controlId="arvPrice">
+                            <ControlLabel>After Repair Value Price</ControlLabel>
+                            <FormControl
+                              value={arvPrice}
+                              type="text"
+                              onChange={(e) => setArvPrice(e.target.value)}
+                            />
+                          </FormGroup>
                       </Col>
                     </Row>
                     <FormGroup controlId="address">

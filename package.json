@@ -30,6 +30,8 @@
     "reactstrap": "^8.5.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "react-stickynode": "^3.0.3",
+    "reactstrap": "^8.5.1",
     "socket.io": "^3.0.1",
     "socket.io-client": "^3.0.1"
   },

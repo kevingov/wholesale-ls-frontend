@@ -7,6 +7,8 @@ import MapGL, {
 } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import mapPinIcon from "../assets/map-pin-icon.png";
+import PropertiesCard from "../components/PropertiesCard";
 
 export const PropertiesMap = ({ properties }) => {
   const geocoderContainerRef = useRef();
@@ -15,8 +17,8 @@ export const PropertiesMap = ({ properties }) => {
   const [viewport, setViewport] = useState({
     width: "100%",
     height: "100%",
-    latitude: 45.4215,
-    longitude: -75.6972,
+    latitude: 43.6532,
+    longitude: -79.3832,
     zoom: 8,
     searchResultLayer: null,
   });
@@ -60,8 +62,8 @@ export const PropertiesMap = ({ properties }) => {
               onClick={() => {
                 setSelectedProperties(spot);
               }}
-              src='https://wholesale-ls-marketing.s3.amazonaws.com/Icons/bed.svg'
-              alt=''
+              src={mapPinIcon}
+              alt='Map Pin Icon'
             />
           </Marker>
         );
@@ -102,7 +104,7 @@ export const PropertiesMap = ({ properties }) => {
             longitude={parseFloat(selectedProperties.longitude)}
             onClose={closePopup}
           >
-            <p>HotSpot Information</p>
+            <PropertiesCard property={selectedProperties} />
           </Popup>
         ) : null}
       </MapGL>

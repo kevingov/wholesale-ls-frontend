@@ -4,10 +4,9 @@ import React, { useEffect, useState, Fragment } from "react";
 import { API } from "aws-amplify";
 
 import Loading from "./Loading";
-import config from "../config";
 import "./Properties.css";
-import mapPinIcon from "../assets/map-pin-icon.png";
 import PropertiesMap from "../components/PropertiesMap";
+import PropertiesCard from "../components/PropertiesCard";
 
 export default function Properties(props) {
   const [properties, setProperties] = useState([]);
@@ -64,7 +63,7 @@ export default function Properties(props) {
     let isPropertyType =
       filterPropertyType.value === "All"
         ? true
-        : results.propertyType == filterPropertyType.value;
+        : results.propertyType === filterPropertyType.value;
 
     return (
       isPropertyType &&
@@ -109,8 +108,8 @@ export default function Properties(props) {
 
   return (
     <div className='Index'>
-      <div className='SearchProperties__Filter'>
-        <div className='SearchProperties__Filter-Container container'>
+      <div className='Properties__Filter'>
+        <div className='Properties__Filter-Container container'>
           <FormGroup
             controlId='filterPropertyType'
             className='FilterContainer__Search-Bar'
@@ -233,68 +232,16 @@ export default function Properties(props) {
         </div>
       </div>
       {!isLoading ? (
-        <div className='SearchProperties'>
-          <div className='SearchProperties__Results'>
-            <p className='SearchProperties__Results-Found'>
+        <div className='Properties'>
+          <div className='Properties__Results'>
+            <p className='Properties__Results-Found'>
               {searchProperties.length} Properties found
             </p>
             {searchProperties.length > 0 ? (
               <Fragment>
-                <h2>Properties in Markham</h2>
+                <h2>Properties in Toronto</h2>
                 {searchProperties.map((property, index) => (
-                  <div
-                    key={("Property", index)}
-                    className='SearchPropertiesCard'
-                  >
-                    <a
-                      href={`/properties/${property.propertyId}`}
-                      className='SearchPropertiesCard__Image-Container'
-                    >
-                      <img
-                        alt={`${property.address} - Focus Property`}
-                        src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image}`}
-                      />
-                    </a>
-                    <div className='SearchPropertiesCard__Details'>
-                      <h3 className='SearchPropertiesCard__Title'>
-                        {property.title.length > 45
-                          ? property.title.slice(0, 45) + " ..."
-                          : property.title}
-                      </h3>
-                      <div className='SearchPropertiesCard__Address'>
-                        <img src={mapPinIcon} alt='Map Pin Icon' />
-                        {/* <p>{property.address}</p> */}
-                        <p className='lightText'>
-                          1025 Sesame Street, Aurora ON
-                        </p>
-                      </div>
-                      <div className='SearchProperties__Row-Highlights'>
-                        {property.bedroom && (
-                          <div>{property.bedroom} Bedrooms</div>
-                        )}
-                        {property.bathroom && (
-                          <div>{property.bathroom} Bathrooms</div>
-                        )}
-                        {property.propertType && (
-                          <div>{property.propertyType}</div>
-                        )}
-                      </div>
-                      <div className='SearchProperties__Row-Pricing'>
-                        <div className='SearchProperties__Row-Pricing-Item'>
-                          <p>Asking</p>
-                          <p>$500,000</p>
-                        </div>
-                        <div className='SearchProperties__Row-Pricing-Item'>
-                          <p>Nearby</p>
-                          <p>$620,000</p>
-                        </div>
-                        <div className='SearchProperties__Row-Pricing-Item SearchProperties__Row-Pricing-Item--Profit'>
-                          <p>Est. Profit</p>
-                          <p>$120,000</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <PropertiesCard property={property} index={index} />
                 ))}
               </Fragment>
             ) : (
@@ -305,7 +252,7 @@ export default function Properties(props) {
             )}
           </div>
 
-          <div className='SearchProperties__MapContainer'>
+          <div className='Properties__MapContainer'>
             <PropertiesMap properties={properties} />
           </div>
         </div>

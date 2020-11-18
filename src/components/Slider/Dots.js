@@ -4,11 +4,10 @@ import { css, jsx } from "@emotion/react";
 const Dot = ({ active }) => (
   <span
     css={css`
-      padding: 10px;
+      padding: 6px;
       margin-right: 5px;
-      cursor: pointer;
       border-radius: 50%;
-      background: ${active ? "black" : "white"};
+      background: ${active ? "gray" : "white"};
     `}
   />
 );

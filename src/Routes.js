@@ -65,7 +65,7 @@ export default ({ childProps }) => (
       component={ViewProperty}
       props={childProps}
     />
-    <AuthenticatedRoute
+    <AppliedRoute
       path='/dashboard'
       exact
       component={UserDashboard}

@@ -1,0 +1,101 @@
+.PropertiesCard {
+  margin: 27px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.PropertiesCard__Title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 0;
+}
+
+.PropertiesCard__Image-Container {
+  height: 180px;
+  width: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.PropertiesCard__Image-Container > img {
+  border-radius: 5px;
+  height: auto;
+  width: 100%;
+}
+
+.PropertiesCard__Details {
+  height: 180px;
+  width: 320px;
+  padding-left: 12px;
+}
+
+.PropertiesCard__Address {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 12px;
+}
+
+.PropertiesCard__Address > img {
+  height: 13px;
+  margin-right: 8px;
+}
+
+.PropertiesCard__Address > p {
+  font-size: 14px;
+}
+
+.PropertiesCard__Row-Highlights {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 14px;
+}
+
+.PropertiesCard__Row-Highlights > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 9px;
+  border-radius: 4px;
+  padding: 6px 12px;
+  background-color: #eff3fa;
+  font-size: 12px;
+  font-weight: 600;
+  color: #27313e;
+}
+
+.PropertiesCard__Row-Pricing {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 12px;
+}
+
+.PropertiesCard__Row-Pricing-Item {
+  margin-right: 9px;
+  border-radius: 2px;
+  padding: 8px 14px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #27313e;
+  background-color: #f1f1f1;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.PropertiesCard__Row-Pricing-Item p:first-child {
+  color: #7f8fa4;
+}
+
+.PropertiesCard__Row-Pricing-Item--Profit {
+  background-color: #ffe8d9;
+}
+
+.PropertiesCard__Row-Pricing-Item--Profit p:first-child {
+  color: #fe6500;
+}

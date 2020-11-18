@@ -16,7 +16,7 @@ export default function Home(props) {
             <Row>
               <div className='col-md-4'>
                 <h1>Real Estate Marketplace for Wholesale Properties</h1>
-                <Button variant='success' href='/searchproperties'>
+                <Button variant='success' href='/properties'>
                   Search Properties
                 </Button>
               </div>

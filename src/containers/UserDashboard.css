@@ -1,0 +1,47 @@
+/******* Dashboard *******/
+
+.Dashboard {
+  clear: both;
+  padding-bottom: 90px;
+  overflow: auto;
+}
+
+.Dashboard__Results-Found {
+  margin-top: 20px;
+  color: #7f8fa4;
+  font-size: 13px;
+}
+
+.Dashboard h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 35px;
+}
+
+.Dashboard > div {
+  padding-left: 0;
+}
+
+/******* Propertie Card - Dashboard *******/
+
+.PropertiesCard--Dashboard {
+  margin: 15px 0;
+  flex-direction: column;
+  border-radius: 5px;
+  box-shadow: 0 0 5px 0 rgba(230, 230, 230, 0.5);
+  background-color: #fff;
+  padding: 11px;
+  border-radius: 5px;
+}
+
+.PropertiesCard__Image-Container--Dashboard {
+  height: 210px;
+  width: 100%;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.PropertiesCard__Details--Dashboard {
+  width: 100%;
+  padding: 0;
+}
