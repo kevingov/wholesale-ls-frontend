@@ -18,6 +18,7 @@ import UserDashboard from "./containers/UserDashboard";
 import ViewProperty from "./containers/ViewProperty";
 import EditProfile from "./containers/EditProfile";
 import ViewProfile from "./containers/ViewProperty";
+import NewTestProperty from "./containers/NewTestProperty";
 
 export default ({ childProps }) => (
   <Switch>
@@ -89,6 +90,16 @@ export default ({ childProps }) => (
       component={ViewProfile}
       props={childProps}
     />
+
+  {/* testing multistep form */}
+
+  <AuthenticatedRoute
+      path='/test'
+      exact
+      component={NewTestProperty}
+      props={childProps}
+    />
+
     {/* Finally, catch all unmatched routes */}
     <Route component={NotFound} />
   </Switch>

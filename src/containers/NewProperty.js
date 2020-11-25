@@ -3,20 +3,9 @@ import "react-dropdown/style.css";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { API, Storage } from "aws-amplify";
-import {
-  Col,
-  ControlLabel,
-  FormControl,
-  FormGroup,
-  Row,
-  Breadcrumb,
-} from "react-bootstrap";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
+import { Col, Row, Breadcrumb, ControlLabel, FormControl, FormGroup, } from "react-bootstrap";
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 import React, { useState } from "react";
-
 import DatePicker from "react-datepicker";
 import Dropdown from "react-dropdown";
 import Loading from "./Loading";

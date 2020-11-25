@@ -34,13 +34,13 @@ export default function UserDashboard() {
   console.log(properties);
   return (
     <div className='Index'>
-      <div className='Breadcrumbs'>
+      {/* <div className='Breadcrumbs'>
         <div className='Breadcrumbs-items container'>
           <Breadcrumb>
             <Breadcrumb.Item active>Properties</Breadcrumb.Item>
           </Breadcrumb>
         </div>
-      </div>
+      </div> */}
       <div className='container'>
         {!isLoading ? (
           <div className='Dashboard'>
