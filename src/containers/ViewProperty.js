@@ -91,7 +91,7 @@ export default function ViewProperty(props) {
           <div className='ViewProperty__Wrapper'>
             {isLoading ? (
               <div>
-                {/* {propertyOwner ? (
+                {propertyOwner ? (
                   <div>
                     <a
                       href={`/properties/${property.propertyId}/edit`}
@@ -100,7 +100,7 @@ export default function ViewProperty(props) {
                       Edit Property
                     </a>
                   </div>
-                ) : null} */}
+                ) : null}
 
                 <div className='backLink'>
                   <img src={backArrowIcon} alt='Back Arrow Icon' />

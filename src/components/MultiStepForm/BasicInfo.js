@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row, Breadcrumb, ControlLabel, FormControl, FormGroup, } from "react-bootstrap";
+import { Col, Row, ControlLabel, FormControl, FormGroup, } from "react-bootstrap";
 import "./MultiForm.css";
 
 
@@ -11,17 +11,23 @@ const BasicInfo = ({ setForm, formData, navigation }) => {
 
     return (
         <div className="MultiForm container">
-            <Row xs={4}>
-            </Row>
-            <Row xs={4}>
-            </Row>
+          <div className="MultiForm-Title">
+            <h1>Basic Info</h1>
+            <h2>Please add a title and description</h2>
+          </div>
+          <Row>
+          <Col xs={2}>
+          </Col>
+
+          <Col xs={8}>
            <FormGroup controlId="title">
             <ControlLabel>Title</ControlLabel>
                 <FormControl
                     value={title}
                     type="text"
                     placeholder="Beautiful detached house in downtown London"
-                    onChange={(e) => setForm(e.target.value)}
+                    onChange={setForm}
+                    name="title"
                     />
             </FormGroup>
 
@@ -32,6 +38,7 @@ const BasicInfo = ({ setForm, formData, navigation }) => {
                     type="text"
                     placeholder="I.e. $30k under Market Value"
                     onChange={setForm}
+                    name="tagline"
                     />
             </FormGroup>
 
@@ -42,16 +49,26 @@ const BasicInfo = ({ setForm, formData, navigation }) => {
                     type="text"
                     placeholder="94 Armstrong St."
                     onChange={setForm}
+                    name="address"
                     />
             </FormGroup>
+          </Col>
 
-            <Row xs={4}>
-            </Row>
-            
+          <Col xs={2}>
+          </Col>
+
+          </Row>
+          <Col xs={9}>
+          </Col>
+          <Col xs={2}>
           <div>
-            <button onClick={next}>Next</button>
+            <button className='secondary-btn' onClick={next}>Next</button>
           </div>
+          </Col>
+          <Col xs={1}>
+          </Col>
         </div>
+        
       );
     };
     
