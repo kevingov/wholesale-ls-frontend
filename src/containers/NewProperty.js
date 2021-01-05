@@ -6,6 +6,10 @@ import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-au
 import { API, Storage } from "aws-amplify";
 import Loading from "./Loading";
 
+import "./NewProperty.css";
+import "react-dropdown/style.css";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 export default function MultiformTest2(props) {
     // const [form, setForm] = useState({

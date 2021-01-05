@@ -5,7 +5,6 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import EditProperty from "./containers/EditProperty";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
-import NewProperty from "./containers/OldNewProperty";
 import NotFound from "./containers/NotFound";
 import Privacy from "./containers/Privacy";
 import PrivacyPolicy from "./containers/PrivacyPolicy";
@@ -18,8 +17,7 @@ import UserDashboard from "./containers/UserDashboard";
 import ViewProperty from "./containers/ViewProperty";
 import EditProfile from "./containers/EditProfile";
 import ViewProfile from "./containers/ViewProperty";
-import NewTestProperty from "./containers/NewTestProperty";
-import MultiformTest2 from "./containers/MultiFormTest2";
+import MultiformTest2 from "./containers/NewProperty";
 import PropertyChat from "./containers/PropertyChat";
 
 export default ({ childProps }) => (
