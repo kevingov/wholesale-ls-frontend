@@ -5,7 +5,7 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import EditProperty from "./containers/EditProperty";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
-import NewProperty from "./containers/NewProperty";
+import NewProperty from "./containers/OldNewProperty";
 import NotFound from "./containers/NotFound";
 import Privacy from "./containers/Privacy";
 import PrivacyPolicy from "./containers/PrivacyPolicy";
@@ -19,6 +19,8 @@ import ViewProperty from "./containers/ViewProperty";
 import EditProfile from "./containers/EditProfile";
 import ViewProfile from "./containers/ViewProperty";
 import NewTestProperty from "./containers/NewTestProperty";
+import MultiformTest2 from "./containers/MultiFormTest2";
+import PropertyChat from "./containers/PropertyChat";
 
 export default ({ childProps }) => (
   <Switch>
@@ -45,7 +47,7 @@ export default ({ childProps }) => (
     <AuthenticatedRoute
       path='/properties/new'
       exact
-      component={NewProperty}
+      component={MultiformTest2}
       props={childProps}
     />
     <AuthenticatedRoute
@@ -90,13 +92,10 @@ export default ({ childProps }) => (
       component={ViewProfile}
       props={childProps}
     />
-
-  {/* testing multistep form */}
-
-  <AuthenticatedRoute
-      path='/test'
+    <AppliedRoute
+      path='/properties/:id/chat'
       exact
-      component={NewTestProperty}
+      component={PropertyChat}
       props={childProps}
     />
 

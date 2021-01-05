@@ -14,6 +14,7 @@ const Price = ({ setForm, formData, navigation }) => {
             <h1>Price and Dates</h1>
             <h2>Please add a title and description</h2>
           </div>
+          <Row>
           <Col xs={2}>
             </Col>
             <Col xs={8}>
@@ -58,10 +59,11 @@ const Price = ({ setForm, formData, navigation }) => {
                     <ControlLabel>Price</ControlLabel>
                         <FormControl
                             value={price}
-                            type="text"
+                            type="number"
                             placeholder="I.e. $30k under Market Value"
                             onChange={setForm}
                             name="price"
+                            pattern="[0-9]*"
                             />
                   </FormGroup>
                 </Col>
@@ -70,10 +72,11 @@ const Price = ({ setForm, formData, navigation }) => {
                     <ControlLabel>Nearby Price</ControlLabel>
                         <FormControl
                             value={nearbyPrice}
-                            type="text"
+                            type="number"
                             placeholder="94 Armstrong St."
                             onChange={setForm}
                             name="nearbyPrice"
+                            pattern="[0-9]*"
                             />
                   </FormGroup>
                 </Col>
@@ -82,10 +85,11 @@ const Price = ({ setForm, formData, navigation }) => {
                     <ControlLabel>After Repair Value Price</ControlLabel>
                         <FormControl
                             value={arvPrice}
-                            type="text"
+                            type="number"
                             placeholder="94 Armstrong St."
                             onChange={setForm}
                             name="arvPrice"
+                            pattern="[0-9]*"
                             />
                   </FormGroup>
                 </Col>
@@ -93,6 +97,7 @@ const Price = ({ setForm, formData, navigation }) => {
             </Col>
             <Col xs={2}>
             </Col>
+            </Row>
 
           <Col xs={9}>
           </Col>

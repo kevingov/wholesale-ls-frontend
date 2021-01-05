@@ -46,7 +46,7 @@ const PropertyDetail = ({ setForm, formData, navigation }) => {
                               value: "Multi-family",
                             },
                           ]}
-                          type="text"
+                          type="dropdown"
                           onChange={setForm}
                           name="propertyType"
                           />

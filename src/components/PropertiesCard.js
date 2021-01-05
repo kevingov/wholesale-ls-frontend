@@ -4,6 +4,8 @@ import config from "../config";
 import mapPinIcon from "../assets/map-pin-icon.png";
 import "./PropertiesCard.css";
 
+
+
 const PropertiesCard = ({ property, index }) => (
   <div key={index ? "Property " + index : ""} className='PropertiesCard'>
     <a
@@ -34,11 +36,11 @@ const PropertiesCard = ({ property, index }) => (
       <div className='PropertiesCard__Row-Pricing'>
         <div className='PropertiesCard__Row-Pricing-Item'>
           <p>Asking</p>
-          <p>$500,000</p>
+          <p>${property.price}</p>
         </div>
         <div className='PropertiesCard__Row-Pricing-Item'>
           <p>Nearby</p>
-          <p>$620,000</p>
+          <p>${property.nearbyPrice}</p>
         </div>
         <div className='PropertiesCard__Row-Pricing-Item PropertiesCard__Row-Pricing-Item--Profit'>
           <p>Est. Profit</p>

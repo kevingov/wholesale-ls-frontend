@@ -10,6 +10,7 @@ import { numberWithCommas } from "../helper";
 import backArrowIcon from "../assets/back-icon.png";
 import mapPinIcon from "../assets/map-pin-icon.png";
 import Slider from "../components/Slider";
+import PropertiesMap from "../components/PropertiesMap";
 
 const images = [
   "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
@@ -70,11 +71,12 @@ export default function ViewProperty(props) {
   }
 
   function sendEmail(info) {
-    console.log(info);
+    // console.log(info);
     return API.post("properties", "/propertyemail", {
       body: info,
     });
   }
+
 
   return (
     <div className='Index'>
@@ -99,7 +101,13 @@ export default function ViewProperty(props) {
                     >
                       Edit Property
                     </a>
+                    <br />
+                    <br />
+                    <br />
                   </div>
+
+                  
+
                 ) : null}
 
                 <div className='backLink'>
@@ -113,8 +121,7 @@ export default function ViewProperty(props) {
                   <h2>{property.title}</h2>
                   <div className='ViewProperty__Address'>
                     <img src={mapPinIcon} alt='Map Pin Icon' />
-                    {/* <p>{property.address}</p> */}
-                    <p>1025 Sesame Street, Aurora ON</p>
+                    <p>{property.address}</p>
                   </div>
                 </div>
 
@@ -157,16 +164,18 @@ export default function ViewProperty(props) {
                           {infoSent ? (
                             <p>info is sent</p>
                           ) : (
+                            <a href={`/properties/${property.propertyId}/chat`}>
                             <button
                               className='ViewPropertyCard__ContactButton secondary-btn'
-                              onClick={
-                                userEmail
-                                  ? () => sendPropertyEmail()
-                                  : () => setViewCreateAccountModal(true)
-                              }
+                              // onClick={
+                                // userEmail
+                                //   ? () => sendPropertyEmail()
+                                //   : () => setViewCreateAccountModal(true)
+                              // }
                             >
                               Contact
                             </button>
+                          </a>
                           )}
                         </div>
                         <hr className='ViewPropertyCard__Separator' />
@@ -175,15 +184,15 @@ export default function ViewProperty(props) {
                             <tbody>
                               <tr>
                                 <td>After Repair Value</td>
-                                <td>$650,000</td>
+                                <td>$ {numberWithCommas(property.arvPrice)}</td>
                               </tr>
                               <tr>
                                 <td>Asking Price</td>
-                                <td>$550,000</td>
+                                <td>$ {numberWithCommas(property.price)}</td>
                               </tr>
                               <tr>
-                                <td>Repair Price</td>
-                                <td>$50,000</td>
+                                <td>Estimated Cost of Repairs</td>
+                                <td>$0</td>
                               </tr>
                             </tbody>
                           </table>
@@ -193,9 +202,9 @@ export default function ViewProperty(props) {
                           <p className='midBold'>Estimated Profit</p>
                           <div className='ViewPropertyCard__EstimatedReturns'>
                             <div className='ViewPropertyCard__PercentageReturns'>
-                              18%
+                              {(((property.arvPrice - property.price)/property.price) * 100).toFixed(2) + '%'}
                             </div>
-                            <p className='midBold'>$100,000</p>
+                            <p className='midBold'>$ {(property.arvPrice - property.price).toLocaleString()}</p>
                           </div>
                         </div>
                       </div>
@@ -208,22 +217,7 @@ export default function ViewProperty(props) {
 
                       {/* <p>{property.description}</p> */}
                       <p className='lightText'>
-                        4 bedrooms 1.5 bathrooms There is also a toilet in the
-                        basement, however there isn’t a sink. That toilet is not
-                        considered in the 1.5 bathrooms Built in 1910 Above
-                        grade: 1448 sq ft Basement: 724 sq ft Low ceiling height
-                        Flooring is hardwood and tile Vinyl windows
-                        (15-years-old as per seller) Gas furnace (3-years-old)
-                        Central air conditioning PEX plumbing for water supply
-                        and ABS drains Wiring appears updated Closed in front
-                        porch (could be redone to give a much better curb
-                        appeal) Also includes side entrance Nice brick on front
-                        of home On municipal services 3 parking spaces Lot size:
-                        25 ft x 104 ft Zoning appears to allow for many uses
-                        (Buyer to verify) PROPERTY NEEDS Cosmetic updating
-                        required in kitchen and bathrooms Roof has a small leak
-                        concentrated in the master bedroom Empty fibre glass oil
-                        tank is still in the basement and should be removed
+                        {property.description}
                       </p>
 
                       <table className='ViewProperty__DetailsTable'>
@@ -237,51 +231,46 @@ export default function ViewProperty(props) {
                             <td>{property.bathroom}</td>
                           </tr>
                           <tr>
-                            <td>Areas</td>
-                            <td>1,800 sq.ft</td>
-                          </tr>
-                          <tr>
                             <td>Built</td>
                             <td>2010</td>
                           </tr>
                           <tr>
-                            <td>Title</td>
-                            <td>Freehold</td>
-                          </tr>
-                          <tr>
-                            <td>Land Size</td>
+                            <td>Lot Size</td>
                             <td>33.6 x 130 FT; Irregular - Irregular</td>
-                          </tr>
-                          <tr>
-                            <td>Property Taxes</td>
-                            <td>$6,390</td>
                           </tr>
                           <tr>
                             <td>Parking Type</td>
                             <td>{property.parking}</td>
                           </tr>
                           <tr>
-                            <td>Building Type</td>
-                            <td>House</td>
-                          </tr>
-                          <tr>
                             <td>Property Type</td>
                             <td>{property.propertyType}</td>
-                          </tr>
-                          <tr>
-                            <td>Storeys</td>
-                            <td>2</td>
-                          </tr>
-                          <tr>
-                            <td>Community Name</td>
-                            <td>Berczy Village</td>
                           </tr>
                         </tbody>
                       </table>
 
+                      <h3>Property Needs</h3>
+                      <p>{property.propertyNeeds}</p>
+
+                      <br />
+                      <br />
+
                       <h3>Why this Property?</h3>
                       <p>{property.whyThisProperty}</p>
+
+                      <br />
+                      <br />
+
+                      <h3>Comparable Properties</h3>
+                      <p>{property.comparable}</p>
+
                     </div>
+
+                    <br />
+                    <br />
+
+                    <PropertiesMap />
+
                   </Col>
                 </Row>
               </div>

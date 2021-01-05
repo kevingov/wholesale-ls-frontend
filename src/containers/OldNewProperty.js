@@ -10,7 +10,7 @@ import DatePicker from "react-datepicker";
 import Dropdown from "react-dropdown";
 import Loading from "./Loading";
 
-export default function NewProperty(props) {
+export default function OldNewProperty(props) {
   const [title, setTitle] = useState("");
   const [tagline, setTagline] = useState("");
   const [city, setCity] = useState("");
