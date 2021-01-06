@@ -50,6 +50,7 @@ export const PropertiesMap = ({ properties }) => {
 
   const loadPropertyMarkers = () => {
     if (properties) {
+      console.log("PropertiesMap", properties);
       return properties.map((spot) => {
         return (
           <Marker

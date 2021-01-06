@@ -12,6 +12,7 @@ export default function Properties(props) {
   const [properties, setProperties] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchInput, setSearchInput] = useState("");
+  const [citySelected, setCitySelected] = useState("");
   const [filterPropertyType, setFilterPropertyType] = useState({
     value: "All",
   });
@@ -72,21 +73,21 @@ export default function Properties(props) {
     );
   });
 
-  let sortedProperties;
+  let searchProperties;
   if (filterSort === "Newest") {
-    sortedProperties = resultsFilteredByDropdown.sort(
+    searchProperties = resultsFilteredByDropdown.sort(
       (a, b) => b.createdAt - a.createdAt
     );
   } else if (filterSort === "Oldest") {
-    sortedProperties = resultsFilteredByDropdown.sort(
+    searchProperties = resultsFilteredByDropdown.sort(
       (a, b) => a.createdAt - b.createdAt
     );
   } else if (filterSort === "Price High-Low") {
-    sortedProperties = resultsFilteredByDropdown.sort(
+    searchProperties = resultsFilteredByDropdown.sort(
       (a, b) => Number(a.price) - Number(b.price)
     );
   } else {
-    sortedProperties = resultsFilteredByDropdown.sort(
+    searchProperties = resultsFilteredByDropdown.sort(
       (a, b) => Number(b.price) - Number(a.price)
     );
   }
@@ -103,8 +104,6 @@ export default function Properties(props) {
   // const searchProperties = sortedProperties.filter((results) => {
   //   return results.title.toLowerCase().includes(filterText.toLowerCase());
   // });
-
-  const searchProperties = sortedProperties;
 
   return (
     <div className='Index'>
@@ -241,7 +240,10 @@ export default function Properties(props) {
               <Fragment>
                 <h2>Properties in Toronto</h2>
                 {searchProperties.map((property, index) => (
-                  <PropertiesCard property={property} index={index} />
+                  <PropertiesCard
+                    key={("Property", index)}
+                    property={property}
+                  />
                 ))}
               </Fragment>
             ) : (

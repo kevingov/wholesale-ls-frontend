@@ -2,10 +2,11 @@ import React from "react";
 
 import config from "../config";
 import mapPinIcon from "../assets/map-pin-icon.png";
+import { numberWithCommas } from "../helper";
 import "./PropertiesCard.css";
 
-const PropertiesCard = ({ property, index }) => (
-  <div key={index ? "Property " + index : ""} className='PropertiesCard'>
+const PropertiesCard = ({ property }) => (
+  <div className='PropertiesCard'>
     <a
       href={`/properties/${property.propertyId}`}
       className='PropertiesCard__Image-Container'
@@ -23,8 +24,7 @@ const PropertiesCard = ({ property, index }) => (
       </h3>
       <div className='PropertiesCard__Address'>
         <img src={mapPinIcon} alt='Map Pin Icon' />
-        {/* <p>{property.address}</p> */}
-        <p className='lightText'>1025 Sesame Street, Aurora ON</p>
+        <p>{property.address}</p>
       </div>
       <div className='PropertiesCard__Row-Highlights'>
         {property.bedroom && <div>{property.bedroom} Bedrooms</div>}
@@ -34,11 +34,11 @@ const PropertiesCard = ({ property, index }) => (
       <div className='PropertiesCard__Row-Pricing'>
         <div className='PropertiesCard__Row-Pricing-Item'>
           <p>Asking</p>
-          <p>$500,000</p>
+          <p>${numberWithCommas(property.price)}</p>
         </div>
         <div className='PropertiesCard__Row-Pricing-Item'>
           <p>Nearby</p>
-          <p>$620,000</p>
+          <p>${numberWithCommas(property.nearbyPrice)}</p>
         </div>
         <div className='PropertiesCard__Row-Pricing-Item PropertiesCard__Row-Pricing-Item--Profit'>
           <p>Est. Profit</p>
