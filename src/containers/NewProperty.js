@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Col, Row, ControlLabel, FormControl, FormGroup, Form, Breadcrumb } from "react-bootstrap";
 import Dropdown from "react-dropdown";
 import DatePicker from "react-datepicker";
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete";
-import { API, Storage } from "aws-amplify";
+import { API, Storage, a } from "aws-amplify";
 import Loading from "./Loading";
 
 import "./NewProperty.css";
@@ -61,7 +61,7 @@ export default function MultiformTest2(props) {
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const [file, setFile] = useState(false);
+    const [files, setFiles] = useState(false);
     const [price, setPrice] = useState("");
     const [nearbyPrice, setNearbyPrice] = useState("");
     const [arvPrice, setArvPrice] = useState("");
@@ -86,7 +86,7 @@ export default function MultiformTest2(props) {
         setIsLoading(true);
 
         try {
-            const image = file ? await s3Upload(file) : null;
+            const image = files ? await s3Upload(files) : null;
             console.log(image);
             const property = await createProperty({
                 title,
@@ -153,22 +153,26 @@ export default function MultiformTest2(props) {
     }
 
     function handleFileChange(event) {
-        setFile(event.target.files[0]);
+        setFiles(event.target.files);
     }
 
-    async function s3Upload(file) {
-        const filename = `${Date.now()}-${file.name}`;
-
-        try {
-            const stored = await Storage.put(filename, file, {
-                level: "public",
-                contentType: file.type,
-            });
-            return stored.key;
-        } catch (e) {
-            console.log(e);
-        }
+    async function s3Upload(files) {
+        return Promise.all(
+            Array.from(files).map(async (file) => {
+                const filename = `${Date.now()}-${file.name}`;
+                try {
+                    const stored = await Storage.put(filename, file, {
+                        level: "public",
+                        contentType: file.type,
+                    });
+                    return stored.key;
+                } catch (e) {
+                    console.log(e);
+                }
+            })
+        );
     }
+
 
     return (
         <div className="Index">
@@ -580,7 +584,25 @@ export default function MultiformTest2(props) {
 
                                     ) : null}
 
-                                    {count === 4 ? (
+                                    
+                                    {count === 5 ? (
+                                        
+                                        <Row>
+                                            <FormGroup controlId="image">
+                                                <ControlLabel>Property Image</ControlLabel>
+                                                <FormControl onChange={handleFileChange} type="file" multiple={true}/>
+                                            </FormGroup>
+                                        </Row>
+
+
+
+                                    ) : null}
+
+
+
+
+
+                                    {count === 5 ? (
                                         <button className='secondary-btn' type='submit'>Submit</button>
                                     ) : null}
 
@@ -600,7 +622,7 @@ export default function MultiformTest2(props) {
                                     className='btn btn-light'
                                     type='submit'
                                     onClick={() => setCount(count + 1)}
-                                    disabled={count > 3}
+                                    disabled={count > 4}
                                 >
                                     Next
             </button>
