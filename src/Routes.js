@@ -5,7 +5,6 @@ import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import EditProperty from "./containers/EditProperty";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
-import NewProperty from "./containers/NewProperty";
 import NotFound from "./containers/NotFound";
 import Privacy from "./containers/Privacy";
 import PrivacyPolicy from "./containers/PrivacyPolicy";
@@ -18,6 +17,8 @@ import UserDashboard from "./containers/UserDashboard";
 import ViewProperty from "./containers/ViewProperty";
 import EditProfile from "./containers/EditProfile";
 import ViewProfile from "./containers/ViewProperty";
+import PropertyMultiform from "./containers/NewProperty";
+import PropertyChat from "./containers/PropertyChat";
 
 export default ({ childProps }) => (
   <Switch>
@@ -41,10 +42,10 @@ export default ({ childProps }) => (
       component={Signup}
       props={childProps}
     />
-    <AuthenticatedRoute
+    <AppliedRoute
       path='/properties/new'
       exact
-      component={NewProperty}
+      component={PropertyMultiform}
       props={childProps}
     />
     <AuthenticatedRoute
@@ -89,6 +90,13 @@ export default ({ childProps }) => (
       component={ViewProfile}
       props={childProps}
     />
+    <AppliedRoute
+      path='/properties/:id/chat'
+      exact
+      component={PropertyChat}
+      props={childProps}
+    />
+
     {/* Finally, catch all unmatched routes */}
     <Route component={NotFound} />
   </Switch>

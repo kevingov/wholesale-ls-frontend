@@ -1,0 +1,20 @@
+h1 {
+  height: 28px;
+  color: #27313e;
+  font-family: "Source Sans Pro";
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 28px;
+  text-align: center;
+}
+
+h2 {
+  height: 18px;
+  color: #27313e;
+  font-family: "Source Sans Pro";
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 18px;
+  text-align: center;
+}

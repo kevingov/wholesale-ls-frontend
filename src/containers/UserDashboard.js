@@ -37,7 +37,8 @@ export default function UserDashboard() {
       <div className='Breadcrumbs'>
         <div className='Breadcrumbs-items container'>
           <Breadcrumb>
-            <Breadcrumb.Item active>Properties</Breadcrumb.Item>
+            <Breadcrumb.Item href='/properties'>Properties</Breadcrumb.Item>
+            <Breadcrumb.Item active>My Properties</Breadcrumb.Item>
           </Breadcrumb>
         </div>
       </div>

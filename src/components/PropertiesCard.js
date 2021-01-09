@@ -5,8 +5,8 @@ import mapPinIcon from "../assets/map-pin-icon.png";
 import { numberWithCommas } from "../helper";
 import "./PropertiesCard.css";
 
-const PropertiesCard = ({ property }) => (
-  <div className='PropertiesCard'>
+const PropertiesCard = ({ property, index }) => (
+  <div key={index ? "Property " + index : ""} className='PropertiesCard'>
     <a
       href={`/properties/${property.propertyId}`}
       className='PropertiesCard__Image-Container'

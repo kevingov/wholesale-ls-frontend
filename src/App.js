@@ -30,6 +30,7 @@ class App extends Component {
       const userProfile = await this.loadProfile(userId);
       this.setState({ profile: userProfile });
       console.log("userProfile:", userProfile);
+      console.log(userProfile);
     } catch (e) {
       if (e !== "No current user") {
         alert(e);
