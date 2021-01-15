@@ -271,6 +271,50 @@ p {
   text-align: center;
 }
 
+.ViewProperty__Desc {
+  margin-bottom: 32px;
+}
+
+.ViewProperty__Desc h3 {
+  margin-bottom: 22px;
+}
+
+.ViewProperty__MapContainer {
+  width: 100%;
+  height: 360px;
+}
+
+/******* Full Screen Slider *******/
+.FullScreenSlider {
+  width: 100vw;
+  height: auto;
+  background: rgba(83, 83, 83, 0.9);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+.FullScreenSlider #slider {
+  z-index: 11;
+}
+
+.FullScreenSlider #slide-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-backface-visibility: hidden;
+}
+
+.FullScreenSlider #slide-wrapper > div {
+  width: 90%;
+  height: 85%;
+}
+
 /******* Media Queries (Responsive) *******/
 @media only screen and (min-width: 992px) {
   .row.equal {
@@ -286,19 +330,3 @@ p {
     top: 40px;
   }
 }
-
-/* @media only screen and (min-width: 768px) {
-  .container {
-    width: 840px;
-  }
-}
-@media only screen and (min-width: 992px) {
-  .container {
-    width: 1150px;
-  }
-}
-@media only screen and (min-width: 1200px) {
-  .container {
-    width: 1380px;
-  }
-} */

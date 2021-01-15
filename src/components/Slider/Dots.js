@@ -7,7 +7,7 @@ const Dot = ({ active }) => (
       padding: 6px;
       margin-right: 5px;
       border-radius: 50%;
-      background: ${active ? "gray" : "white"};
+      background: ${active ? "#5bc33e" : "white"};
     `}
   />
 );

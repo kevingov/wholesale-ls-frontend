@@ -44,6 +44,21 @@
   width: 48%;
 }
 
+.MultiForm__Upload-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 50px;
+}
+.MultiForm__UploadIcon {
+  width: 180px;
+  height: auto;
+}
+.MultiForm__UploadBtn {
+  padding: 15px 32px;
+}
+
 /******* Progress Bar *******/
 .progressbar-wrapper {
   width: 100%;

@@ -5,57 +5,59 @@ import Slide from "./Slide";
 import SliderContent from "./SliderContent";
 import Arrow from "./Arrow";
 import Dots from "./Dots";
+import focusIcon from "../../assets/focus-icon.png";
 
 /**
  * @function Slider
  */
 const Slider = (props) => {
   const sliderRef = useRef(null);
+  const transition = 0.45;
   const [sliderWidth, setSliderWidth] = useState(null);
-  const [state, setState] = useState({
-    activeIndex: 0,
-    translate: 0,
-    transition: 0.45,
-  });
+  const [translate, setTranslate] = useState(0);
 
-  const { translate, transition, activeIndex } = state;
+  const {
+    slides,
+    toggleFullScreen,
+    fullScreenMode,
+    updateActiveIndex,
+    activeIndex,
+  } = props;
 
   useEffect(() => {
     if (sliderRef.current) {
-      setSliderWidth(sliderRef.current.offsetWidth);
+      const sliderWidth = sliderRef.current.offsetWidth;
+      setSliderWidth(sliderWidth);
+      if (activeIndex !== 0) {
+        setTranslate(activeIndex * sliderWidth);
+      }
     }
   }, []);
 
-  const nextSlide = () => {
-    if (activeIndex === props.slides.length - 1) {
-      return setState({
-        ...state,
-        translate: 0,
-        activeIndex: 0,
-      });
-    }
+  useEffect(() => {
+    if (sliderWidth) setTranslate(activeIndex * sliderWidth);
+  }, [activeIndex]);
 
-    setState({
-      ...state,
-      activeIndex: activeIndex + 1,
-      translate: (activeIndex + 1) * sliderWidth,
-    });
+  // ########## TASK: trigger rerender of Window resize < 990px ###########
+
+  const preventClose = (e) => {
+    if (fullScreenMode) e.stopPropagation();
   };
 
-  const prevSlide = () => {
-    if (activeIndex === 0) {
-      return setState({
-        ...state,
-        translate: (props.slides.length - 1) * sliderWidth,
-        activeIndex: props.slides.length - 1,
-      });
+  const nextSlide = (e) => {
+    preventClose(e);
+    if (activeIndex === slides.length - 1) {
+      return updateActiveIndex(0);
     }
+    updateActiveIndex(activeIndex + 1);
+  };
 
-    setState({
-      ...state,
-      activeIndex: activeIndex - 1,
-      translate: (activeIndex - 1) * sliderWidth,
-    });
+  const prevSlide = (e) => {
+    preventClose(e);
+    if (activeIndex === 0) {
+      return updateActiveIndex(slides.length - 1);
+    }
+    updateActiveIndex(activeIndex - 1);
   };
 
   return (
@@ -64,18 +66,37 @@ const Slider = (props) => {
         <SliderContent
           translate={translate}
           transition={transition}
-          width={sliderWidth * props.slides.length}
+          width={sliderWidth * slides.length}
         >
-          {props.slides.map((slide, i) => (
-            <Slide key={slide + i} content={slide} />
+          {slides.map((slide, i) => (
+            <Slide
+              key={slide + i}
+              content={slide}
+              preventClose={preventClose}
+            />
           ))}
         </SliderContent>
       )}
-
-      <Arrow direction='left' handleClick={prevSlide} />
-      <Arrow direction='right' handleClick={nextSlide} />
-
-      <Dots slides={props.slides} activeIndex={activeIndex} />
+      <Arrow
+        fullScreenMode={fullScreenMode}
+        direction='left'
+        handleClick={prevSlide}
+      />
+      <Arrow
+        fullScreenMode={fullScreenMode}
+        direction='right'
+        handleClick={nextSlide}
+      />
+      <Dots slides={slides} activeIndex={activeIndex} />
+      {!fullScreenMode && (
+        <div css={FocusIconCSS}>
+          <img
+            style={{ width: "15px", height: "15px" }}
+            src={focusIcon}
+            onClick={() => toggleFullScreen(activeIndex)}
+          />
+        </div>
+      )}
     </div>
   );
 };
@@ -86,6 +107,32 @@ const SliderCSS = css`
   width: 100%;
   margin: 0 auto;
   overflow: hidden;
+  -webkit-backface-visibility: hidden;
+`;
+
+const FocusIconCSS = css`
+  position: absolute;
+  display: flex;
+  bottom: 20px;
+  right: 20px;
+  height: 30px;
+  width: 30px;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.9;
+  border-radius: 50%;
+  cursor: pointer;
+  align-items: center;
+  background: #e2e2e2;
+  transition: transform ease-in 0.1s;
+  &:hover {
+    transform: scale(1.1);
+  }
+  img {
+    &:focus {
+      outline: 0;
+    }
+  }
 `;
 
 export default Slider;

@@ -1,7 +1,5 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useRef, Fragment } from "react";
 import {
-  Col,
-  Row,
   ControlLabel,
   FormControl,
   FormGroup,
@@ -14,14 +12,14 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
-import { API, Storage } from "aws-amplify";
+import { API, Storage, a, sectionFooterSecondaryContent } from "aws-amplify";
 import Loading from "./Loading";
-
 import "./NewProperty.css";
 import "react-dropdown/style.css";
 import "react-datepicker/dist/react-datepicker.css";
 import checkmarkIcon from "../assets/checkmark-icon.png";
 import backIcon from "../assets/back-icon-green.png";
+import imageUploadIcon from "../assets/image-upload-icon.png";
 
 export default function PropertyMultiForm(props) {
   // const [form, setForm] = useState({
@@ -73,7 +71,7 @@ export default function PropertyMultiForm(props) {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [file, setFile] = useState(false);
+  const [files, setFiles] = useState(false);
   const [price, setPrice] = useState("");
   const [nearbyPrice, setNearbyPrice] = useState("");
   const [arvPrice, setArvPrice] = useState("");
@@ -81,6 +79,7 @@ export default function PropertyMultiForm(props) {
   const [lotSize, setLotSize] = useState("");
   const [associationFees, setAssociationFees] = useState("");
 
+  const uploadFileRef = useRef();
   const [step, setStep] = useState(1);
   const stageNames = [
     "Basic Info",
@@ -104,7 +103,7 @@ export default function PropertyMultiForm(props) {
     setIsLoading(true);
 
     try {
-      const image = file ? await s3Upload(file) : null;
+      const image = files ? await s3Upload(files) : null;
       console.log(image);
       const property = await createProperty({
         title,
@@ -171,21 +170,24 @@ export default function PropertyMultiForm(props) {
   }
 
   function handleFileChange(event) {
-    setFile(event.target.files[0]);
+    setFiles(event.target.files);
   }
 
-  async function s3Upload(file) {
-    const filename = `${Date.now()}-${file.name}`;
-
-    try {
-      const stored = await Storage.put(filename, file, {
-        level: "public",
-        contentType: file.type,
-      });
-      return stored.key;
-    } catch (e) {
-      console.log(e);
-    }
+  async function s3Upload(files) {
+    return Promise.all(
+      Array.from(files).map(async (file) => {
+        const filename = `${Date.now()}-${file.name}`;
+        try {
+          const stored = await Storage.put(filename, file, {
+            level: "public",
+            contentType: file.type,
+          });
+          return stored.key;
+        } catch (e) {
+          console.log(e);
+        }
+      })
+    );
   }
 
   return (
@@ -215,7 +217,7 @@ export default function PropertyMultiForm(props) {
                     <li className={nodeFill} key={stageName}>
                       {stageName}
                       <span />
-                      <img src={checkmarkIcon} />
+                      <img alt='checkmark icon' src={checkmarkIcon} />
                     </li>
                   );
                 })}
@@ -279,7 +281,7 @@ export default function PropertyMultiForm(props) {
                               return (
                                 <div
                                   className='MultiForm__AutoComplete-Suggestions'
-                                  key={i}
+                                  key={suggestion}
                                   {...getSuggestionItemProps(suggestion, {})}
                                 >
                                   {suggestion.description}
@@ -363,7 +365,6 @@ export default function PropertyMultiForm(props) {
                       placeholder='Select an Option'
                     />
                   </FormGroup>
-
                   <FormGroup controlId='propertyStatus'>
                     <ControlLabel>Property Status</ControlLabel>
                     <Dropdown
@@ -397,7 +398,6 @@ export default function PropertyMultiForm(props) {
                         name='bedroom'
                       />
                     </FormGroup>
-
                     <FormGroup controlId='bathroom'>
                       <ControlLabel>Bathrooms</ControlLabel>
                       <FormControl
@@ -408,7 +408,6 @@ export default function PropertyMultiForm(props) {
                         name='bathrooms'
                       />
                     </FormGroup>
-
                     <FormGroup controlId='parking'>
                       <ControlLabel>Parking</ControlLabel>
                       <FormControl
@@ -420,7 +419,6 @@ export default function PropertyMultiForm(props) {
                       />
                     </FormGroup>
                   </div>
-
                   <FormGroup controlId='description'>
                     <ControlLabel>Description</ControlLabel>
                     <FormControl
@@ -480,10 +478,45 @@ export default function PropertyMultiForm(props) {
               {step === 4 ? (
                 <Fragment>
                   <div className='MultiForm__Title'>
+                    <h1>Property Images</h1>
+                    <h2>
+                      Please upload interior and exterior images of the property
+                    </h2>
+                  </div>
+                  <div className='MultiForm__Upload-container'>
+                    <img
+                      alt='file upload icon'
+                      className='MultiForm__UploadIcon'
+                      src={imageUploadIcon}
+                    />
+                    <input
+                      onChange={handleFileChange}
+                      type='file'
+                      multiple={true}
+                      style={{ display: "none" }}
+                      ref={uploadFileRef}
+                    />
+                    <div
+                      onClick={() => uploadFileRef.current.click()}
+                      className='MultiForm__UploadBtn btn'
+                    >
+                      UPLOAD
+                    </div>
+                    <label>
+                      {(uploadFileRef.current
+                        ? uploadFileRef.current.files.length
+                        : "No") + " image(s) uploaded"}
+                    </label>
+                  </div>
+                </Fragment>
+              ) : null}
+
+              {step === 5 ? (
+                <Fragment>
+                  <div className='MultiForm__Title'>
                     <h1>Price and Dates</h1>
                     <h2>Please add a title and description</h2>
                   </div>
-
                   <div className='MultiForm__Row MultiForm__Row-3'>
                     <FormGroup controlId='offerDate'>
                       <ControlLabel>Offer Date</ControlLabel>
@@ -498,7 +531,6 @@ export default function PropertyMultiForm(props) {
                     <FormGroup controlId='closeDate'>
                       <ControlLabel>Close Date</ControlLabel>
                       <DatePicker
-                        className='AutoComplete'
                         selected={closeDate}
                         onChange={(date) => setCloseDate(date)}
                         name='closeDate'
@@ -509,12 +541,11 @@ export default function PropertyMultiForm(props) {
                     <FormGroup controlId='groupShowingDate'>
                       <ControlLabel>Group Showing Date</ControlLabel>
                       <DatePicker
-                        className='AutoComplete'
+                        className='form-control'
                         selected={groupShowingDate}
                         onChange={(date) => setGroupShowingDate(date)}
                         name='groupShowingDate'
                         dateFormat='MMMM d, yyyy'
-                        className='form-control'
                       />
                     </FormGroup>
                   </div>
@@ -559,16 +590,22 @@ export default function PropertyMultiForm(props) {
                   className='MultiForm__back-btn btn'
                   onClick={() => setStep(step - 1)}
                 >
-                  <img src={backIcon} />
+                  <img alt='back button icon' src={backIcon} />
                   Back
                 </button>
               )}
-              <button
-                className='MultiForm__btn btn'
-                onClick={() => setStep(step + 1)}
-              >
-                Next
-              </button>
+              {step < 5 ? (
+                <button
+                  className='MultiForm__btn btn'
+                  onClick={() => setStep(step + 1)}
+                >
+                  Next
+                </button>
+              ) : (
+                <button className='MultiForm__btn btn' onClick={handleSubmit}>
+                  Submit
+                </button>
+              )}
             </div>
           </div>
         </div>
