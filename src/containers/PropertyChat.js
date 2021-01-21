@@ -22,6 +22,7 @@ export default function PropertyChat(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [propertyOwner, setPropertyOwner] = useState(false);
   const [profile, setProfile] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
   const [viewCreateAccountModal, setViewCreateAccountModal] = useState(null);
   const [message, setMessage] = useState("");
 
@@ -39,7 +40,7 @@ export default function PropertyChat(props) {
         const user = await Auth.currentUserInfo();
         let userId = "none";
         if (user) userId = user["id"];
-        // if (user) setUserEmail(user.attributes.email);
+        if (user) setUserEmail(user.attributes.email);
         const property = await loadProperty();
         console.log(property);
         const profile = await loadProfile(property.userId);
@@ -47,6 +48,8 @@ export default function PropertyChat(props) {
         setPropertyOwner(userId === property.userId);
         setProperty(property);
         setIsLoading(true);
+        console.log("below is userId");
+        console.log(userId);
       } catch (e) {
         alert(e);
       }
@@ -61,10 +64,11 @@ export default function PropertyChat(props) {
     setIsLoading(true);
 
     try {
-      const property = await sendMessage({
+      const message = await sendMessage({
         message,
       });
-      // props.history.push(`/properties/${property.propertyId}`);
+      console.log(message);
+      props.history.push(`/properties/${property.propertyId}/chat`);
     } catch (e) {
       alert(e);
       setIsLoading(false);
@@ -72,8 +76,11 @@ export default function PropertyChat(props) {
   }
 
   function sendMessage() {
-    return API.post("properties", "/properties", {
-        body: message,
+    return API.post("properties", `/properties/${props.match.params.id}/chat`, {
+        Body: {
+          // senderId: userId,
+          content: message,
+        }
     });
   }
 
@@ -93,7 +100,7 @@ export default function PropertyChat(props) {
   ]
 
 
-  // function send
+
 
   return (
     <div className='Index'>
@@ -182,9 +189,10 @@ export default function PropertyChat(props) {
                               placeholder="Type your message and hit Enter"
                               type="text">
                             </FormControl>
-                        </Form>
+                        
                       
                         <button className='secondary-btn' type='submit'>Submit</button>
+                        </Form>
 
                     </div>
 
@@ -193,19 +201,6 @@ export default function PropertyChat(props) {
 
 
                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
               </div>
             ) : (
                 <Loading />
