@@ -64,10 +64,10 @@ export default function PropertyChat(props) {
     setIsLoading(true);
 
     try {
-      const message = await sendMessage({
+      const response = await sendMessage({
         message,
       });
-      console.log(message);
+      console.log(response);
       props.history.push(`/properties/${property.propertyId}/chat`);
     } catch (e) {
       alert(e);
@@ -75,11 +75,11 @@ export default function PropertyChat(props) {
     }
   }
 
-  function sendMessage() {
+  function sendMessage(response) {
     return API.post("properties", `/properties/${props.match.params.id}/chat`, {
         Body: {
           // senderId: userId,
-          content: message,
+          content: response,
         }
     });
   }
@@ -181,7 +181,7 @@ export default function PropertyChat(props) {
 
                     <div className="send-message-container">
                         <Form 
-                          onSubmit={handleSubmit}
+                          // onSubmit={handleSubmit}
                           className="send-message-form">
                             <FormControl
                               onChange={(e) => setMessage(e.target.value)}
@@ -191,7 +191,7 @@ export default function PropertyChat(props) {
                             </FormControl>
                         
                       
-                        <button className='secondary-btn' type='submit'>Submit</button>
+                        <button className='secondary-btn' onClick={handleSubmit}>Submit</button>
                         </Form>
 
                     </div>
