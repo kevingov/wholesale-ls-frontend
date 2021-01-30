@@ -52,6 +52,8 @@ export default function ViewProperty(props) {
         setPropertyOwner(userId === property.userId);
         setProperty(property);
         setIsLoading(true);
+        console.log("here is profile");
+        console.log(profile);
       } catch (e) {
         alert(e);
       }
@@ -113,6 +115,23 @@ export default function ViewProperty(props) {
           <div className='ViewProperty__Wrapper'>
             {isLoading ? (
               <div>
+              {propertyOwner ? (
+                <div>
+                  <a
+                    href={`/properties/${property.propertyId}/edit`}
+                    className='other-btn'
+                  >
+                    Edit Property
+                  </a>
+                  <br />
+                  <br />
+                  <br />
+                </div>
+
+
+
+              ) : null}
+              <div>
                 <div className='backLink'>
                   <img src={backArrowIcon} alt='Back Arrow Icon' />
                   <a className='navLink' href={`/properties`}>
@@ -133,7 +152,7 @@ export default function ViewProperty(props) {
                   {property.bathroom && (
                     <div>{property.bathroom} Bathrooms</div>
                   )}
-                  {property.propertType && <div>{property.propertyType}</div>}
+                  {property.propertyType && <div>{property.propertyType}</div>}
                 </div>
                 <Row className='equal'>
                   <Col md={6}>
@@ -276,6 +295,7 @@ export default function ViewProperty(props) {
                     </div>
                   </Col>
                 </Row>
+              </div>
               </div>
             ) : (
               <Loading />

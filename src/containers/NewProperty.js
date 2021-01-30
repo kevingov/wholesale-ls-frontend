@@ -88,14 +88,9 @@ export default function PropertyMultiForm(props) {
     "Images",
     "Price",
   ];
+  const [selectedImages, setSelectedImages] = useState([]);
 
-  // const updateForm = (e) => {
-  //     setForm({
-  //         ...form,
-  //         [e.target.name]: e.target.value,
 
-  //     })
-  // }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -169,8 +164,26 @@ export default function PropertyMultiForm(props) {
     setGeoAddress(result.formatted_address);
   }
 
-  function handleFileChange(event) {
-    setFiles(event.target.files);
+  // function handleFileChange(event) {
+  //   setFiles(event.target.files);
+  // }
+
+  const handleChange = (e) => {
+    if(e.target.files){
+      const fileArray = Array.from(e.target.files).map((file)=> URL.createObjectURL(file))
+      
+      setSelectedImages((prevImages)=>prevImages.concat(fileArray))
+      Array.from(e.target.files).map(
+        (file)=>URL.revokeObjectURL(file)
+      )
+    };
+    setFiles(e.target.files);
+  }
+
+  const renderPhotos = (source) => {
+    return source.map((photo)=>{
+      return <img src={photo} key={photo} />
+    })
   }
 
   async function s3Upload(files) {
@@ -484,13 +497,15 @@ export default function PropertyMultiForm(props) {
                     </h2>
                   </div>
                   <div className='MultiForm__Upload-container'>
+                    {selectedImages ? renderPhotos(selectedImages) : (
                     <img
                       alt='file upload icon'
                       className='MultiForm__UploadIcon'
                       src={imageUploadIcon}
                     />
+                    )}
                     <input
-                      onChange={handleFileChange}
+                      onChange={handleChange}
                       type='file'
                       multiple={true}
                       style={{ display: "none" }}
@@ -583,6 +598,8 @@ export default function PropertyMultiForm(props) {
                   </div>
                 </Fragment>
               ) : null}
+
+              {/* {step === 6 ?  } */}
             </Form>
             <div className='MultiForm__btn-container'>
               {step > 1 && (

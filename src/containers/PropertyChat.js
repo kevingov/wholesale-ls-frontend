@@ -1,21 +1,21 @@
 import "./PropertyChat.css";
 
 import { API, Auth } from "aws-amplify";
-import { Col, Modal, Row, Breadcrumb, Form, FormControl } from "react-bootstrap";
+import { Modal, Breadcrumb, Form, FormControl } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 import Loading from "./Loading";
-import config from "../config";
+// import config from "../config";
 import backArrowIcon from "../assets/back-icon.png";
 import mapPinIcon from "../assets/map-pin-icon.png";
-import Slider from "../components/Slider";
+// import Slider from "../components/Slider";
 
-const images = [
-  "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
-  "https://images.unsplash.com/photo-1470341223622-1019832be824?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2288&q=80",
-  "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2094&q=80",
-  "https://images.unsplash.com/photo-1534161308652-fdfcf10f62c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2174&q=80",
-];
+// const images = [
+//   "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
+//   "https://images.unsplash.com/photo-1470341223622-1019832be824?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2288&q=80",
+//   "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2094&q=80",
+//   "https://images.unsplash.com/photo-1534161308652-fdfcf10f62c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2174&q=80",
+// ];
 
 export default function PropertyChat(props) {
   const [property, setProperty] = useState(null);
@@ -25,6 +25,7 @@ export default function PropertyChat(props) {
   const [userEmail, setUserEmail] = useState(null);
   const [viewCreateAccountModal, setViewCreateAccountModal] = useState(null);
   const [message, setMessage] = useState("");
+  const [conversation, setConversation] = useState([]);
 
   useEffect(() => {
     function loadProperty() {
@@ -33,6 +34,14 @@ export default function PropertyChat(props) {
 
     function loadProfile(userId) {
       return API.get("profiles", `/profiles/${userId}`);
+    }
+
+    function loadConversation() {
+      return API.get("conversations", "/conversations", {
+        // queryStringParameters: {
+        //   propertyOwner: profile,
+        // }
+      });
     }
 
     async function onLoad() {
@@ -48,10 +57,14 @@ export default function PropertyChat(props) {
         setPropertyOwner(userId === property.userId);
         setProperty(property);
         setIsLoading(true);
+        const conversation = await loadConversation();
+        setConversation(conversation);
         console.log("below is userId");
         console.log(userId);
+        console.log(profile);
       } catch (e) {
         alert(e);
+        // console.log(profile.userId);
       }
     }
 
@@ -68,19 +81,24 @@ export default function PropertyChat(props) {
         message,
       });
       console.log(response);
+      console.log("testing");
       props.history.push(`/properties/${property.propertyId}/chat`);
     } catch (e) {
       alert(e);
       setIsLoading(false);
+      console.log(property.userId)
     }
   }
 
-  function sendMessage(response) {
+  function sendMessage() {
     return API.post("properties", `/properties/${props.match.params.id}/chat`, {
-        Body: {
-          // senderId: userId,
-          content: response,
-        }
+      body: {
+          // senderId: profile,
+          message,
+      },
+      queryStringParameters: {
+        senderId: property.userId,
+      },
     });
   }
 
