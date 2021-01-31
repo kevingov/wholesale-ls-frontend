@@ -1,24 +1,39 @@
 import { FormGroup, FormControl } from "react-bootstrap";
 import Dropdown from "react-dropdown";
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, useRef, Fragment } from "react";
 import { API } from "aws-amplify";
 
 import Loading from "./Loading";
 import "./Properties.css";
 import PropertiesMap from "../components/PropertiesMap";
 import PropertiesCard from "../components/PropertiesCard";
+import openDropdownIcon from "../assets/open-dropdown-icon.png";
+import closeDropdownIcon from "../assets/close-dropdown-icon.png";
 
 export default function Properties(props) {
-  const [properties, setProperties] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [properties, setProperties] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [citySelected, setCitySelected] = useState("");
+  const [searchDropdownExpanded, setSearchDropdownExpanded] = useState(false);
+  const [locationSelected, setLocationSelected] = useState("Toronto");
   const [filterPropertyType, setFilterPropertyType] = useState({
     value: "All",
   });
   const [filterBedrooms, setFilterBedrooms] = useState({ value: 0 });
   const [filterBathrooms, setFilterBathrooms] = useState({ value: 0 });
   const [filterSort, setFilterSort] = useState({ value: "" });
+
+  const geocoderRef = useRef(null);
+  const LOCATIONS_LIST = [
+    "Toronto",
+    "Vaughan",
+    "Markham",
+    "North York",
+    "Scarborough",
+    "Brampton",
+    "Mississauga",
+    "Richmond Hill",
+  ];
 
   useEffect(() => {
     async function onLoad() {
@@ -33,7 +48,7 @@ export default function Properties(props) {
     }
 
     onLoad();
-  }, [props.isAuthenticated]);
+  }, [props.isAuthenticated, locationSelected]);
 
   function loadProperties() {
     return API.get("properties", "/properties", {
@@ -92,18 +107,12 @@ export default function Properties(props) {
     );
   }
 
-  // let searchProperties;
-  // if (filterText === "") {
-  //   searchProperties = sortedProperties
-  // } else {
-  //   searchProperties = sortedProperties.filter(results => {
-  //     return results.title.toLowerCase().includes( filterText.toLowerCase() )
-  //   })
-  // }
-
-  // const searchProperties = sortedProperties.filter((results) => {
-  //   return results.title.toLowerCase().includes(filterText.toLowerCase());
-  // });
+  const onSelectDropdownLocation = (event) => {
+    const location = event.currentTarget.getAttribute("data-location");
+    setSearchInput(location);
+    setSearchDropdownExpanded(false);
+    setLocationSelected(location);
+  };
 
   return (
     <div className='Index'>
@@ -111,16 +120,59 @@ export default function Properties(props) {
         <div className='Properties__Filter-Container container'>
           <FormGroup
             controlId='filterPropertyType'
-            className='FilterContainer__Search-Bar'
+            className='Locations-Search-Bar'
           >
-            <FormControl
-              type='text'
-              placeholder='Search'
-              value={searchInput}
-              onChange={(input) => setSearchInput(input.value)}
-            ></FormControl>
+            {/* <div className='Locations-Search-Bar__Wrapper'>
+              <input
+                type='text'
+                placeholder='Search'
+                value={searchInput}
+                onChange={(input) => setSearchInput(input.value)}
+                onBlur={() => setSearchDropdownExpanded(false)}
+              />
+              <a
+                onClick={() =>
+                  setSearchDropdownExpanded(!searchDropdownExpanded)
+                }
+              >
+                <img
+                  src={
+                    searchDropdownExpanded
+                      ? closeDropdownIcon
+                      : openDropdownIcon
+                  }
+                />
+              </a>
+            </div>
+            <div
+              className={`Locations-Search-Bar__Dropdown-Content ${
+                searchDropdownExpanded ? "active" : ""
+              }`}
+            >
+              {LOCATIONS_LIST.map((item) => (
+                <a
+                  onClick={onSelectDropdownLocation}
+                  data-location={item}
+                  key={item}
+                >
+                  {item}
+                </a>
+              ))}
+            </div> */}
+
+            <div
+              ref={geocoderRef}
+              className='Locations-Search-Bar__Wrapper'
+              style={{
+                height: 50,
+                display: "flex",
+                alignItems: "center",
+                paddingLeft: 4,
+              }}
+            ></div>
           </FormGroup>
           <FormGroup controlId='filterPropertyType'>
+            <p className='Property__Filter-Label'>Property Type</p>
             <Dropdown
               placeholder='Property Types'
               value={filterPropertyType.label}
@@ -154,6 +206,7 @@ export default function Properties(props) {
             />
           </FormGroup>
           <FormGroup controlId='filterBedrooms'>
+            <p className='Property__Filter-Label'>Bedrooms</p>
             <Dropdown
               placeholder='Bedrooms'
               value={filterBedrooms.label}
@@ -179,6 +232,7 @@ export default function Properties(props) {
             />
           </FormGroup>
           <FormGroup controlId='filterBathrooms'>
+            <p className='Property__Filter-Label'>Bathrooms</p>
             <Dropdown
               placeholder='Bathrooms'
               value={filterBathrooms.label}
@@ -204,6 +258,7 @@ export default function Properties(props) {
             />
           </FormGroup>
           <FormGroup controlId='filterSort'>
+            <p className='Property__Filter-Label'>Sort By</p>
             <Dropdown
               placeholder='Sort By'
               value={filterSort.label}
@@ -255,7 +310,12 @@ export default function Properties(props) {
           </div>
 
           <div className='Properties__MapContainer'>
-            <PropertiesMap properties={properties} />
+            <PropertiesMap
+              className='mapboxgl-map'
+              properties={properties}
+              location={locationSelected}
+              geocoderRef={geocoderRef}
+            />
           </div>
         </div>
       ) : (

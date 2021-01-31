@@ -2,6 +2,8 @@ import React from "react";
 
 import config from "../config";
 import mapPinIcon from "../assets/map-pin-icon.png";
+import bedIcon from "../assets/bed-icon.png";
+import bathIcon from "../assets/bath-icon.png";
 import { numberWithCommas } from "../helper";
 import "./PropertiesCard.css";
 
@@ -27,8 +29,22 @@ const PropertiesCard = ({ property, index }) => (
         <p>{property.address}</p>
       </div>
       <div className='PropertiesCard__Row-Highlights'>
-        {property.bedroom && <div>{property.bedroom} Bedrooms</div>}
-        {property.bathroom && <div>{property.bathroom} Bathrooms</div>}
+        {property.bedroom && (
+          <div className='PropertiesCard__Highlight'>
+            <img src={bedIcon} />
+            <p>
+              {property.bedroom + (property.bedroom > 1 ? " Beds" : " Bed")}
+            </p>
+          </div>
+        )}
+        {property.bathroom && (
+          <div className='PropertiesCard__Highlight'>
+            <img src={bathIcon} />
+            <p>
+              {property.bathroom + (property.bathroom > 1 ? " Baths" : " Bath")}
+            </p>
+          </div>
+        )}
         {property.propertType && <div>{property.propertyType}</div>}
       </div>
       <div className='PropertiesCard__Row-Pricing'>

@@ -1,7 +1,14 @@
 import "./PropertyChat.css";
 
 import { API, Auth } from "aws-amplify";
-import { Col, Modal, Row, Breadcrumb, Form, FormControl } from "react-bootstrap";
+import {
+  Col,
+  Modal,
+  Row,
+  Breadcrumb,
+  Form,
+  FormControl,
+} from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 import Loading from "./Loading";
@@ -77,30 +84,18 @@ export default function PropertyChat(props) {
 
   function sendMessage() {
     return API.post("properties", `/properties/${props.match.params.id}/chat`, {
-        Body: {
-          // senderId: userId,
-          content: message,
-        }
+      Body: {
+        // senderId: userId,
+        content: message,
+      },
     });
   }
 
   const testMessages = [
-    { senderId: 'Kevin',
-      content: "testing messages",
-      conversationId: 123,
-    },
-    { senderId: 'Jon',
-      content: "Hey how's it going?",
-      conversationId: 123,
-    },
-    { senderId: 'Kevin',
-      content: "Good, you",
-      conversationId: 123,
-    },
-  ]
-
-
-
+    { senderId: "Kevin", content: "testing messages", conversationId: 123 },
+    { senderId: "Jon", content: "Hey how's it going?", conversationId: 123 },
+    { senderId: "Kevin", content: "Good, you", conversationId: 123 },
+  ];
 
   return (
     <div className='Index'>
@@ -129,9 +124,6 @@ export default function PropertyChat(props) {
                     <br />
                     <br />
                   </div>
-
-
-
                 ) : null}
 
                 <div className='backLink'>
@@ -157,54 +149,40 @@ export default function PropertyChat(props) {
                   {property.propertType && <div>{property.propertyType}</div>}
                 </div>
 
-
-
-
-
                 <div className='chat-container'>
-                  
+                  <ul className='message-list'>
+                    {testMessages.map((testMessages, index) => {
+                      return (
+                        <li
+                          // key={testMessages.conversationId}
+                          className='message'
+                        >
+                          <div>{testMessages.senderId}</div>
+                          <div>{testMessages.content}</div>
+                        </li>
+                      );
+                    })}
+                  </ul>
 
-                  
-                    <ul className="message-list">
-                      {testMessages.map((testMessages, index) => {
-                        return (
-                          <li 
-                          // key={testMessages.conversationId} 
-                          className="message">
-                            <div>{testMessages.senderId}</div>
-                            <div>{testMessages.content}</div>
-                          </li>
-                        )
-                      })}
-                    </ul>
+                  <div className='send-message-container'>
+                    <Form onSubmit={handleSubmit} className='send-message-form'>
+                      <FormControl
+                        onChange={(e) => setMessage(e.target.value)}
+                        value={message}
+                        placeholder='Type your message and hit Enter'
+                        type='text'
+                      ></FormControl>
 
-
-                    <div className="send-message-container">
-                        <Form 
-                          onSubmit={handleSubmit}
-                          className="send-message-form">
-                            <FormControl
-                              onChange={(e) => setMessage(e.target.value)}
-                              value={message}
-                              placeholder="Type your message and hit Enter"
-                              type="text">
-                            </FormControl>
-                        
-                      
-                        <button className='secondary-btn' type='submit'>Submit</button>
-                        </Form>
-
-                    </div>
-
-                    
-                  
-
-
+                      <button className='secondary-btn' type='submit'>
+                        Submit
+                      </button>
+                    </Form>
+                  </div>
                 </div>
               </div>
             ) : (
-                <Loading />
-              )}
+              <Loading />
+            )}
             <Modal
               show={viewCreateAccountModal}
               onHide={() => setViewCreateAccountModal(false)}

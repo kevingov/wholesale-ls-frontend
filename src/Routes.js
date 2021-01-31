@@ -42,7 +42,7 @@ export default ({ childProps }) => (
       component={Signup}
       props={childProps}
     />
-    <AuthenticatedRoute
+    <AppliedRoute
       path='/properties/new'
       exact
       component={PropertyMultiform}
