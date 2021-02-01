@@ -25,7 +25,7 @@ export default function PropertyChat(props) {
   const [userEmail, setUserEmail] = useState(null);
   const [viewCreateAccountModal, setViewCreateAccountModal] = useState(null);
   const [message, setMessage] = useState("");
-  const [conversation, setConversation] = useState([]);
+  const [conversation, setConversation] = useState(null);
 
   useEffect(() => {
     function loadProperty() {
@@ -36,13 +36,15 @@ export default function PropertyChat(props) {
       return API.get("profiles", `/profiles/${userId}`);
     }
 
-    function loadConversation() {
-      return API.get("conversations", "/conversations", {
-        // queryStringParameters: {
-        //   propertyOwner: profile,
-        // }
+    function loadConversation(propertyOwnerId) {
+      return API.get("properties", `/properties/${props.match.params.id}/chat`, {
+        queryStringParameters: {
+          propertyOwner: propertyOwnerId,
+        }
       });
     }
+
+    
 
     async function onLoad() {
       try {
@@ -57,11 +59,10 @@ export default function PropertyChat(props) {
         setPropertyOwner(userId === property.userId);
         setProperty(property);
         setIsLoading(true);
-        const conversation = await loadConversation();
-        setConversation(conversation);
-        console.log("below is userId");
-        console.log(userId);
-        console.log(profile);
+        const existingConversation = await loadConversation(property.userId);
+        console.log("existingConversation below");
+        console.log(existingConversation);
+        setConversation(existingConversation);
       } catch (e) {
         alert(e);
         // console.log(profile.userId);
@@ -71,14 +72,31 @@ export default function PropertyChat(props) {
     onLoad();
   }, [props.match.params.id]);
 
+  function createConversation(propertyOwnerId) {
+    return API.post("properties", `/properties/${props.match.params.id}/chat`, {
+      body: {
+        propertyOwner: propertyOwnerId,
+      }
+    });
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
 
     setIsLoading(true);
 
     try {
-      const response = await sendMessage({
-        message,
+      if(conversation == null) {
+        console.log("Existing conversation below");
+        console.log(conversation);
+        const newConversation = await createConversation(property.userId);
+        console.log(newConversation);
+        setConversation(newConversation);
+      };
+      const response = await createMessage({
+        message: message,
+        conversationId: conversation.conversationId,
+        propertyOwner: profile.userId,
       });
       console.log(response);
       console.log("testing");
@@ -90,15 +108,9 @@ export default function PropertyChat(props) {
     }
   }
 
-  function sendMessage() {
-    return API.post("properties", `/properties/${props.match.params.id}/chat`, {
-      body: {
-          // senderId: profile,
-          message,
-      },
-      queryStringParameters: {
-        senderId: property.userId,
-      },
+  function createMessage(message) {
+    return API.post("properties", `/properties/${props.match.params.id}/message`, {
+      body: message,
     });
   }
 
