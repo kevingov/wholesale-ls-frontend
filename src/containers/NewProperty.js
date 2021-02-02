@@ -5,6 +5,9 @@ import {
   FormGroup,
   Form,
   Breadcrumb,
+  Col,
+  Row,
+  Modal
 } from "react-bootstrap";
 import Dropdown from "react-dropdown";
 import DatePicker from "react-datepicker";
@@ -20,6 +23,18 @@ import "react-datepicker/dist/react-datepicker.css";
 import checkmarkIcon from "../assets/checkmark-icon.png";
 import backIcon from "../assets/back-icon-green.png";
 import imageUploadIcon from "../assets/image-upload-icon.png";
+import PropertiesMap from "../components/PropertiesMap";
+import mapPinIcon from "../assets/map-pin-icon.png";
+import Slider from "../components/Slider";
+import { numberWithCommas } from "../helper";
+import config from "../config";
+
+const images = [
+  "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
+  "https://images.unsplash.com/photo-1470341223622-1019832be824?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2288&q=80",
+  "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2094&q=80",
+  "https://images.unsplash.com/photo-1534161308652-fdfcf10f62c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2174&q=80",
+];
 
 export default function PropertyMultiForm(props) {
   // const [form, setForm] = useState({
@@ -78,6 +93,12 @@ export default function PropertyMultiForm(props) {
   const [yearBuilt, setYearBuilt] = useState("");
   const [lotSize, setLotSize] = useState("");
   const [associationFees, setAssociationFees] = useState("");
+
+  const [profile, setProfile] = useState(null);
+  const [sliderActiveIndex, setSliderActiveIndex] = useState(0);
+  const [viewCreateAccountModal, setViewCreateAccountModal] = useState(null);
+  const [infoSent, setInfoSent] = useState(false);
+  const [fullSliderActive, setFullSliderActive] = useState(false);
 
   const uploadFileRef = useRef();
   const [step, setStep] = useState(1);
@@ -202,6 +223,15 @@ export default function PropertyMultiForm(props) {
       })
     );
   }
+
+  const toggleFullScreenSlider = (sliderIndex) => {
+    if (fullSliderActive) {
+      document.body.style.overflow = "unset";
+    } else {
+      document.body.style.overflow = "hidden";
+    }
+    setFullSliderActive(!fullSliderActive);
+  };
 
   return (
     <div className='Index'>
@@ -599,7 +629,170 @@ export default function PropertyMultiForm(props) {
                 </Fragment>
               ) : null}
 
-              {/* {step === 6 ?  } */}
+              {step === 6 ? (
+                <Fragment>
+                  <div className='ViewProperty__Wrapper'>
+                    
+                      <div>
+                      <div>
+                        <div className='ViewProperty__Header'>
+                          <h2>{title}</h2>
+                          <div className='ViewProperty__Address'>
+                            <img src={mapPinIcon} alt='Map Pin Icon' />
+                            <p>{address}</p>
+                          </div>
+                        </div>
+
+                        <div className='ViewProperty__Row-Highlights'>
+                          {bedroom && <div>{bedroom} Bedrooms</div>}
+                          {bathroom && (
+                            <div>{bathroom} Bathrooms</div>
+                          )}
+                          {propertyType && <div>{propertyType}</div>}
+                        </div>
+                        <Row className='equal'>
+                          <Col md={6}>
+                            <div className='ViewPropertyCard'>
+                              <div className='ViewPropertyCard__Image-Container'>
+                                <div className='ViewPropertyCard__Image-Highlight'>
+                                  ${numberWithCommas(price)}
+                                </div>
+                                <Slider
+                                  updateActiveIndex={setSliderActiveIndex}
+                                  toggleFullScreen={toggleFullScreenSlider}
+                                  activeIndex={sliderActiveIndex}
+                                  slides={images}
+                                />
+                              </div>
+                              <div className='ViewPropertyCard__Details'>
+                                <div className='CardContainer'>
+                                  <div className='ViewPropertyCard__ContactProfile'>
+                                    <img
+                                      className='ViewPropertyCard__ContactProfilePic'
+                                      // alt={`${profile.firstName} ${profile.lastName} avatar`}
+                                      // src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${profile.image}`}
+                                    />
+                                    <div className='ViewPropertyCard__ContactInfo'>
+                                      <b className='ViewPropertyCard__PostedBy'>
+                                        Posted By 
+                                        {/* {profile.firstName} {profile.lastName} */}
+                                        {/* {lastName} */}
+                                      </b>
+                                      <p className='lightText'>(647) XXX-XXXX</p>
+                                    </div>
+                                  </div>
+                                  {infoSent ? (
+                                    <p>info is sent</p>
+                                  ) : (
+                                    <div>
+                                      <button
+                                        className='ViewPropertyCard__ContactButton secondary-btn'
+                                      >
+                                        Contact
+                                      </button>
+                                      </div>
+                                    // </a>
+                                  )}
+                                </div>
+                                <hr className='ViewPropertyCard__Separator' />
+                                <div className='CardContainer'>
+                                  <table className='ViewPropertyCard__PriceBreakdown'>
+                                    <tbody>
+                                      <tr>
+                                        <td>After Repair Value</td>
+                                        <td>$ {numberWithCommas(arvPrice)}</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Asking Price</td>
+                                        <td>$ {numberWithCommas(price)}</td>
+                                      </tr>
+                                      <tr>
+                                        <td>Estimated Cost of Repairs</td>
+                                        <td>$0</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <hr className='ViewPropertyCard__Separator' />
+                                <div className='CardContainer'>
+                                  <p className='midBold'>Estimated Profit</p>
+                                  <div className='ViewPropertyCard__EstimatedReturns'>
+                                    <div className='ViewPropertyCard__PercentageReturns'>
+                                      {(
+                                        ((arvPrice - price) /
+                                          price) *
+                                        100
+                                      ).toFixed(2) + "%"}
+                                    </div>
+                                    <p className='midBold'>
+                                      ${" "}
+                                      {(
+                                        arvPrice - price
+                                      ).toLocaleString()}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </Col>
+
+                          <Col md={6}>
+                            <div className='ViewProperty__Details'>
+                              <div className='ViewProperty__Desc'>
+                                <h3>Property Details</h3>
+                                <p className='lightText'>{description}</p>
+                                <table className='ViewProperty__DetailsTable'>
+                                  <tbody>
+                                    <tr>
+                                      <td>Bedrooms</td>
+                                      <td>{bedroom}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Bathrooms</td>
+                                      <td>{bathroom}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Built</td>
+                                      <td>2010</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Lot Size</td>
+                                      <td>33.6 x 130 FT; Irregular - Irregular</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Parking Type</td>
+                                      <td>{parking}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Property Type</td>
+                                      <td>{propertyType}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <div className='ViewProperty__Desc'>
+                                <h3>Property Needs</h3>
+                                <p>{propertyNeeds}</p>
+                              </div>
+                              <div className='ViewProperty__Desc'>
+                                <h3>Why this Property?</h3>
+                                <p>{whyThisProperty}</p>
+                              </div>
+                              <div className='ViewProperty__Desc'>
+                                <h3>Comparable Properties</h3>
+                                <p>{comparable}</p>
+                              </div>
+                            </div>
+                            <div className='ViewProperty__MapContainer'>
+                              <PropertiesMap />
+                            </div>
+                          </Col>
+                        </Row>
+                      </div>
+                      </div>
+                  </div>
+                </Fragment>
+              ) : null}
             </Form>
             <div className='MultiForm__btn-container'>
               {step > 1 && (
@@ -611,7 +804,7 @@ export default function PropertyMultiForm(props) {
                   Back
                 </button>
               )}
-              {step < 5 ? (
+              {step < 6 ? (
                 <button
                   className='MultiForm__btn btn'
                   onClick={() => setStep(step + 1)}
