@@ -272,7 +272,7 @@ export default function ViewProperty(props) {
                       </div>
                     </div>
                     <div className='ViewProperty__MapContainer'>
-                      <PropertiesMap />
+                      <PropertiesMap propertySelected={property} />
                     </div>
                   </Col>
                 </Row>

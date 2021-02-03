@@ -115,6 +115,10 @@
   overflow-y: scroll;
 }
 
+.Properties__Results h2 {
+  line-height: 30px;
+}
+
 .Properties__Results-Found {
   margin-top: 20px;
   color: #7f8fa4;
