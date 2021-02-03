@@ -7,33 +7,20 @@ import Loading from "./Loading";
 import "./Properties.css";
 import PropertiesMap from "../components/PropertiesMap";
 import PropertiesCard from "../components/PropertiesCard";
-import openDropdownIcon from "../assets/open-dropdown-icon.png";
-import closeDropdownIcon from "../assets/close-dropdown-icon.png";
 
 export default function Properties(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [properties, setProperties] = useState([]);
-  const [searchInput, setSearchInput] = useState("");
-  const [searchDropdownExpanded, setSearchDropdownExpanded] = useState(false);
   const [locationSelected, setLocationSelected] = useState("Toronto");
+  const [propertySelected, setPropertySelected] = useState(null);
+  const geocoderRef = useRef(null);
+
   const [filterPropertyType, setFilterPropertyType] = useState({
     value: "All",
   });
   const [filterBedrooms, setFilterBedrooms] = useState({ value: 0 });
   const [filterBathrooms, setFilterBathrooms] = useState({ value: 0 });
   const [filterSort, setFilterSort] = useState({ value: "" });
-
-  const geocoderRef = useRef(null);
-  const LOCATIONS_LIST = [
-    "Toronto",
-    "Vaughan",
-    "Markham",
-    "North York",
-    "Scarborough",
-    "Brampton",
-    "Mississauga",
-    "Richmond Hill",
-  ];
 
   useEffect(() => {
     async function onLoad() {
@@ -43,7 +30,6 @@ export default function Properties(props) {
       } catch (e) {
         alert(e);
       }
-
       setIsLoading(false);
     }
 
@@ -109,8 +95,6 @@ export default function Properties(props) {
 
   const onSelectDropdownLocation = (event) => {
     const location = event.currentTarget.getAttribute("data-location");
-    setSearchInput(location);
-    setSearchDropdownExpanded(false);
     setLocationSelected(location);
   };
 
@@ -122,44 +106,6 @@ export default function Properties(props) {
             controlId='filterPropertyType'
             className='Locations-Search-Bar'
           >
-            {/* <div className='Locations-Search-Bar__Wrapper'>
-              <input
-                type='text'
-                placeholder='Search'
-                value={searchInput}
-                onChange={(input) => setSearchInput(input.value)}
-                onBlur={() => setSearchDropdownExpanded(false)}
-              />
-              <a
-                onClick={() =>
-                  setSearchDropdownExpanded(!searchDropdownExpanded)
-                }
-              >
-                <img
-                  src={
-                    searchDropdownExpanded
-                      ? closeDropdownIcon
-                      : openDropdownIcon
-                  }
-                />
-              </a>
-            </div>
-            <div
-              className={`Locations-Search-Bar__Dropdown-Content ${
-                searchDropdownExpanded ? "active" : ""
-              }`}
-            >
-              {LOCATIONS_LIST.map((item) => (
-                <a
-                  onClick={onSelectDropdownLocation}
-                  data-location={item}
-                  key={item}
-                >
-                  {item}
-                </a>
-              ))}
-            </div> */}
-
             <div
               ref={geocoderRef}
               className='Locations-Search-Bar__Wrapper'
@@ -293,7 +239,7 @@ export default function Properties(props) {
             </p>
             {searchProperties.length > 0 ? (
               <Fragment>
-                <h2>Properties in Toronto</h2>
+                <h2>Properties in {locationSelected}</h2>
                 {searchProperties.map((property, index) => (
                   <PropertiesCard
                     key={("Property", index)}
@@ -315,6 +261,10 @@ export default function Properties(props) {
               properties={properties}
               location={locationSelected}
               geocoderRef={geocoderRef}
+              propertySelected={propertySelected}
+              setPropertySelected={setPropertySelected}
+              locationSelected={locationSelected}
+              setLocationSelected={setLocationSelected}
             />
           </div>
         </div>

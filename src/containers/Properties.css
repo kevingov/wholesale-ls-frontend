@@ -140,6 +140,10 @@
   margin: 10px 0 0 10px;
 }
 
+.mapboxgl-ctrl-geocoder.mapboxgl-ctrl {
+  width: 90%;
+}
+
 .markerImage {
-  width: 30px;
+  width: 26px;
 }
