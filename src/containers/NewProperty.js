@@ -2,6 +2,8 @@ import React, { useState, useRef, Fragment } from "react";
 import {
   ControlLabel,
   FormControl,
+  FormControlFeedback,
+  FormLabel,
   FormGroup,
   Form,
   Breadcrumb,
@@ -28,6 +30,7 @@ import mapPinIcon from "../assets/map-pin-icon.png";
 import Slider from "../components/Slider";
 import { numberWithCommas } from "../helper";
 import config from "../config";
+import LoaderButton from "../components/LoaderButton";
 
 const images = [
   "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
@@ -113,7 +116,9 @@ export default function PropertyMultiForm(props) {
 
 
 
+
   async function handleSubmit(event) {
+    
     event.preventDefault();
 
     setIsLoading(true);
@@ -149,12 +154,13 @@ export default function PropertyMultiForm(props) {
         lotSize,
         associationFees,
       });
+      setIsLoading(false);
       props.history.push(`/properties/${property.propertyId}`);
     } catch (e) {
       alert(e);
       setIsLoading(false);
     }
-  }
+  };
 
   function createProperty(property) {
     return API.post("properties", "/properties", {
@@ -168,6 +174,7 @@ export default function PropertyMultiForm(props) {
 
   function updatePropertyType(propertyType) {
     setPropertyType(propertyType);
+    console.log(propertyType);
   }
 
   async function handleSelect(val) {
@@ -233,6 +240,31 @@ export default function PropertyMultiForm(props) {
     setFullSliderActive(!fullSliderActive);
   };
 
+  function validateForm() {
+    return (
+      title.length > 0 &&
+      tagline.length > 0 &&
+      address.length > 0 &&
+      yearBuilt > 0 &&
+      lotSize > 0 &&
+      associationFees > 0 &&
+      propertyType.value.length > 0 &&
+      propertyStatus.value.length > 0 &&
+      bedroom > 0 && 
+      bathroom > 0 && 
+      description.length > 0 && 
+      whyThisProperty.length > 0 &&
+      propertyNeeds.length > 0 &&
+      comparable.length > 0 && 
+      offerDate > 0 &&
+      closeDate > 0 &&
+      groupShowingDate > 0 &&
+      price > 0 &&
+      nearbyPrice > 0 && 
+      arvPrice > 0
+    );
+  }
+
   return (
     <div className='Index'>
       <div className='Breadcrumbs'>
@@ -266,7 +298,7 @@ export default function PropertyMultiForm(props) {
                 })}
               </ul>
             </div>
-            <Form className='MultiForm__Section'>
+            <Form className='MultiForm__Section' onSubmit={handleSubmit}>
               {step === 1 ? (
                 <Fragment>
                   <div className='MultiForm__Title'>
@@ -276,16 +308,19 @@ export default function PropertyMultiForm(props) {
                   <FormGroup controlId='title'>
                     <ControlLabel>Title</ControlLabel>
                     <FormControl
+                      required
                       value={title}
                       type='text'
                       placeholder='Beautiful detached house in downtown London'
                       onChange={(e) => setTitle(e.target.value)}
                       name='title'
                     />
+                  {/* <FormControlFeedback>Looks Good!</FormControlFeedback> */}
                   </FormGroup>
                   <FormGroup controlId='tagline'>
                     <ControlLabel>Tagline</ControlLabel>
                     <FormControl
+                      required
                       value={tagline}
                       type='text'
                       placeholder='I.e. $30k under Market Value'
@@ -632,26 +667,23 @@ export default function PropertyMultiForm(props) {
               {step === 6 ? (
                 <Fragment>
                   <div className='ViewProperty__Wrapper'>
-                    
-                      <div>
-                      <div>
-                        <div className='ViewProperty__Header'>
-                          <h2>{title}</h2>
-                          <div className='ViewProperty__Address'>
-                            <img src={mapPinIcon} alt='Map Pin Icon' />
-                            <p>{address}</p>
-                          </div>
-                        </div>
+                    <div className='ViewProperty__Header'>
+                      <h2>{title}</h2>
+                      <div className='ViewProperty__Address'>
+                        <img src={mapPinIcon} alt='Map Pin Icon' />
+                        <p>{address}</p>
+                      </div>
+                    </div>
 
-                        <div className='ViewProperty__Row-Highlights'>
-                          {bedroom && <div>{bedroom} Bedrooms</div>}
-                          {bathroom && (
-                            <div>{bathroom} Bathrooms</div>
-                          )}
-                          {propertyType && <div>{propertyType}</div>}
-                        </div>
-                        <Row className='equal'>
-                          <Col md={6}>
+                    <div className='ViewProperty__Row-Highlights'>
+                      {bedroom && <div>{bedroom} Bedrooms</div>}
+                      {bathroom && (
+                        <div>{bathroom} Bathrooms</div>
+                      )}
+                      {propertyType.value && <div>{propertyType.value}</div>}
+                    </div>
+                    <Row className='equal'>
+                      <Col md={6}>
                             <div className='ViewPropertyCard'>
                               <div className='ViewPropertyCard__Image-Container'>
                                 <div className='ViewPropertyCard__Image-Highlight'>
@@ -664,19 +696,20 @@ export default function PropertyMultiForm(props) {
                                   slides={images}
                                 />
                               </div>
+
                               <div className='ViewPropertyCard__Details'>
                                 <div className='CardContainer'>
                                   <div className='ViewPropertyCard__ContactProfile'>
-                                    <img
+                                    {/* <img
                                       className='ViewPropertyCard__ContactProfilePic'
-                                      // alt={`${profile.firstName} ${profile.lastName} avatar`}
-                                      // src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${profile.image}`}
-                                    />
+                                       alt={`${profile.firstName} ${profile.lastName} avatar`}
+                                       src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${profile.image}`}
+                                    /> */}
                                     <div className='ViewPropertyCard__ContactInfo'>
                                       <b className='ViewPropertyCard__PostedBy'>
-                                        Posted By 
-                                        {/* {profile.firstName} {profile.lastName} */}
-                                        {/* {lastName} */}
+                                        Posted By
+                                        {/* {profile.firstName} {profile.lastName}
+                                        {lastName} */}
                                       </b>
                                       <p className='lightText'>(647) XXX-XXXX</p>
                                     </div>
@@ -691,7 +724,7 @@ export default function PropertyMultiForm(props) {
                                         Contact
                                       </button>
                                       </div>
-                                    // </a>
+                                    
                                   )}
                                 </div>
                                 <hr className='ViewPropertyCard__Separator' />
@@ -734,10 +767,10 @@ export default function PropertyMultiForm(props) {
                                 </div>
                               </div>
                             </div>
-                          </Col>
-
-                          <Col md={6}>
-                            <div className='ViewProperty__Details'>
+                        </Col>
+                        
+                        <Col md={6}>
+                        <div className='ViewProperty__Details'>
                               <div className='ViewProperty__Desc'>
                                 <h3>Property Details</h3>
                                 <p className='lightText'>{description}</p>
@@ -765,7 +798,7 @@ export default function PropertyMultiForm(props) {
                                     </tr>
                                     <tr>
                                       <td>Property Type</td>
-                                      <td>{propertyType}</td>
+                                      <td>{propertyType.value}</td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -786,13 +819,17 @@ export default function PropertyMultiForm(props) {
                             <div className='ViewProperty__MapContainer'>
                               <PropertiesMap />
                             </div>
-                          </Col>
-                        </Row>
-                      </div>
-                      </div>
+                        </Col>
+                        
+                    </Row>
+
+
                   </div>
+
                 </Fragment>
               ) : null}
+                
+
             </Form>
             <div className='MultiForm__btn-container'>
               {step > 1 && (
@@ -804,18 +841,40 @@ export default function PropertyMultiForm(props) {
                   Back
                 </button>
               )}
-              {step < 6 ? (
+              {step < 5 && (
                 <button
                   className='MultiForm__btn btn'
                   onClick={() => setStep(step + 1)}
                 >
                   Next
                 </button>
-              ) : (
-                <button className='MultiForm__btn btn' onClick={handleSubmit}>
-                  Submit
-                </button>
               )}
+              {step < 6 && step > 4 && (
+                <LoaderButton
+                className='MultiForm__btn btn'
+                type='submit'
+                bsSize='small'
+                isLoading={isLoading}
+                disabled={!validateForm()}
+                onClick={() => setStep(step + 1)}
+              >
+                Preview
+              </LoaderButton>
+              )}
+
+              {step > 5 && (
+                <LoaderButton
+                className='MultiForm__btn btn'
+                type='submit'
+                bsSize='small'
+                isLoading={isLoading}
+                disabled={!validateForm()}
+                onClick={handleSubmit}
+              >
+                Submit
+              </LoaderButton>
+              )}
+              
             </div>
           </div>
         </div>

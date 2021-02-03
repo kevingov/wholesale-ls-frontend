@@ -79,15 +79,9 @@ export default ({ childProps }) => (
       props={childProps}
     />
     <AuthenticatedRoute
-      path='/profile/edit'
-      exact
-      component={EditProfile}
-      props={childProps}
-    />
-    <AuthenticatedRoute
       path='/profile'
       exact
-      component={ViewProfile}
+      component={EditProfile}
       props={childProps}
     />
     <AppliedRoute
