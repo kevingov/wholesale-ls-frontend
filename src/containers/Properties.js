@@ -93,10 +93,10 @@ export default function Properties(props) {
     );
   }
 
-  const onSelectDropdownLocation = (event) => {
-    const location = event.currentTarget.getAttribute("data-location");
-    setLocationSelected(location);
-  };
+  // const onSelectDropdownLocation = (event) => {
+  //   const location = event.currentTarget.getAttribute("data-location");
+  //   setLocationSelected(location);
+  // };
 
   return (
     <div className='Index'>
