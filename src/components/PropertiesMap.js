@@ -40,6 +40,7 @@ export const PropertiesMap = ({
     latitude: 43.6534817,
     longitude: -79.3839347,
     zoom: 10,
+    searchResultLayer: null,
   });
 
   useEffect(() => {
