@@ -72,23 +72,19 @@ export const PropertiesMap = ({
       .catch((err) => console.log(err.response));
   };
 
-  const handleViewportChange = useCallback((newViewport) => {
-    const { width, height, ...etc } = newViewport;
-    setViewport(etc);
-  }, []);
-
-  const handleGeocoderViewportChange = useCallback(
-    (newViewport) => {
-      const geocoderDefaultOverrides = {
-        transitionDuration: 800,
-      };
-      return handleViewportChange({
-        ...newViewport,
-        ...geocoderDefaultOverrides,
-      });
-    },
-    [handleViewportChange]
+  const handleViewportChange = useCallback(
+    (newViewport) => setViewport(newViewport),
+    []
   );
+
+  const handleGeocoderViewportChange = useCallback((newViewport) => {
+    const geocoderDefaultOverrides = { transitionDuration: 1000 };
+
+    return handleViewportChange({
+      ...newViewport,
+      ...geocoderDefaultOverrides,
+    });
+  }, []);
 
   const closePopup = () => {
     setPropertySelected(null);

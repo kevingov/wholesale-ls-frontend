@@ -263,7 +263,6 @@ export default function Properties(props) {
               geocoderRef={geocoderRef}
               propertySelected={propertySelected}
               setPropertySelected={setPropertySelected}
-              locationSelected={locationSelected}
               setLocationSelected={setLocationSelected}
             />
           </div>
