@@ -29,8 +29,8 @@ const layerStyle = {
 export const PropertiesMap = ({
   properties,
   geocoderRef,
-  locationSelected,
-  setLocationSelected,
+  location,
+  setLocation,
   propertySelected,
   setPropertySelected,
 }) => {
@@ -44,12 +44,13 @@ export const PropertiesMap = ({
   });
 
   useEffect(() => {
+    console.log("location", location);
     const province = "Ontario";
     const URI = encodeURI(
-      `https://nominatim.openstreetmap.org/search/${locationSelected} ${province}?format=json&limit=1&polygon_geojson=1`
+      `https://nominatim.openstreetmap.org/search/${location} ${province}?format=json&limit=1&polygon_geojson=1`
     ); // nominatim API
     handleGeojsonFeatures(URI);
-  }, [locationSelected]);
+  }, [location]);
 
   const handleGeojsonFeatures = (URI) => {
     axios
@@ -66,6 +67,7 @@ export const PropertiesMap = ({
               },
             },
           ];
+          console.log("feature2", feature);
           setPolygonFeatures(feature);
         }
       })
@@ -78,17 +80,13 @@ export const PropertiesMap = ({
   );
 
   const handleGeocoderViewportChange = useCallback((newViewport) => {
-    const geocoderDefaultOverrides = { transitionDuration: 1000 };
+    const geocoderDefaultOverrides = { transitionDuration: 800 };
 
     return handleViewportChange({
       ...newViewport,
       ...geocoderDefaultOverrides,
     });
   }, []);
-
-  const closePopup = () => {
-    setPropertySelected(null);
-  };
 
   const loadPropertyMarkers = () => {
     if (properties) {
@@ -119,9 +117,9 @@ export const PropertiesMap = ({
       {...viewport}
       width='100%'
       height='100%'
-      onViewportChange={handleViewportChange}
       mapboxApiAccessToken={TOKEN}
       mapStyle='mapbox://styles/mapbox/navigation-preview-day-v2'
+      onViewportChange={handleViewportChange}
     >
       <Geocoder
         mapRef={mapRef}
@@ -133,7 +131,7 @@ export const PropertiesMap = ({
         types='place, locality, neighborhood'
         onResult={(res) => {
           const { text: location } = res.result;
-          setLocationSelected(location);
+          setLocation(location);
         }}
       />
       <NavigationControl />
@@ -142,7 +140,7 @@ export const PropertiesMap = ({
         <Popup
           latitude={parseFloat(propertySelected.latitude)}
           longitude={parseFloat(propertySelected.longitude)}
-          onClose={closePopup}
+          onClose={() => setPropertySelected(null)}
         >
           <PropertiesCard property={propertySelected} />
         </Popup>

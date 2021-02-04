@@ -11,7 +11,7 @@ import PropertiesCard from "../components/PropertiesCard";
 export default function Properties(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [properties, setProperties] = useState([]);
-  const [locationSelected, setLocationSelected] = useState("Toronto");
+  const [location, setLocation] = useState("Toronto");
   const [propertySelected, setPropertySelected] = useState(null);
   const geocoderRef = useRef(null);
 
@@ -34,7 +34,7 @@ export default function Properties(props) {
     }
 
     onLoad();
-  }, [props.isAuthenticated, locationSelected]);
+  }, [props.isAuthenticated, location]);
 
   function loadProperties() {
     return API.get("properties", "/properties", {
@@ -92,10 +92,10 @@ export default function Properties(props) {
       (a, b) => Number(b.price) - Number(a.price)
     );
   }
-
+  console.log(location);
   // const onSelectDropdownLocation = (event) => {
   //   const location = event.currentTarget.getAttribute("data-location");
-  //   setLocationSelected(location);
+  //   setLocation(location);
   // };
 
   return (
@@ -239,7 +239,7 @@ export default function Properties(props) {
             </p>
             {searchProperties.length > 0 ? (
               <Fragment>
-                <h2>Properties in {locationSelected}</h2>
+                <h2>Properties in {location}</h2>
                 {searchProperties.map((property, index) => (
                   <PropertiesCard
                     key={("Property", index)}
@@ -258,12 +258,12 @@ export default function Properties(props) {
           <div className='Properties__MapContainer'>
             <PropertiesMap
               className='mapboxgl-map'
-              properties={properties}
-              location={locationSelected}
               geocoderRef={geocoderRef}
+              properties={properties}
+              location={location}
+              setLocation={setLocation}
               propertySelected={propertySelected}
               setPropertySelected={setPropertySelected}
-              setLocationSelected={setLocationSelected}
             />
           </div>
         </div>
