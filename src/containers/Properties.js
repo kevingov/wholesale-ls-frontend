@@ -92,7 +92,6 @@ export default function Properties(props) {
       (a, b) => Number(b.price) - Number(a.price)
     );
   }
-  console.log(location);
   // const onSelectDropdownLocation = (event) => {
   //   const location = event.currentTarget.getAttribute("data-location");
   //   setLocation(location);

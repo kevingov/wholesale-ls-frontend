@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, {
+  Fragment,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from "react";
 import MapGL, {
   NavigationControl,
   Marker,
@@ -44,7 +50,6 @@ export const PropertiesMap = ({
   });
 
   useEffect(() => {
-    console.log("location", location);
     const province = "Ontario";
     const URI = encodeURI(
       `https://nominatim.openstreetmap.org/search/${location} ${province}?format=json&limit=1&polygon_geojson=1`
@@ -67,7 +72,6 @@ export const PropertiesMap = ({
               },
             },
           ];
-          console.log("feature2", feature);
           setPolygonFeatures(feature);
         }
       })
@@ -81,7 +85,7 @@ export const PropertiesMap = ({
 
   const handleGeocoderViewportChange = useCallback((newViewport) => {
     const geocoderDefaultOverrides = { transitionDuration: 800 };
-
+    console.log(newViewport);
     return handleViewportChange({
       ...newViewport,
       ...geocoderDefaultOverrides,
@@ -121,18 +125,19 @@ export const PropertiesMap = ({
       mapStyle='mapbox://styles/mapbox/navigation-preview-day-v2'
       onViewportChange={handleViewportChange}
     >
+      {/* <div
+        onClick={handleLocationSelection}
+        style={{ width: "50px;", height: "50px", backgroundColor: "#000" }}
+      /> */}
       <Geocoder
         mapRef={mapRef}
+        onResult={setLocationFromResult}
         containerRef={geocoderRef}
         onViewportChange={handleGeocoderViewportChange}
         mapboxApiAccessToken={TOKEN}
         marker={false}
         countries='CA'
         types='place, locality, neighborhood'
-        onResult={(res) => {
-          const { text: location } = res.result;
-          setLocation(location);
-        }}
       />
       <NavigationControl />
       {loadPropertyMarkers()}
