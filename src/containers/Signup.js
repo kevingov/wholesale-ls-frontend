@@ -35,27 +35,10 @@ export default function Signup(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isBuyer, setIsBuyer] = useState(false);
   const [isWholesaler, setIsWholesaler] = useState(false);
-  // const [file, setFile] = useState(false);
+
 
   useEffect(() => {}, []);
 
-  // function handleFileChange(event) {
-  //   setFile(event.target.files[0]);
-  // }
-
-  // async function s3Upload(file) {
-  //   const filename = `${Date.now()}-${file.name}`;
-
-  //   try {
-  //     const stored = await Storage.put(filename, file, {
-  //       level: "public",
-  //       contentType: file.type,
-  //     });
-  //     return stored.key;
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
   console.log(isWholesaler, isBuyer);
 
   function accountForm() {
@@ -244,7 +227,7 @@ export default function Signup(props) {
       await Auth.confirmSignUp(fields.email, fields.confirmationCode);
       await Auth.signIn(fields.email, fields.password);
       await createProfile();
-      props.userHasAuthenticated(true);
+      // props.userHasAuthenticated(true);
       props.history.push("/");
     } catch (e) {
       alert(e.message);

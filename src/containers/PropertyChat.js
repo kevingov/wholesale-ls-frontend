@@ -26,6 +26,7 @@ export default function PropertyChat(props) {
   const [viewCreateAccountModal, setViewCreateAccountModal] = useState(null);
   const [message, setMessage] = useState("");
   const [conversation, setConversation] = useState(null);
+  const [conversationMessages, setConversationMessages] = useState(null);
 
   useEffect(() => {
     function loadProperty() {
@@ -42,6 +43,14 @@ export default function PropertyChat(props) {
           propertyOwner: propertyOwnerId,
         }
       });
+    }
+
+    function loadConversationMessages(conversationId) {
+      return API.get("properties", `/conversation/messages`, {
+        queryStringParameters: {
+          conversationId: conversationId
+        }
+      })
     }
 
     
@@ -63,6 +72,18 @@ export default function PropertyChat(props) {
         console.log("existingConversation below");
         console.log(existingConversation);
         setConversation(existingConversation);
+        console.log("after setConversation");
+        console.log(conversation);
+        if(existingConversation) {
+          const existingConversationMessages = await loadConversationMessages(existingConversation.conversationId);
+          setConversationMessages(existingConversationMessages);
+          console.log("existingConversationMessages Below");
+          console.log(existingConversationMessages);
+        };
+        console.log("out of if statement existing conversation messages");
+        console.log(conversationMessages);
+        console.log(conversation);
+        console.log(property);
       } catch (e) {
         alert(e);
         // console.log(profile.userId);
@@ -99,7 +120,6 @@ export default function PropertyChat(props) {
         propertyOwner: profile.userId,
       });
       console.log(response);
-      console.log("testing");
       props.history.push(`/properties/${property.propertyId}/chat`);
     } catch (e) {
       alert(e);
@@ -196,16 +216,16 @@ export default function PropertyChat(props) {
 
                   
                     <ul className="message-list">
-                      {testMessages.map((testMessages, index) => {
+                      {/* {conversationMessages.map((conversationMessages, index) => {
                         return (
                           <li 
                           // key={testMessages.conversationId} 
                           className="message">
-                            <div>{testMessages.senderId}</div>
-                            <div>{testMessages.content}</div>
+                            <div>{conversationMessages.participants}</div>
+                            <div>{conversationMessages.message}</div>
                           </li>
                         )
-                      })}
+                      })} */}
                     </ul>
 
 

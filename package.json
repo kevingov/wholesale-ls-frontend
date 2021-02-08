@@ -6,6 +6,7 @@
     "@emotion/css": "^11.0.0",
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
+    "@sentry/serverless": "^6.1.0",
     "aws-amplify": "^3.0.18",
     "cra-template": "1.0.3",
     "deck.gl": "^8.3.5",
