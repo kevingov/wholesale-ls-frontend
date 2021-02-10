@@ -216,7 +216,9 @@ export default function PropertyChat(props) {
 
                   
                     <ul className="message-list">
-                      {/* {conversationMessages.map((conversationMessages, index) => {
+                      {
+                      conversationMessages &&
+                      conversationMessages.map((conversationMessages, index) => {
                         return (
                           <li 
                           // key={testMessages.conversationId} 
@@ -225,7 +227,7 @@ export default function PropertyChat(props) {
                             <div>{conversationMessages.message}</div>
                           </li>
                         )
-                      })} */}
+                      })}
                     </ul>
 
 
