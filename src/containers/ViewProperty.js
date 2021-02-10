@@ -10,7 +10,7 @@ import { numberWithCommas } from "../helper";
 import backArrowIcon from "../assets/back-icon.png";
 import mapPinIcon from "../assets/map-pin-icon.png";
 import Slider from "../components/Slider";
-import PropertiesMap from "../components/PropertiesMap";
+import PropertyMap from "../components/PropertyMap";
 
 const images = [
   "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
@@ -52,6 +52,8 @@ export default function ViewProperty(props) {
         setPropertyOwner(userId === property.userId);
         setProperty(property);
         setIsLoading(true);
+        console.log("here is profile");
+        console.log(profile);
       } catch (e) {
         alert(e);
       }
@@ -79,7 +81,7 @@ export default function ViewProperty(props) {
     });
   }
 
-  const toggleFullScreenSlider = (sliderIndex) => {
+  const toggleFullScreenSlider = () => {
     if (fullSliderActive) {
       document.body.style.overflow = "unset";
     } else {
@@ -87,6 +89,7 @@ export default function ViewProperty(props) {
     }
     setFullSliderActive(!fullSliderActive);
   };
+  console.log(props);
 
   return (
     <div className='Index'>
@@ -113,169 +116,194 @@ export default function ViewProperty(props) {
           <div className='ViewProperty__Wrapper'>
             {isLoading ? (
               <div>
-                <div className='backLink'>
-                  <img src={backArrowIcon} alt='Back Arrow Icon' />
-                  <a className='navLink' href={`/properties`}>
-                    Back to List
-                  </a>
-                </div>
-
-                <div className='ViewProperty__Header'>
-                  <h2>{property.title}</h2>
-                  <div className='ViewProperty__Address'>
-                    <img src={mapPinIcon} alt='Map Pin Icon' />
-                    <p>{property.address}</p>
+                {propertyOwner ? (
+                  <div>
+                    <a
+                      href={`/properties/${property.propertyId}/edit`}
+                      className='other-btn'
+                    >
+                      Edit Property
+                    </a>
+                    <br />
+                    <br />
+                    <br />
                   </div>
-                </div>
+                ) : null}
+                <div>
+                  <div className='backLink'>
+                    <img src={backArrowIcon} alt='Back Arrow Icon' />
+                    <a className='navLink' href={`/properties`}>
+                      Back to List
+                    </a>
+                  </div>
 
-                <div className='ViewProperty__Row-Highlights'>
-                  {property.bedroom && <div>{property.bedroom} Bedrooms</div>}
-                  {property.bathroom && (
-                    <div>{property.bathroom} Bathrooms</div>
-                  )}
-                  {property.propertType && <div>{property.propertyType}</div>}
-                </div>
-                <Row className='equal'>
-                  <Col md={6}>
-                    <div className='ViewPropertyCard'>
-                      <div className='ViewPropertyCard__Image-Container'>
-                        <div className='ViewPropertyCard__Image-Highlight'>
-                          ${numberWithCommas(property.price)}
+                  <div className='ViewProperty__Header'>
+                    <h2>{property.title}</h2>
+                    <div className='ViewProperty__Address'>
+                      <img src={mapPinIcon} alt='Map Pin Icon' />
+                      <p>{property.address}</p>
+                    </div>
+                  </div>
+
+                  <div className='ViewProperty__Row-Highlights'>
+                    {property.bedroom && <div>{property.bedroom} Bedrooms</div>}
+                    {property.bathroom && (
+                      <div>{property.bathroom} Bathrooms</div>
+                    )}
+                    {property.propertyType && (
+                      <div>{property.propertyType}</div>
+                    )}
+                  </div>
+                  <Row className='equal'>
+                    <Col md={6}>
+                      <div className='ViewPropertyCard'>
+                        <div className='ViewPropertyCard__Image-Container'>
+                          <div className='ViewPropertyCard__Image-Highlight'>
+                            ${numberWithCommas(property.price)}
+                          </div>
+                          <Slider
+                            updateActiveIndex={setSliderActiveIndex}
+                            toggleFullScreen={toggleFullScreenSlider}
+                            activeIndex={sliderActiveIndex}
+                            slides={images}
+                          />
                         </div>
-                        <Slider
-                          updateActiveIndex={setSliderActiveIndex}
-                          toggleFullScreen={toggleFullScreenSlider}
-                          activeIndex={sliderActiveIndex}
-                          slides={images}
-                        />
-                      </div>
-                      <div className='ViewPropertyCard__Details'>
-                        <div className='CardContainer'>
-                          <div className='ViewPropertyCard__ContactProfile'>
-                            <img
-                              className='ViewPropertyCard__ContactProfilePic'
-                              alt={`${profile.firstName} ${profile.lastName} avatar`}
-                              src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${profile.image}`}
-                            />
-                            <div className='ViewPropertyCard__ContactInfo'>
-                              <b className='ViewPropertyCard__PostedBy'>
-                                Posted By {profile.firstName} {profile.lastName}
-                                {property.lastName}
-                              </b>
-                              <p className='lightText'>(647) XXX-XXXX</p>
+                        <div className='ViewPropertyCard__Details'>
+                          <div className='CardContainer'>
+                            <div className='ViewPropertyCard__ContactProfile'>
+                              <img
+                                className='ViewPropertyCard__ContactProfilePic'
+                                alt={`${profile.firstName} ${profile.lastName} avatar`}
+                                src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${profile.image}`}
+                              />
+                              <div className='ViewPropertyCard__ContactInfo'>
+                                <b className='ViewPropertyCard__PostedBy'>
+                                  Posted By {profile.firstName}{" "}
+                                  {profile.lastName}
+                                  {property.lastName}
+                                </b>
+                                <p className='lightText'>(647) XXX-XXXX</p>
+                              </div>
+                            </div>
+                            {infoSent ? (
+                              <p>info is sent</p>
+                            ) : (
+                              <a
+                                href={`/properties/${property.propertyId}/chat`}
+                              >
+                                <button
+                                  className='ViewPropertyCard__ContactButton secondary-btn'
+                                  // onClick={
+                                  // userEmail
+                                  //   ? () => sendPropertyEmail()
+                                  //   : () => setViewCreateAccountModal(true)
+                                  // }
+                                >
+                                  Contact
+                                </button>
+                              </a>
+                            )}
+                          </div>
+                          <hr className='ViewPropertyCard__Separator' />
+                          <div className='CardContainer'>
+                            <table className='ViewPropertyCard__PriceBreakdown'>
+                              <tbody>
+                                <tr>
+                                  <td>After Repair Value</td>
+                                  <td>
+                                    $ {numberWithCommas(property.arvPrice)}
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>Asking Price</td>
+                                  <td>$ {numberWithCommas(property.price)}</td>
+                                </tr>
+                                <tr>
+                                  <td>Estimated Cost of Repairs</td>
+                                  <td>$0</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                          <hr className='ViewPropertyCard__Separator' />
+                          <div className='CardContainer'>
+                            <p className='midBold'>Estimated Profit</p>
+                            <div className='ViewPropertyCard__EstimatedReturns'>
+                              <div className='ViewPropertyCard__PercentageReturns'>
+                                {(
+                                  ((property.arvPrice - property.price) /
+                                    property.price) *
+                                  100
+                                ).toFixed(2) + "%"}
+                              </div>
+                              <p className='midBold'>
+                                ${" "}
+                                {(
+                                  property.arvPrice - property.price
+                                ).toLocaleString()}
+                              </p>
                             </div>
                           </div>
-                          {infoSent ? (
-                            <p>info is sent</p>
-                          ) : (
-                            <a href={`/properties/${property.propertyId}/chat`}>
-                              <button
-                                className='ViewPropertyCard__ContactButton secondary-btn'
-                                // onClick={
-                                // userEmail
-                                //   ? () => sendPropertyEmail()
-                                //   : () => setViewCreateAccountModal(true)
-                                // }
-                              >
-                                Contact
-                              </button>
-                            </a>
-                          )}
                         </div>
-                        <hr className='ViewPropertyCard__Separator' />
-                        <div className='CardContainer'>
-                          <table className='ViewPropertyCard__PriceBreakdown'>
+                      </div>
+                    </Col>
+
+                    <Col md={6}>
+                      <div className='ViewProperty__Details'>
+                        <div className='ViewProperty__Desc'>
+                          <h3>Property Details</h3>
+                          <p className='lightText'>{property.description}</p>
+                          <table className='ViewProperty__DetailsTable'>
                             <tbody>
                               <tr>
-                                <td>After Repair Value</td>
-                                <td>$ {numberWithCommas(property.arvPrice)}</td>
+                                <td>Bedrooms</td>
+                                <td>{property.bedroom}</td>
                               </tr>
                               <tr>
-                                <td>Asking Price</td>
-                                <td>$ {numberWithCommas(property.price)}</td>
+                                <td>Bathrooms</td>
+                                <td>{property.bathroom}</td>
                               </tr>
                               <tr>
-                                <td>Estimated Cost of Repairs</td>
-                                <td>$0</td>
+                                <td>Built</td>
+                                <td>2010</td>
+                              </tr>
+                              <tr>
+                                <td>Lot Size</td>
+                                <td>33.6 x 130 FT; Irregular - Irregular</td>
+                              </tr>
+                              <tr>
+                                <td>Parking Type</td>
+                                <td>{property.parking}</td>
+                              </tr>
+                              <tr>
+                                <td>Property Type</td>
+                                <td>{property.propertyType}</td>
                               </tr>
                             </tbody>
                           </table>
                         </div>
-                        <hr className='ViewPropertyCard__Separator' />
-                        <div className='CardContainer'>
-                          <p className='midBold'>Estimated Profit</p>
-                          <div className='ViewPropertyCard__EstimatedReturns'>
-                            <div className='ViewPropertyCard__PercentageReturns'>
-                              {(
-                                ((property.arvPrice - property.price) /
-                                  property.price) *
-                                100
-                              ).toFixed(2) + "%"}
-                            </div>
-                            <p className='midBold'>
-                              ${" "}
-                              {(
-                                property.arvPrice - property.price
-                              ).toLocaleString()}
-                            </p>
-                          </div>
+                        <div className='ViewProperty__Desc'>
+                          <h3>Property Needs</h3>
+                          <p>{property.propertyNeeds}</p>
+                        </div>
+                        <div className='ViewProperty__Desc'>
+                          <h3>Why this Property?</h3>
+                          <p>{property.whyThisProperty}</p>
+                        </div>
+                        <div className='ViewProperty__Desc'>
+                          <h3>Comparable Properties</h3>
+                          <p>{property.comparable}</p>
                         </div>
                       </div>
-                    </div>
-                  </Col>
-
-                  <Col md={6}>
-                    <div className='ViewProperty__Details'>
-                      <div className='ViewProperty__Desc'>
-                        <h3>Property Details</h3>
-                        <p className='lightText'>{property.description}</p>
-                        <table className='ViewProperty__DetailsTable'>
-                          <tbody>
-                            <tr>
-                              <td>Bedrooms</td>
-                              <td>{property.bedroom}</td>
-                            </tr>
-                            <tr>
-                              <td>Bathrooms</td>
-                              <td>{property.bathroom}</td>
-                            </tr>
-                            <tr>
-                              <td>Built</td>
-                              <td>2010</td>
-                            </tr>
-                            <tr>
-                              <td>Lot Size</td>
-                              <td>33.6 x 130 FT; Irregular - Irregular</td>
-                            </tr>
-                            <tr>
-                              <td>Parking Type</td>
-                              <td>{property.parking}</td>
-                            </tr>
-                            <tr>
-                              <td>Property Type</td>
-                              <td>{property.propertyType}</td>
-                            </tr>
-                          </tbody>
-                        </table>
+                      <div className='ViewProperty__MapContainer'>
+                        <PropertyMap
+                          latitude={property.latitude}
+                          longitude={property.longitude}
+                        />
                       </div>
-                      <div className='ViewProperty__Desc'>
-                        <h3>Property Needs</h3>
-                        <p>{property.propertyNeeds}</p>
-                      </div>
-                      <div className='ViewProperty__Desc'>
-                        <h3>Why this Property?</h3>
-                        <p>{property.whyThisProperty}</p>
-                      </div>
-                      <div className='ViewProperty__Desc'>
-                        <h3>Comparable Properties</h3>
-                        <p>{property.comparable}</p>
-                      </div>
-                    </div>
-                    <div className='ViewProperty__MapContainer'>
-                      <PropertiesMap propertySelected={property} />
-                    </div>
-                  </Col>
-                </Row>
+                    </Col>
+                  </Row>
+                </div>
               </div>
             ) : (
               <Loading />

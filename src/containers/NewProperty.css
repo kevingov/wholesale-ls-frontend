@@ -15,19 +15,19 @@
   margin-bottom: 20px;
 }
 
-.MultiForm h1 {
+.MultiForm__Title h1 {
   font-size: 22px;
   text-align: center;
 }
 
-.MultiForm h2 {
+.MultiForm__Title h2 {
   font-size: 14px;
   text-align: center;
 }
 
 .MultiForm__Section {
   width: 100%;
-  height: 560px;
+  min-height: 600px;
 }
 
 .MultiForm__Row {
@@ -57,6 +57,15 @@
 }
 .MultiForm__UploadBtn {
   padding: 15px 32px;
+}
+
+.MultiForm__ImgWrapper {
+  width: 100%;
+  object-fit: contain;
+  margin: 15px 0;
+}
+.MultiForm__ImgWrapper > img {
+  width: 100%;
 }
 
 /******* Progress Bar *******/

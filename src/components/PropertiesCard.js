@@ -7,8 +7,11 @@ import bathIcon from "../assets/bath-icon.png";
 import { numberWithCommas } from "../helper";
 import "./PropertiesCard.css";
 
-const PropertiesCard = ({ property, index }) => (
-  <div key={index ? "Property " + index : ""} className='PropertiesCard'>
+const PropertiesCard = ({ property, index, isSelected }) => (
+  <div
+    key={index ? "Property " + index : ""}
+    className={`PropertiesCard ${isSelected ? " selected" : ""}`}
+  >
     <a
       href={`/properties/${property.propertyId}`}
       className='PropertiesCard__Image-Container'
@@ -20,8 +23,8 @@ const PropertiesCard = ({ property, index }) => (
     </a>
     <div className='PropertiesCard__Details'>
       <h3 className='PropertiesCard__Title'>
-        {property.title.length > 45
-          ? property.title.slice(0, 45) + " ..."
+        {property.title.length > 55
+          ? property.title.slice(0, 55) + " ..."
           : property.title}
       </h3>
       <div className='PropertiesCard__Address'>

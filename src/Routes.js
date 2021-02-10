@@ -19,6 +19,7 @@ import EditProfile from "./containers/EditProfile";
 import ViewProfile from "./containers/ViewProperty";
 import PropertyMultiform from "./containers/NewProperty";
 import PropertyChat from "./containers/PropertyChat";
+import ResetPassword from "./containers/ResetPassword";
 
 export default ({ childProps }) => (
   <Switch>
@@ -79,21 +80,21 @@ export default ({ childProps }) => (
       props={childProps}
     />
     <AuthenticatedRoute
-      path='/profile/edit'
-      exact
-      component={EditProfile}
-      props={childProps}
-    />
-    <AuthenticatedRoute
       path='/profile'
       exact
-      component={ViewProfile}
+      component={EditProfile}
       props={childProps}
     />
     <AppliedRoute
       path='/properties/:id/chat'
       exact
       component={PropertyChat}
+      props={childProps}
+    />
+    <UnauthenticatedRoute
+      path='/login/reset'
+      exact
+      component={ResetPassword}
       props={childProps}
     />
 

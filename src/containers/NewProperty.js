@@ -13,13 +13,14 @@ import PlacesAutocomplete, {
   getLatLng,
 } from "react-places-autocomplete";
 import { API, Storage, a, sectionFooterSecondaryContent } from "aws-amplify";
-import Loading from "./Loading";
 import "./NewProperty.css";
 import "react-dropdown/style.css";
 import "react-datepicker/dist/react-datepicker.css";
 import checkmarkIcon from "../assets/checkmark-icon.png";
 import backIcon from "../assets/back-icon-green.png";
 import imageUploadIcon from "../assets/image-upload-icon.png";
+import LoaderButton from "../components/LoaderButton";
+import PreviewViewProperty from "./PreviewViewProperty";
 
 export default function PropertyMultiForm(props) {
   // const [form, setForm] = useState({
@@ -88,14 +89,7 @@ export default function PropertyMultiForm(props) {
     "Images",
     "Price",
   ];
-
-  // const updateForm = (e) => {
-  //     setForm({
-  //         ...form,
-  //         [e.target.name]: e.target.value,
-
-  //     })
-  // }
+  const [selectedImages, setSelectedImages] = useState([]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -133,6 +127,7 @@ export default function PropertyMultiForm(props) {
         lotSize,
         associationFees,
       });
+      setIsLoading(false);
       props.history.push(`/properties/${property.propertyId}`);
     } catch (e) {
       alert(e);
@@ -152,6 +147,7 @@ export default function PropertyMultiForm(props) {
 
   function updatePropertyType(propertyType) {
     setPropertyType(propertyType);
+    console.log(propertyType);
   }
 
   async function handleSelect(val) {
@@ -169,9 +165,29 @@ export default function PropertyMultiForm(props) {
     setGeoAddress(result.formatted_address);
   }
 
-  function handleFileChange(event) {
-    setFiles(event.target.files);
-  }
+  // function handleFileChange(event) {
+  //   setFiles(event.target.files);
+  // }
+
+  const handleChange = (e) => {
+    if (e.target.files) {
+      const fileArray = Array.from(e.target.files).map((file) =>
+        URL.createObjectURL(file)
+      );
+
+      setSelectedImages((prevImages) => prevImages.concat(fileArray));
+      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+    }
+    setFiles(e.target.files);
+  };
+
+  const renderPhotos = (source) => {
+    return source.map((photo) => (
+      <div className='MultiForm__ImgWrapper'>
+        <img src={photo} key={photo} />
+      </div>
+    ));
+  };
 
   async function s3Upload(files) {
     return Promise.all(
@@ -187,6 +203,32 @@ export default function PropertyMultiForm(props) {
           console.log(e);
         }
       })
+    );
+  }
+
+  function validateForm() {
+    return true;
+    return (
+      title.length > 0 &&
+      tagline.length > 0 &&
+      address.length > 0 &&
+      yearBuilt > 0 &&
+      lotSize > 0 &&
+      associationFees > 0 &&
+      propertyType.value.length > 0 &&
+      propertyStatus.value.length > 0 &&
+      bedroom > 0 &&
+      bathroom > 0 &&
+      description.length > 0 &&
+      whyThisProperty.length > 0 &&
+      propertyNeeds.length > 0 &&
+      comparable.length > 0 &&
+      offerDate > 0 &&
+      closeDate > 0 &&
+      groupShowingDate > 0 &&
+      price > 0 &&
+      nearbyPrice > 0 &&
+      arvPrice > 0
     );
   }
 
@@ -223,367 +265,416 @@ export default function PropertyMultiForm(props) {
                 })}
               </ul>
             </div>
-            <Form className='MultiForm__Section'>
-              {step === 1 ? (
-                <Fragment>
-                  <div className='MultiForm__Title'>
-                    <h1>Basic Information</h1>
-                    <h2>Please add a title and description</h2>
-                  </div>
-                  <FormGroup controlId='title'>
-                    <ControlLabel>Title</ControlLabel>
-                    <FormControl
-                      value={title}
-                      type='text'
-                      placeholder='Beautiful detached house in downtown London'
-                      onChange={(e) => setTitle(e.target.value)}
-                      name='title'
-                    />
-                  </FormGroup>
-                  <FormGroup controlId='tagline'>
-                    <ControlLabel>Tagline</ControlLabel>
-                    <FormControl
-                      value={tagline}
-                      type='text'
-                      placeholder='I.e. $30k under Market Value'
-                      onChange={(e) => setTagline(e.target.value)}
-                      name='tagline'
-                    />
-                  </FormGroup>
-                  <FormGroup controlId='address'>
-                    <ControlLabel>Address</ControlLabel>
-                    <PlacesAutocomplete
-                      value={geoAddress}
-                      onChange={setGeoAddress}
-                      onSelect={handleSelect}
-                    >
-                      {({
-                        getInputProps,
-                        suggestions,
-                        getSuggestionItemProps,
-                        loading,
-                      }) => (
-                        <Fragment>
-                          <input
-                            className='MultiForm__AutoComplete'
-                            {...getInputProps({
-                              placeholder: "Type address",
-                            })}
-                          />
-                          <div>
-                            {loading ? (
-                              <div className='MultiForm__AutoComplete'>
-                                ...loading
-                              </div>
-                            ) : null}
-
-                            {suggestions.map((suggestion, i) => {
-                              return (
-                                <div
-                                  className='MultiForm__AutoComplete-Suggestions'
-                                  key={suggestion}
-                                  {...getSuggestionItemProps(suggestion, {})}
-                                >
-                                  {suggestion.description}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </Fragment>
-                      )}
-                    </PlacesAutocomplete>
-                  </FormGroup>
-                  <div className='MultiForm__Row MultiForm__Row-3'>
-                    <FormGroup controlId='yearBuilt'>
-                      <ControlLabel>Year Built</ControlLabel>
-                      <FormControl
-                        value={yearBuilt}
-                        type='number'
-                        placeholder='0'
-                        onChange={(e) => setYearBuilt(e.target.value)}
-                        name='yearBuilt'
-                      />
-                    </FormGroup>
-                    <FormGroup controlId='lotSize'>
-                      <ControlLabel>Lot Size</ControlLabel>
-                      <FormControl
-                        value={lotSize}
-                        type='number'
-                        placeholder='0'
-                        onChange={(e) => setLotSize(e.target.value)}
-                        name='lotSize'
-                      />
-                    </FormGroup>
-                    <FormGroup controlId='associationFees'>
-                      <ControlLabel>Association Fees</ControlLabel>
-                      <FormControl
-                        value={associationFees}
-                        type='number'
-                        placeholder='0'
-                        onChange={(e) => setAssociationFees(e.target.value)}
-                        name='associationFees'
-                      />
-                    </FormGroup>
-                  </div>
-                </Fragment>
-              ) : null}
-
-              {step === 2 ? (
-                <Fragment>
-                  <div className='MultiForm__Title'>
-                    <h1>Property Detail</h1>
-                    <h2>Please add a title and description</h2>
-                  </div>
-                  <FormGroup controlId='propertyType'>
-                    <ControlLabel>Property Type</ControlLabel>
-                    <Dropdown
-                      value={propertyType}
-                      options={[
-                        {
-                          label: "Detached",
-                          value: "Detached",
-                        },
-                        {
-                          label: "Semi-Detached",
-                          value: "Semi-Detached",
-                        },
-                        {
-                          label: "Townhome",
-                          value: "Townhome",
-                        },
-                        {
-                          label: "Condo",
-                          value: "Condo",
-                        },
-                        {
-                          label: "Multi-family",
-                          value: "Multi-family",
-                        },
-                      ]}
-                      type='dropdown'
-                      onChange={updatePropertyType}
-                      placeholder='Select an Option'
-                    />
-                  </FormGroup>
-                  <FormGroup controlId='propertyStatus'>
-                    <ControlLabel>Property Status</ControlLabel>
-                    <Dropdown
-                      value={propertyStatus}
-                      options={[
-                        {
-                          label: "Active",
-                          value: "Active",
-                        },
-                        {
-                          label: "Pending",
-                          value: "Pending",
-                        },
-                        {
-                          label: "Assigned",
-                          value: "Assigned",
-                        },
-                      ]}
-                      onChange={updatePropertyStatus}
-                      name='propertyStatus'
-                    />
-                  </FormGroup>
-                  <div className='MultiForm__Row MultiForm__Row-3'>
-                    <FormGroup controlId='bedroom'>
-                      <ControlLabel>Bedrooms</ControlLabel>
-                      <FormControl
-                        value={bedroom}
-                        type='number'
-                        placeholder='0'
-                        onChange={(e) => setBedroom(e.target.value)}
-                        name='bedroom'
-                      />
-                    </FormGroup>
-                    <FormGroup controlId='bathroom'>
-                      <ControlLabel>Bathrooms</ControlLabel>
-                      <FormControl
-                        value={bathroom}
-                        type='number'
-                        placeholder='0'
-                        onChange={(e) => setBathroom(e.target.value)}
-                        name='bathrooms'
-                      />
-                    </FormGroup>
-                    <FormGroup controlId='parking'>
-                      <ControlLabel>Parking</ControlLabel>
-                      <FormControl
-                        value={parking}
-                        type='number'
-                        placeholder='0'
-                        onChange={(e) => setParking(e.target.value)}
-                        name='parking'
-                      />
-                    </FormGroup>
-                  </div>
-                  <FormGroup controlId='description'>
-                    <ControlLabel>Description</ControlLabel>
-                    <FormControl
-                      value={description}
-                      rows={5}
-                      componentClass='textarea'
-                      placeholder='Enter the Description'
-                      onChange={(e) => setDescription(e.target.value)}
-                      name='description'
-                    />
-                  </FormGroup>
-                </Fragment>
-              ) : null}
-
-              {step === 3 ? (
-                <Fragment>
-                  <div className='MultiForm__Title'>
-                    <h1>Comparables</h1>
-                    <h2>Please add a title and description</h2>
-                  </div>
-                  <FormGroup controlId='whyThisProperty'>
-                    <ControlLabel>Why This Property?</ControlLabel>
-                    <FormControl
-                      value={whyThisProperty}
-                      componentClass='textarea'
-                      onChange={(e) => setWhyThisProperty(e.target.value)}
-                      name='whyThisProperty'
-                      placeholder='Enter Why This Property'
-                      rows={4}
-                    />
-                  </FormGroup>
-                  <FormGroup controlId='propertyNeeds'>
-                    <ControlLabel>Property Needs</ControlLabel>
-                    <FormControl
-                      value={propertyNeeds}
-                      componentClass='textarea'
-                      placeholder='Enter the Property Needs'
-                      onChange={(e) => setPropertyNeeds(e.target.value)}
-                      name='propertyNeeds'
-                      rows={4}
-                    />
-                  </FormGroup>
-                  <FormGroup controlId='comparableProperties'>
-                    <ControlLabel>Comparable Properties</ControlLabel>
-                    <FormControl
-                      value={comparable}
-                      componentClass='textarea'
-                      placeholder='Enter the Comparables'
-                      onChange={(e) => setComparable(e.target.value)}
-                      name='comparableProperties'
-                      rows={4}
-                    />
-                  </FormGroup>
-                </Fragment>
-              ) : null}
-
-              {step === 4 ? (
-                <Fragment>
-                  <div className='MultiForm__Title'>
-                    <h1>Property Images</h1>
-                    <h2>
-                      Please upload interior and exterior images of the property
-                    </h2>
-                  </div>
-                  <div className='MultiForm__Upload-container'>
-                    <img
-                      alt='file upload icon'
-                      className='MultiForm__UploadIcon'
-                      src={imageUploadIcon}
-                    />
-                    <input
-                      onChange={handleFileChange}
-                      type='file'
-                      multiple={true}
-                      style={{ display: "none" }}
-                      ref={uploadFileRef}
-                    />
-                    <div
-                      onClick={() => uploadFileRef.current.click()}
-                      className='MultiForm__UploadBtn btn'
-                    >
-                      UPLOAD
+            {step >= 1 && step <= 5 && (
+              <Form className='MultiForm__Section' onSubmit={handleSubmit}>
+                {step === 1 ? (
+                  <Fragment>
+                    <div className='MultiForm__Title'>
+                      <h1>Basic Information</h1>
+                      <h2>Please add a title and description</h2>
                     </div>
-                    <label>
-                      {(uploadFileRef.current
-                        ? uploadFileRef.current.files.length
-                        : "No") + " image(s) uploaded"}
-                    </label>
-                  </div>
-                </Fragment>
-              ) : null}
+                    <FormGroup controlId='title'>
+                      <ControlLabel>Title</ControlLabel>
+                      <FormControl
+                        required
+                        value={title}
+                        type='text'
+                        placeholder='Beautiful detached house in downtown London'
+                        onChange={(e) => setTitle(e.target.value)}
+                        name='title'
+                      />
+                    </FormGroup>
+                    <FormGroup controlId='tagline'>
+                      <ControlLabel>Tagline</ControlLabel>
+                      <FormControl
+                        required
+                        value={tagline}
+                        type='text'
+                        placeholder='I.e. $30k under Market Value'
+                        onChange={(e) => setTagline(e.target.value)}
+                        name='tagline'
+                      />
+                    </FormGroup>
+                    <FormGroup controlId='address'>
+                      <ControlLabel>Address</ControlLabel>
+                      <PlacesAutocomplete
+                        value={geoAddress}
+                        onChange={setGeoAddress}
+                        onSelect={handleSelect}
+                      >
+                        {({
+                          getInputProps,
+                          suggestions,
+                          getSuggestionItemProps,
+                          loading,
+                        }) => (
+                          <Fragment>
+                            <input
+                              className='MultiForm__AutoComplete'
+                              {...getInputProps({
+                                placeholder: "Type address",
+                              })}
+                            />
+                            <div>
+                              {loading ? (
+                                <div className='MultiForm__AutoComplete'>
+                                  ...loading
+                                </div>
+                              ) : null}
 
-              {step === 5 ? (
-                <Fragment>
-                  <div className='MultiForm__Title'>
-                    <h1>Price and Dates</h1>
-                    <h2>Please add a title and description</h2>
-                  </div>
-                  <div className='MultiForm__Row MultiForm__Row-3'>
-                    <FormGroup controlId='offerDate'>
-                      <ControlLabel>Offer Date</ControlLabel>
-                      <DatePicker
-                        selected={offerDate}
-                        onChange={(date) => setOfferDate(date)}
-                        name='offerDate'
-                        dateFormat='MMMM d, yyyy'
-                        className='form-control'
+                              {suggestions.map((suggestion, i) => {
+                                return (
+                                  <div
+                                    className='MultiForm__AutoComplete-Suggestions'
+                                    key={suggestion}
+                                    {...getSuggestionItemProps(suggestion, {})}
+                                  >
+                                    {suggestion.description}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </Fragment>
+                        )}
+                      </PlacesAutocomplete>
+                    </FormGroup>
+                    <div className='MultiForm__Row MultiForm__Row-3'>
+                      <FormGroup controlId='yearBuilt'>
+                        <ControlLabel>Year Built</ControlLabel>
+                        <FormControl
+                          value={yearBuilt}
+                          type='number'
+                          placeholder='0'
+                          onChange={(e) => setYearBuilt(e.target.value)}
+                          name='yearBuilt'
+                        />
+                      </FormGroup>
+                      <FormGroup controlId='lotSize'>
+                        <ControlLabel>Lot Size</ControlLabel>
+                        <FormControl
+                          value={lotSize}
+                          type='number'
+                          placeholder='0'
+                          onChange={(e) => setLotSize(e.target.value)}
+                          name='lotSize'
+                        />
+                      </FormGroup>
+                      <FormGroup controlId='associationFees'>
+                        <ControlLabel>Association Fees</ControlLabel>
+                        <FormControl
+                          value={associationFees}
+                          type='number'
+                          placeholder='0'
+                          onChange={(e) => setAssociationFees(e.target.value)}
+                          name='associationFees'
+                        />
+                      </FormGroup>
+                    </div>
+                  </Fragment>
+                ) : null}
+
+                {step === 2 ? (
+                  <Fragment>
+                    <div className='MultiForm__Title'>
+                      <h1>Property Detail</h1>
+                      <h2>Please add a title and description</h2>
+                    </div>
+                    <FormGroup controlId='propertyType'>
+                      <ControlLabel>Property Type</ControlLabel>
+                      <Dropdown
+                        value={propertyType}
+                        options={[
+                          {
+                            label: "Detached",
+                            value: "Detached",
+                          },
+                          {
+                            label: "Semi-Detached",
+                            value: "Semi-Detached",
+                          },
+                          {
+                            label: "Townhome",
+                            value: "Townhome",
+                          },
+                          {
+                            label: "Condo",
+                            value: "Condo",
+                          },
+                          {
+                            label: "Multi-family",
+                            value: "Multi-family",
+                          },
+                        ]}
+                        type='dropdown'
+                        onChange={updatePropertyType}
+                        placeholder='Select an Option'
                       />
                     </FormGroup>
-                    <FormGroup controlId='closeDate'>
-                      <ControlLabel>Close Date</ControlLabel>
-                      <DatePicker
-                        selected={closeDate}
-                        onChange={(date) => setCloseDate(date)}
-                        name='closeDate'
-                        dateFormat='MMMM d, yyyy'
-                        className='form-control'
+                    <FormGroup controlId='propertyStatus'>
+                      <ControlLabel>Property Status</ControlLabel>
+                      <Dropdown
+                        value={propertyStatus}
+                        options={[
+                          {
+                            label: "Active",
+                            value: "Active",
+                          },
+                          {
+                            label: "Pending",
+                            value: "Pending",
+                          },
+                          {
+                            label: "Assigned",
+                            value: "Assigned",
+                          },
+                        ]}
+                        onChange={updatePropertyStatus}
+                        name='propertyStatus'
                       />
                     </FormGroup>
-                    <FormGroup controlId='groupShowingDate'>
-                      <ControlLabel>Group Showing Date</ControlLabel>
-                      <DatePicker
-                        className='form-control'
-                        selected={groupShowingDate}
-                        onChange={(date) => setGroupShowingDate(date)}
-                        name='groupShowingDate'
-                        dateFormat='MMMM d, yyyy'
-                      />
-                    </FormGroup>
-                  </div>
-                  <div className='MultiForm__Row MultiForm__Row-3'>
-                    <FormGroup controlId='price'>
-                      <ControlLabel>Price</ControlLabel>
+                    <div className='MultiForm__Row MultiForm__Row-3'>
+                      <FormGroup controlId='bedroom'>
+                        <ControlLabel>Bedrooms</ControlLabel>
+                        <FormControl
+                          value={bedroom}
+                          type='number'
+                          placeholder='0'
+                          onChange={(e) => setBedroom(e.target.value)}
+                          name='bedroom'
+                        />
+                      </FormGroup>
+                      <FormGroup controlId='bathroom'>
+                        <ControlLabel>Bathrooms</ControlLabel>
+                        <FormControl
+                          value={bathroom}
+                          type='number'
+                          placeholder='0'
+                          onChange={(e) => setBathroom(e.target.value)}
+                          name='bathrooms'
+                        />
+                      </FormGroup>
+                      <FormGroup controlId='parking'>
+                        <ControlLabel>Parking</ControlLabel>
+                        <FormControl
+                          value={parking}
+                          type='number'
+                          placeholder='0'
+                          onChange={(e) => setParking(e.target.value)}
+                          name='parking'
+                        />
+                      </FormGroup>
+                    </div>
+                    <FormGroup controlId='description'>
+                      <ControlLabel>Description</ControlLabel>
                       <FormControl
-                        value={price}
-                        type='number'
-                        onChange={(e) => setPrice(e.target.value)}
-                        name='price'
-                        pattern='[0-9]*'
+                        value={description}
+                        rows={5}
+                        componentClass='textarea'
+                        placeholder='Enter the Description'
+                        onChange={(e) => setDescription(e.target.value)}
+                        name='description'
                       />
                     </FormGroup>
-                    <FormGroup controlId='nearbyPrice'>
-                      <ControlLabel>Nearby Price</ControlLabel>
+                  </Fragment>
+                ) : null}
+
+                {step === 3 ? (
+                  <Fragment>
+                    <div className='MultiForm__Title'>
+                      <h1>Comparables</h1>
+                      <h2>Please add a title and description</h2>
+                    </div>
+                    <FormGroup controlId='whyThisProperty'>
+                      <ControlLabel>Why This Property?</ControlLabel>
                       <FormControl
-                        value={nearbyPrice}
-                        type='number'
-                        onChange={(e) => setNearbyPrice(e.target.value)}
-                        name='nearbyPrice'
-                        pattern='[0-9]*'
+                        value={whyThisProperty}
+                        componentClass='textarea'
+                        onChange={(e) => setWhyThisProperty(e.target.value)}
+                        name='whyThisProperty'
+                        placeholder='Enter Why This Property'
+                        rows={4}
                       />
                     </FormGroup>
-                    <FormGroup controlId='arvPrice'>
-                      <ControlLabel>After Repair Value Price</ControlLabel>
+                    <FormGroup controlId='propertyNeeds'>
+                      <ControlLabel>Property Needs</ControlLabel>
                       <FormControl
-                        value={arvPrice}
-                        type='number'
-                        onChange={(e) => setArvPrice(e.target.value)}
-                        name='arvPrice'
-                        pattern='[0-9]*'
+                        value={propertyNeeds}
+                        componentClass='textarea'
+                        placeholder='Enter the Property Needs'
+                        onChange={(e) => setPropertyNeeds(e.target.value)}
+                        name='propertyNeeds'
+                        rows={4}
                       />
                     </FormGroup>
-                  </div>
-                </Fragment>
-              ) : null}
-            </Form>
+                    <FormGroup controlId='comparableProperties'>
+                      <ControlLabel>Comparable Properties</ControlLabel>
+                      <FormControl
+                        value={comparable}
+                        componentClass='textarea'
+                        placeholder='Enter the Comparables'
+                        onChange={(e) => setComparable(e.target.value)}
+                        name='comparableProperties'
+                        rows={4}
+                      />
+                    </FormGroup>
+                  </Fragment>
+                ) : null}
+
+                {step === 4 ? (
+                  <Fragment>
+                    <div className='MultiForm__Title'>
+                      <h1>Property Images</h1>
+                      <h2>
+                        Please upload interior and exterior images of the
+                        property
+                      </h2>
+                    </div>
+                    <div className='MultiForm__Upload-container'>
+                      {selectedImages ? (
+                        renderPhotos(selectedImages)
+                      ) : (
+                        <img
+                          alt='file upload icon'
+                          className='MultiForm__UploadIcon'
+                          src={imageUploadIcon}
+                        />
+                      )}
+                      <input
+                        onChange={handleChange}
+                        type='file'
+                        multiple={true}
+                        style={{ display: "none" }}
+                        ref={uploadFileRef}
+                      />
+                      <div
+                        onClick={() => uploadFileRef.current.click()}
+                        className='MultiForm__UploadBtn btn'
+                      >
+                        UPLOAD
+                      </div>
+                      <label>
+                        {(selectedImages ? selectedImages.length : "No") +
+                          " image(s) uploaded"}
+                      </label>
+                    </div>
+                  </Fragment>
+                ) : null}
+
+                {step === 5 ? (
+                  <Fragment>
+                    <div className='MultiForm__Title'>
+                      <h1>Price and Dates</h1>
+                      <h2>Please add a title and description</h2>
+                    </div>
+                    <div className='MultiForm__Row MultiForm__Row-3'>
+                      <FormGroup controlId='offerDate'>
+                        <ControlLabel>Offer Date</ControlLabel>
+                        <DatePicker
+                          selected={offerDate}
+                          onChange={(date) => setOfferDate(date)}
+                          name='offerDate'
+                          dateFormat='MMMM d, yyyy'
+                          className='form-control'
+                        />
+                      </FormGroup>
+                      <FormGroup controlId='closeDate'>
+                        <ControlLabel>Close Date</ControlLabel>
+                        <DatePicker
+                          selected={closeDate}
+                          onChange={(date) => setCloseDate(date)}
+                          name='closeDate'
+                          dateFormat='MMMM d, yyyy'
+                          className='form-control'
+                        />
+                      </FormGroup>
+                      <FormGroup controlId='groupShowingDate'>
+                        <ControlLabel>Group Showing Date</ControlLabel>
+                        <DatePicker
+                          className='form-control'
+                          selected={groupShowingDate}
+                          onChange={(date) => setGroupShowingDate(date)}
+                          name='groupShowingDate'
+                          dateFormat='MMMM d, yyyy'
+                        />
+                      </FormGroup>
+                    </div>
+                    <div className='MultiForm__Row MultiForm__Row-3'>
+                      <FormGroup controlId='price'>
+                        <ControlLabel>Price</ControlLabel>
+                        <FormControl
+                          value={price}
+                          type='number'
+                          onChange={(e) => setPrice(e.target.value)}
+                          name='price'
+                          pattern='[0-9]*'
+                        />
+                      </FormGroup>
+                      <FormGroup controlId='nearbyPrice'>
+                        <ControlLabel>Nearby Price</ControlLabel>
+                        <FormControl
+                          value={nearbyPrice}
+                          type='number'
+                          onChange={(e) => setNearbyPrice(e.target.value)}
+                          name='nearbyPrice'
+                          pattern='[0-9]*'
+                        />
+                      </FormGroup>
+                      <FormGroup controlId='arvPrice'>
+                        <ControlLabel>After Repair Value Price</ControlLabel>
+                        <FormControl
+                          value={arvPrice}
+                          type='number'
+                          onChange={(e) => setArvPrice(e.target.value)}
+                          name='arvPrice'
+                          pattern='[0-9]*'
+                        />
+                      </FormGroup>
+                    </div>
+                  </Fragment>
+                ) : null}
+              </Form>
+            )}
+            {step === 6 ? (
+              <Fragment>
+                <div className='MultiForm__Title'>
+                  <h1>Previewing New Property Post</h1>
+                  <h2>
+                    Please review the property details and click Submit to
+                    confirm the post
+                  </h2>
+                </div>
+                <PreviewViewProperty
+                  property={{
+                    title,
+                    tagline,
+                    city,
+                    address,
+                    propertyType: propertyType.value,
+                    propertyStatus: propertyStatus.value,
+                    offerDate,
+                    closeDate,
+                    groupShowingDate,
+                    bedroom,
+                    bathroom,
+                    parking,
+                    netOperatingIncome,
+                    description,
+                    propertyNeeds,
+                    whyThisProperty,
+                    comparable,
+                    longitude,
+                    latitude,
+                    images: selectedImages,
+                    price,
+                    nearbyPrice,
+                    arvPrice,
+                    yearBuilt,
+                    lotSize,
+                    associationFees,
+                  }}
+                />
+              </Fragment>
+            ) : null}
             <div className='MultiForm__btn-container'>
               {step > 1 && (
                 <button
@@ -594,17 +685,38 @@ export default function PropertyMultiForm(props) {
                   Back
                 </button>
               )}
-              {step < 5 ? (
+              {step < 5 && (
                 <button
                   className='MultiForm__btn btn'
                   onClick={() => setStep(step + 1)}
                 >
                   Next
                 </button>
-              ) : (
-                <button className='MultiForm__btn btn' onClick={handleSubmit}>
+              )}
+              {step < 6 && step > 4 && (
+                <LoaderButton
+                  className='MultiForm__btn btn'
+                  type='submit'
+                  bsSize='small'
+                  isLoading={isLoading}
+                  disabled={!validateForm()}
+                  onClick={() => setStep(step + 1)}
+                >
+                  Preview
+                </LoaderButton>
+              )}
+
+              {step > 5 && (
+                <LoaderButton
+                  className='MultiForm__btn btn'
+                  type='submit'
+                  bsSize='small'
+                  isLoading={isLoading}
+                  disabled={!validateForm()}
+                  onClick={handleSubmit}
+                >
                   Submit
-                </button>
+                </LoaderButton>
               )}
             </div>
           </div>

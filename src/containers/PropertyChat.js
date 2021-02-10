@@ -1,28 +1,21 @@
 import "./PropertyChat.css";
 
 import { API, Auth } from "aws-amplify";
-import {
-  Col,
-  Modal,
-  Row,
-  Breadcrumb,
-  Form,
-  FormControl,
-} from "react-bootstrap";
+import { Modal, Breadcrumb, Form, FormControl } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
 import Loading from "./Loading";
-import config from "../config";
+// import config from "../config";
 import backArrowIcon from "../assets/back-icon.png";
 import mapPinIcon from "../assets/map-pin-icon.png";
-import Slider from "../components/Slider";
+// import Slider from "../components/Slider";
 
-const images = [
-  "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
-  "https://images.unsplash.com/photo-1470341223622-1019832be824?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2288&q=80",
-  "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2094&q=80",
-  "https://images.unsplash.com/photo-1534161308652-fdfcf10f62c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2174&q=80",
-];
+// const images = [
+//   "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
+//   "https://images.unsplash.com/photo-1470341223622-1019832be824?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2288&q=80",
+//   "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2094&q=80",
+//   "https://images.unsplash.com/photo-1534161308652-fdfcf10f62c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2174&q=80",
+// ];
 
 export default function PropertyChat(props) {
   const [property, setProperty] = useState(null);
@@ -32,6 +25,8 @@ export default function PropertyChat(props) {
   const [userEmail, setUserEmail] = useState(null);
   const [viewCreateAccountModal, setViewCreateAccountModal] = useState(null);
   const [message, setMessage] = useState("");
+  const [conversation, setConversation] = useState(null);
+  const [conversationMessages, setConversationMessages] = useState(null);
 
   useEffect(() => {
     function loadProperty() {
@@ -40,6 +35,26 @@ export default function PropertyChat(props) {
 
     function loadProfile(userId) {
       return API.get("profiles", `/profiles/${userId}`);
+    }
+
+    function loadConversation(propertyOwnerId) {
+      return API.get(
+        "properties",
+        `/properties/${props.match.params.id}/chat`,
+        {
+          queryStringParameters: {
+            propertyOwner: propertyOwnerId,
+          },
+        }
+      );
+    }
+
+    function loadConversationMessages(conversationId) {
+      return API.get("properties", `/conversation/messages`, {
+        queryStringParameters: {
+          conversationId: conversationId,
+        },
+      });
     }
 
     async function onLoad() {
@@ -55,15 +70,40 @@ export default function PropertyChat(props) {
         setPropertyOwner(userId === property.userId);
         setProperty(property);
         setIsLoading(true);
-        console.log("below is userId");
-        console.log(userId);
+        const existingConversation = await loadConversation(property.userId);
+        console.log("existingConversation below");
+        console.log(existingConversation);
+        setConversation(existingConversation);
+        console.log("after setConversation");
+        console.log(conversation);
+        if (existingConversation) {
+          const existingConversationMessages = await loadConversationMessages(
+            existingConversation.conversationId
+          );
+          setConversationMessages(existingConversationMessages);
+          console.log("existingConversationMessages Below");
+          console.log(existingConversationMessages);
+        }
+        console.log("out of if statement existing conversation messages");
+        console.log(conversationMessages);
+        console.log(conversation);
+        console.log(property);
       } catch (e) {
         alert(e);
+        // console.log(profile.userId);
       }
     }
 
     onLoad();
   }, [props.match.params.id]);
+
+  function createConversation(propertyOwnerId) {
+    return API.post("properties", `/properties/${props.match.params.id}/chat`, {
+      body: {
+        propertyOwner: propertyOwnerId,
+      },
+    });
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -71,14 +111,24 @@ export default function PropertyChat(props) {
     setIsLoading(true);
 
     try {
-      const message = await sendMessage({
-        message,
+      if (conversation == null) {
+        console.log("Existing conversation below");
+        console.log(conversation);
+        const newConversation = await createConversation(property.userId);
+        console.log(newConversation);
+        setConversation(newConversation);
+      }
+      const response = await createConversation({
+        message: message,
+        conversationId: conversation.conversationId,
+        propertyOwner: profile.userId,
       });
-      console.log(message);
+      console.log(response);
       props.history.push(`/properties/${property.propertyId}/chat`);
     } catch (e) {
       alert(e);
       setIsLoading(false);
+      console.log(property.userId);
     }
   }
 

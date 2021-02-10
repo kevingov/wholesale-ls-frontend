@@ -1,11 +1,19 @@
 /******* Properties Card (List View) *******/
 
 .PropertiesCard {
-  margin: 27px 0;
+  margin: 14px 0;
+  padding: 13px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  border-radius: 5px;
+  transition: background-color 500ms ease, box-shadow 500ms ease;
+}
+
+.PropertiesCard.selected {
+  background-color: #d6dfe7;
+  box-shadow: 2px 3px 15px #a0a0a040;
 }
 
 .PropertiesCard__Title {

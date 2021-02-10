@@ -77,6 +77,9 @@ export default function Login(props) {
                   onChange={handleFieldChange}
                 />
               </FormGroup>
+              <Row>
+              <a href='/login/reset'>Forgot your Password?</a>
+              </Row>
               <LoaderButton
                 className="btn-primary"
                 type="submit"

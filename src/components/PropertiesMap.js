@@ -50,9 +50,8 @@ export const PropertiesMap = ({
   });
 
   useEffect(() => {
-    const province = "Ontario";
     const URI = encodeURI(
-      `https://nominatim.openstreetmap.org/search/${location} ${province}?format=json&limit=1&polygon_geojson=1`
+      `https://nominatim.openstreetmap.org/search/${location}?format=json&limit=1&polygon_geojson=1`
     ); // nominatim API
     handleGeojsonFeatures(URI);
   }, [location]);
@@ -85,7 +84,6 @@ export const PropertiesMap = ({
 
   const handleGeocoderViewportChange = useCallback((newViewport) => {
     const geocoderDefaultOverrides = { transitionDuration: 800 };
-    console.log(newViewport);
     return handleViewportChange({
       ...newViewport,
       ...geocoderDefaultOverrides,
@@ -125,13 +123,13 @@ export const PropertiesMap = ({
       mapStyle='mapbox://styles/mapbox/navigation-preview-day-v2'
       onViewportChange={handleViewportChange}
     >
-      {/* <div
-        onClick={handleLocationSelection}
-        style={{ width: "50px;", height: "50px", backgroundColor: "#000" }}
-      /> */}
       <Geocoder
         mapRef={mapRef}
-        onResult={setLocationFromResult}
+        onResult={(event) => {
+          const { place_name } = event.result;
+          console.log(event.result);
+          setLocation(place_name);
+        }}
         containerRef={geocoderRef}
         onViewportChange={handleGeocoderViewportChange}
         mapboxApiAccessToken={TOKEN}
