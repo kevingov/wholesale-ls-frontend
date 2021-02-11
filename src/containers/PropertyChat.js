@@ -38,22 +38,24 @@ export default function PropertyChat(props) {
     }
 
     function loadConversation(propertyOwnerId) {
-      return API.get("properties", `/properties/${props.match.params.id}/chat`, {
-        queryStringParameters: {
-          propertyOwner: propertyOwnerId,
+      return API.get(
+        "properties",
+        `/properties/${props.match.params.id}/chat`,
+        {
+          queryStringParameters: {
+            propertyOwner: propertyOwnerId,
+          },
         }
-      });
+      );
     }
 
     function loadConversationMessages(conversationId) {
       return API.get("properties", `/conversation/messages`, {
         queryStringParameters: {
-          conversationId: conversationId
-        }
-      })
+          conversationId: conversationId,
+        },
+      });
     }
-
-    
 
     async function onLoad() {
       try {
@@ -74,12 +76,14 @@ export default function PropertyChat(props) {
         setConversation(existingConversation);
         console.log("after setConversation");
         console.log(conversation);
-        if(existingConversation) {
-          const existingConversationMessages = await loadConversationMessages(existingConversation.conversationId);
+        if (existingConversation) {
+          const existingConversationMessages = await loadConversationMessages(
+            existingConversation.conversationId
+          );
           setConversationMessages(existingConversationMessages);
           console.log("existingConversationMessages Below");
           console.log(existingConversationMessages);
-        };
+        }
         console.log("out of if statement existing conversation messages");
         console.log(conversationMessages);
         console.log(conversation);
@@ -97,7 +101,7 @@ export default function PropertyChat(props) {
     return API.post("properties", `/properties/${props.match.params.id}/chat`, {
       body: {
         propertyOwner: propertyOwnerId,
-      }
+      },
     });
   }
 
@@ -107,14 +111,14 @@ export default function PropertyChat(props) {
     setIsLoading(true);
 
     try {
-      if(conversation == null) {
+      if (conversation == null) {
         console.log("Existing conversation below");
         console.log(conversation);
         const newConversation = await createConversation(property.userId);
         console.log(newConversation);
         setConversation(newConversation);
-      };
-      const response = await createMessage({
+      }
+      const response = await createConversation({
         message: message,
         conversationId: conversation.conversationId,
         propertyOwner: profile.userId,
@@ -124,33 +128,24 @@ export default function PropertyChat(props) {
     } catch (e) {
       alert(e);
       setIsLoading(false);
-      console.log(property.userId)
+      console.log(property.userId);
     }
   }
 
-  function createMessage(message) {
-    return API.post("properties", `/properties/${props.match.params.id}/message`, {
-      body: message,
+  function sendMessage() {
+    return API.post("properties", `/properties/${props.match.params.id}/chat`, {
+      Body: {
+        // senderId: userId,
+        content: message,
+      },
     });
   }
 
   const testMessages = [
-    { senderId: 'Kevin',
-      content: "testing messages",
-      conversationId: 123,
-    },
-    { senderId: 'Jon',
-      content: "Hey how's it going?",
-      conversationId: 123,
-    },
-    { senderId: 'Kevin',
-      content: "Good, you",
-      conversationId: 123,
-    },
-  ]
-
-
-
+    { senderId: "Kevin", content: "testing messages", conversationId: 123 },
+    { senderId: "Jon", content: "Hey how's it going?", conversationId: 123 },
+    { senderId: "Kevin", content: "Good, you", conversationId: 123 },
+  ];
 
   return (
     <div className='Index'>
@@ -179,9 +174,6 @@ export default function PropertyChat(props) {
                     <br />
                     <br />
                   </div>
-
-
-
                 ) : null}
 
                 <div className='backLink'>
@@ -206,10 +198,6 @@ export default function PropertyChat(props) {
                   )}
                   {property.propertType && <div>{property.propertyType}</div>}
                 </div>
-
-
-
-
 
                 <div className='chat-container'>
                   
@@ -255,8 +243,8 @@ export default function PropertyChat(props) {
                 </div>
               </div>
             ) : (
-                <Loading />
-              )}
+              <Loading />
+            )}
             <Modal
               show={viewCreateAccountModal}
               onHide={() => setViewCreateAccountModal(false)}

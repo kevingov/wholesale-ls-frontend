@@ -1,33 +1,80 @@
-import React, { Fragment, useState, useRef, useCallback } from "react";
+import React, {
+  Fragment,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+} from "react";
 import MapGL, {
-  GeolocateControl,
   NavigationControl,
   Marker,
   Popup,
+  Layer,
+  Source,
 } from "react-map-gl";
 import Geocoder from "react-map-gl-geocoder";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
+import axios from "axios";
+
 import mapPinIcon from "../assets/map-pin-icon.png";
 import PropertiesCard from "../components/PropertiesCard";
 
-export const PropertiesMap = ({ properties }) => {
-  const geocoderContainerRef = useRef();
+const TOKEN =
+  "pk.eyJ1IjoiZmlyZWhvYm8iLCJhIjoiY2s5aXdwOHQyMWUzZTNlcXQyejRzNTI1cyJ9.Mm2EY__EgXVLkeIcXnv1AQ";
+
+const layerStyle = {
+  id: "zone",
+  type: "fill",
+  source: "zone",
+  paint: {
+    "fill-color": "#3ab984",
+    "fill-opacity": 0.25,
+  },
+};
+
+export const PropertiesMap = ({
+  properties,
+  geocoderRef,
+  location,
+  setLocation,
+  propertySelected,
+  setPropertySelected,
+}) => {
   const mapRef = useRef();
-  const [selectedProperties, setSelectedProperties] = useState(null);
+  const [polygonFeatures, setPolygonFeatures] = useState({});
   const [viewport, setViewport] = useState({
-    width: "100%",
-    height: "100%",
-    latitude: 43.6532,
-    longitude: -79.3832,
-    zoom: 8,
+    latitude: 43.6534817,
+    longitude: -79.3839347,
+    zoom: 10,
     searchResultLayer: null,
   });
-  const TOKEN =
-    "pk.eyJ1IjoiZmlyZWhvYm8iLCJhIjoiY2s5aXdwOHQyMWUzZTNlcXQyejRzNTI1cyJ9.Mm2EY__EgXVLkeIcXnv1AQ";
-  const geolocateStyle = {
-    float: "right",
-    margin: "10px",
-    padding: "10px",
+
+  useEffect(() => {
+    const URI = encodeURI(
+      `https://nominatim.openstreetmap.org/search/${location}?format=json&limit=1&polygon_geojson=1`
+    ); // nominatim API
+    handleGeojsonFeatures(URI);
+  }, [location]);
+
+  const handleGeojsonFeatures = (URI) => {
+    axios
+      .get(URI)
+      .then((res) => {
+        if (res && res.data.length > 0) {
+          const coordinates = res.data[0].geojson.coordinates;
+          const feature = [
+            {
+              type: "Feature",
+              geometry: {
+                type: "Polygon",
+                coordinates,
+              },
+            },
+          ];
+          setPolygonFeatures(feature);
+        }
+      })
+      .catch((err) => console.log(err.response));
   };
 
   const handleViewportChange = useCallback(
@@ -36,21 +83,15 @@ export const PropertiesMap = ({ properties }) => {
   );
 
   const handleGeocoderViewportChange = useCallback((newViewport) => {
-    const geocoderDefaultOverrides = { transitionDuration: 1000 };
-
+    const geocoderDefaultOverrides = { transitionDuration: 800 };
     return handleViewportChange({
       ...newViewport,
       ...geocoderDefaultOverrides,
     });
   }, []);
 
-  const closePopup = () => {
-    setSelectedProperties(null);
-  };
-
   const loadPropertyMarkers = () => {
     if (properties) {
-      console.log("PropertiesMap", properties);
       return properties.map((spot) => {
         return (
           <Marker
@@ -61,7 +102,7 @@ export const PropertiesMap = ({ properties }) => {
             <img
               className='markerImage'
               onClick={() => {
-                setSelectedProperties(spot);
+                setPropertySelected(spot);
               }}
               src={mapPinIcon}
               alt='Map Pin Icon'
@@ -73,43 +114,50 @@ export const PropertiesMap = ({ properties }) => {
   };
 
   return (
-    <Fragment>
-      <div
-        ref={geocoderContainerRef}
-        style={{ position: "absolute", top: 20, left: 20, zIndex: 1 }}
-      />
-      <MapGL
-        ref={mapRef}
-        {...viewport}
+    <MapGL
+      ref={mapRef}
+      {...viewport}
+      width='100%'
+      height='100%'
+      mapboxApiAccessToken={TOKEN}
+      mapStyle='mapbox://styles/mapbox/navigation-preview-day-v2'
+      onViewportChange={handleViewportChange}
+    >
+      <Geocoder
+        mapRef={mapRef}
+        onResult={(event) => {
+          const { place_name } = event.result;
+          console.log(event.result);
+          setLocation(place_name);
+        }}
+        containerRef={geocoderRef}
+        onViewportChange={handleGeocoderViewportChange}
         mapboxApiAccessToken={TOKEN}
-        mapStyle='mapbox://styles/mapbox/navigation-preview-day-v2'
-        onViewportChange={handleViewportChange}
+        marker={false}
+        countries='CA'
+        types='place, locality, neighborhood'
+      />
+      <NavigationControl />
+      {loadPropertyMarkers()}
+      {propertySelected !== null ? (
+        <Popup
+          latitude={parseFloat(propertySelected.latitude)}
+          longitude={parseFloat(propertySelected.longitude)}
+          onClose={() => setPropertySelected(null)}
+        >
+          <PropertiesCard property={propertySelected} />
+        </Popup>
+      ) : null}
+      <Source
+        type='geojson'
+        data={{
+          type: "FeatureCollection",
+          features: polygonFeatures,
+        }}
       >
-        <Geocoder
-          mapRef={mapRef}
-          onViewportChange={handleGeocoderViewportChange}
-          mapboxApiAccessToken={TOKEN}
-          position='top-left'
-        />
-        <GeolocateControl
-          style={geolocateStyle}
-          positionOptions={{ enableHighAccuracy: true }}
-          trackUserLocation={true}
-          position='top-right'
-        />
-        <NavigationControl />
-        {loadPropertyMarkers()}
-        {selectedProperties !== null ? (
-          <Popup
-            latitude={parseFloat(selectedProperties.latitude)}
-            longitude={parseFloat(selectedProperties.longitude)}
-            onClose={closePopup}
-          >
-            <PropertiesCard property={selectedProperties} />
-          </Popup>
-        ) : null}
-      </MapGL>
-    </Fragment>
+        <Layer {...layerStyle} />
+      </Source>
+    </MapGL>
   );
 };
 

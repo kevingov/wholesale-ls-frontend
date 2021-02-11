@@ -2,11 +2,16 @@ import React from "react";
 
 import config from "../config";
 import mapPinIcon from "../assets/map-pin-icon.png";
+import bedIcon from "../assets/bed-icon.png";
+import bathIcon from "../assets/bath-icon.png";
 import { numberWithCommas } from "../helper";
 import "./PropertiesCard.css";
 
-const PropertiesCard = ({ property, index }) => (
-  <div key={index ? "Property " + index : ""} className='PropertiesCard'>
+const PropertiesCard = ({ property, index, isSelected }) => (
+  <div
+    key={index ? "Property " + index : ""}
+    className={`PropertiesCard ${isSelected ? " selected" : ""}`}
+  >
     <a
       href={`/properties/${property.propertyId}`}
       className='PropertiesCard__Image-Container'
@@ -18,8 +23,8 @@ const PropertiesCard = ({ property, index }) => (
     </a>
     <div className='PropertiesCard__Details'>
       <h3 className='PropertiesCard__Title'>
-        {property.title.length > 45
-          ? property.title.slice(0, 45) + " ..."
+        {property.title.length > 55
+          ? property.title.slice(0, 55) + " ..."
           : property.title}
       </h3>
       <div className='PropertiesCard__Address'>
@@ -27,8 +32,22 @@ const PropertiesCard = ({ property, index }) => (
         <p>{property.address}</p>
       </div>
       <div className='PropertiesCard__Row-Highlights'>
-        {property.bedroom && <div>{property.bedroom} Bedrooms</div>}
-        {property.bathroom && <div>{property.bathroom} Bathrooms</div>}
+        {property.bedroom && (
+          <div className='PropertiesCard__Highlight'>
+            <img src={bedIcon} />
+            <p>
+              {property.bedroom + (property.bedroom > 1 ? " Beds" : " Bed")}
+            </p>
+          </div>
+        )}
+        {property.bathroom && (
+          <div className='PropertiesCard__Highlight'>
+            <img src={bathIcon} />
+            <p>
+              {property.bathroom + (property.bathroom > 1 ? " Baths" : " Bath")}
+            </p>
+          </div>
+        )}
         {property.propertType && <div>{property.propertyType}</div>}
       </div>
       <div className='PropertiesCard__Row-Pricing'>

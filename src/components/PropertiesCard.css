@@ -1,19 +1,32 @@
+/******* Properties Card (List View) *******/
+
 .PropertiesCard {
-  margin: 27px 0;
+  margin: 14px 0;
+  padding: 13px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  border-radius: 5px;
+  transition: background-color 500ms ease, box-shadow 500ms ease;
+}
+
+.PropertiesCard.selected {
+  background-color: #d6dfe7;
+  box-shadow: 2px 3px 15px #a0a0a040;
 }
 
 .PropertiesCard__Title {
   font-size: 16px;
   font-weight: 600;
   margin-top: 0;
+  height: 3em;
+  line-height: 1.5em;
+  overflow: hidden;
 }
 
 .PropertiesCard__Image-Container {
-  height: 180px;
+  height: 200px;
   width: 280px;
   display: flex;
   justify-content: center;
@@ -23,12 +36,13 @@
 
 .PropertiesCard__Image-Container > img {
   border-radius: 5px;
-  height: auto;
+  height: 100%;
   width: 100%;
+  object-fit: cover;
 }
 
 .PropertiesCard__Details {
-  height: 180px;
+  height: 200px;
   width: 320px;
   padding-left: 12px;
 }
@@ -47,6 +61,9 @@
 
 .PropertiesCard__Address > p {
   font-size: 14px;
+  line-height: 1.5em;
+  height: 1.5em;
+  overflow: hidden;
 }
 
 .PropertiesCard__Row-Highlights {
@@ -56,10 +73,11 @@
   margin-top: 14px;
 }
 
-.PropertiesCard__Row-Highlights > div {
+.PropertiesCard__Highlight {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
+  flex-direction: row;
   margin-right: 9px;
   border-radius: 4px;
   padding: 6px 12px;
@@ -67,6 +85,16 @@
   font-size: 12px;
   font-weight: 600;
   color: #27313e;
+}
+
+.PropertiesCard__Highlight > p {
+  font-size: 12px;
+}
+
+.PropertiesCard__Highlight > img {
+  width: 20px;
+  height: auto;
+  margin-right: 8px;
 }
 
 .PropertiesCard__Row-Pricing {
@@ -99,3 +127,5 @@
 .PropertiesCard__Row-Pricing-Item--Profit p:first-child {
   color: #fe6500;
 }
+
+/******* Properties Card (Map View) *******/

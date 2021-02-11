@@ -1,6 +1,6 @@
 import { FormGroup, FormControl } from "react-bootstrap";
 import Dropdown from "react-dropdown";
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, useRef, Fragment } from "react";
 import { API } from "aws-amplify";
 
 import Loading from "./Loading";
@@ -9,10 +9,12 @@ import PropertiesMap from "../components/PropertiesMap";
 import PropertiesCard from "../components/PropertiesCard";
 
 export default function Properties(props) {
-  const [properties, setProperties] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchInput, setSearchInput] = useState("");
-  const [citySelected, setCitySelected] = useState("");
+  const [properties, setProperties] = useState([]);
+  const [location, setLocation] = useState("Toronto");
+  const [propertySelected, setPropertySelected] = useState(null);
+  const geocoderRef = useRef(null);
+
   const [filterPropertyType, setFilterPropertyType] = useState({
     value: "All",
   });
@@ -28,12 +30,11 @@ export default function Properties(props) {
       } catch (e) {
         alert(e);
       }
-
       setIsLoading(false);
     }
 
     onLoad();
-  }, [props.isAuthenticated]);
+  }, [props.isAuthenticated, location]);
 
   function loadProperties() {
     return API.get("properties", "/properties", {
@@ -92,18 +93,25 @@ export default function Properties(props) {
     );
   }
 
-  // let searchProperties;
-  // if (filterText === "") {
-  //   searchProperties = sortedProperties
-  // } else {
-  //   searchProperties = sortedProperties.filter(results => {
-  //     return results.title.toLowerCase().includes( filterText.toLowerCase() )
-  //   })
-  // }
+  // *FUTURE IMPLEMENTATION - CUSTOM SEARCH BAR w/ DROPDOWN*
+  // const LOCATION_LIST = [
+  //   "Toronto",
+  //   "Mississauage",
+  //   "Markham",
+  //   "Richmond Hill",
+  //   "Brampton",
+  //   "North York",
+  //   "Scarborough",
+  // ]
+  // const onSelectDropdownLocation = (event) => {
+  //   const location = event.currentTarget.getAttribute("data-location");
+  //   setLocation(location);
+  // };
 
-  // const searchProperties = sortedProperties.filter((results) => {
-  //   return results.title.toLowerCase().includes(filterText.toLowerCase());
-  // });
+  // *GEOCODER DOM*
+  // if (geocoderRef.current) {
+  //   console.log(geocoderRef.current.children.item[1]);
+  // }
 
   return (
     <div className='Index'>
@@ -111,16 +119,59 @@ export default function Properties(props) {
         <div className='Properties__Filter-Container container'>
           <FormGroup
             controlId='filterPropertyType'
-            className='FilterContainer__Search-Bar'
+            className='Locations-Search-Bar'
           >
-            <FormControl
-              type='text'
-              placeholder='Search'
-              value={searchInput}
-              onChange={(input) => setSearchInput(input.value)}
-            ></FormControl>
+            <div
+              ref={geocoderRef}
+              className='Locations-Search-Bar__Wrapper'
+              style={{
+                height: 50,
+                display: "flex",
+                alignItems: "center",
+                paddingLeft: 4,
+              }}
+            ></div>
+            {/* FUTURE IMPLEMENTATION - CUSTOM SEARCH BAR w/ DROPDOWN
+                <div className='Locations-Search-Bar__Wrapper'>
+              <input
+                type='text'
+                placeholder='Search'
+                value={searchInput}
+                onChange={(input) => setSearchInput(input.value)}
+                onBlur={() => setSearchDropdownExpanded(false)}
+              />
+              <a
+                onClick={() =>
+                  setSearchDropdownExpanded(!searchDropdownExpanded)
+                }
+              >
+                <img
+                  src={
+                    searchDropdownExpanded
+                      ? closeDropdownIcon
+                      : openDropdownIcon
+                  }
+                />
+              </a>
+            </div>
+            <div
+              className={`Locations-Search-Bar__Dropdown-Content ${
+                searchDropdownExpanded ? "active" : ""
+              }`}
+            >
+              {LOCATIONS_LIST.map((item) => (
+                <a
+                  onClick={onSelectDropdownLocation}
+                  data-location={item}
+                  key={item}
+                >
+                  {item}
+                </a>
+              ))}
+            </div> */}
           </FormGroup>
           <FormGroup controlId='filterPropertyType'>
+            <p className='Property__Filter-Label'>Property Type</p>
             <Dropdown
               placeholder='Property Types'
               value={filterPropertyType.label}
@@ -154,6 +205,7 @@ export default function Properties(props) {
             />
           </FormGroup>
           <FormGroup controlId='filterBedrooms'>
+            <p className='Property__Filter-Label'>Bedrooms</p>
             <Dropdown
               placeholder='Bedrooms'
               value={filterBedrooms.label}
@@ -179,6 +231,7 @@ export default function Properties(props) {
             />
           </FormGroup>
           <FormGroup controlId='filterBathrooms'>
+            <p className='Property__Filter-Label'>Bathrooms</p>
             <Dropdown
               placeholder='Bathrooms'
               value={filterBathrooms.label}
@@ -204,6 +257,7 @@ export default function Properties(props) {
             />
           </FormGroup>
           <FormGroup controlId='filterSort'>
+            <p className='Property__Filter-Label'>Sort By</p>
             <Dropdown
               placeholder='Sort By'
               value={filterSort.label}
@@ -238,13 +292,23 @@ export default function Properties(props) {
             </p>
             {searchProperties.length > 0 ? (
               <Fragment>
-                <h2>Properties in Toronto</h2>
-                {searchProperties.map((property, index) => (
-                  <PropertiesCard
-                    key={("Property", index)}
-                    property={property}
-                  />
-                ))}
+                <h2>Properties in {location}</h2>
+                {searchProperties.map((property, index) => {
+                  console.log(
+                    propertySelected &&
+                      property.propertyId === propertySelected.propertyId
+                  );
+                  return (
+                    <PropertiesCard
+                      key={("Property", index)}
+                      property={property}
+                      isSelected={
+                        propertySelected &&
+                        property.propertyId === propertySelected.propertyId
+                      }
+                    />
+                  );
+                })}
               </Fragment>
             ) : (
               <Fragment>
@@ -255,7 +319,15 @@ export default function Properties(props) {
           </div>
 
           <div className='Properties__MapContainer'>
-            <PropertiesMap properties={properties} />
+            <PropertiesMap
+              className='mapboxgl-map'
+              geocoderRef={geocoderRef}
+              properties={searchProperties}
+              location={location}
+              setLocation={setLocation}
+              propertySelected={propertySelected}
+              setPropertySelected={setPropertySelected}
+            />
           </div>
         </div>
       ) : (
