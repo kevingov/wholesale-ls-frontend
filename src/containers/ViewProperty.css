@@ -273,6 +273,7 @@ p {
 
 .ViewProperty__Desc {
   margin-bottom: 32px;
+  white-space: break-spaces;
 }
 
 .ViewProperty__Desc h3 {

@@ -237,7 +237,7 @@ export default function Signup(props) {
 
   function renderConfirmationForm() {
     return (
-      <div>
+      <div className="container">
         <form onSubmit={handleConfirmationSubmit}>
           <FormGroup controlId='confirmationCode' bsSize='large'>
             <ControlLabel>Confirmation Code</ControlLabel>

@@ -218,10 +218,10 @@ export default function ViewProperty(props) {
                                   <td>Asking Price</td>
                                   <td>$ {numberWithCommas(property.price)}</td>
                                 </tr>
-                                <tr>
+                                {/* <tr>
                                   <td>Estimated Cost of Repairs</td>
                                   <td>$0</td>
-                                </tr>
+                                </tr> */}
                               </tbody>
                             </table>
                           </div>
@@ -265,11 +265,11 @@ export default function ViewProperty(props) {
                               </tr>
                               <tr>
                                 <td>Built</td>
-                                <td>2010</td>
+                                <td>{property.yearBuilt}</td>
                               </tr>
                               <tr>
                                 <td>Lot Size</td>
-                                <td>33.6 x 130 FT; Irregular - Irregular</td>
+                                <td>{property.lotSize}</td>
                               </tr>
                               <tr>
                                 <td>Parking Type</td>
