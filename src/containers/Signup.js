@@ -181,6 +181,22 @@ export default function Signup(props) {
     return fields.confirmationCode.length > 0;
   }
 
+  async function createProfile() {
+    // const image = file ? await s3Upload(file) : null;
+    return API.post("profiles", "/profiles", {
+      body: {
+        email: fields.email,
+        firstName: fields.firstName,
+        lastName: fields.lastName,
+        phoneNumber: fields.phoneNumber,
+        isWholesaler,
+        isBuyer,
+        // image,
+      },
+    });
+  }
+
+
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -197,26 +213,21 @@ export default function Signup(props) {
       });
       setIsLoading(false);
       setNewUser(newUser);
+      // await createProfile();
+      console.log("shoudl be creating profile");
+      console.log(fields.email);
     } catch (e) {
+      if (e.code === "UsernameExistsException") {
+        await Auth.resendSignUp(fields.email)
+      };
+      setNewUser(true);
+      console.log(e);
       alert(e.message);
       setIsLoading(false);
     }
   }
 
-  async function createProfile() {
-    // const image = file ? await s3Upload(file) : null;
-    return API.post("profiles", "/profiles", {
-      body: {
-        email: fields.email,
-        firstName: fields.firstName,
-        lastName: fields.lastName,
-        phoneNumber: fields.phoneNumber,
-        isWholesaler,
-        isBuyer,
-        // image,
-      },
-    });
-  }
+  
 
   async function handleConfirmationSubmit(event) {
     event.preventDefault();
