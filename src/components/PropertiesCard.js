@@ -61,7 +61,7 @@ const PropertiesCard = ({ property, index, isSelected }) => (
         </div>
         <div className='PropertiesCard__Row-Pricing-Item PropertiesCard__Row-Pricing-Item--Profit'>
           <p>Est. Profit</p>
-          <p>${(property.price - property.nearbyPrice).toLocaleString()}</p>
+          <p>${(property.nearbyPrice - property.price).toLocaleString()}</p>
         </div>
       </div>
     </div>
