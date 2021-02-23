@@ -19,6 +19,9 @@ const images = [
   "https://images.unsplash.com/photo-1534161308652-fdfcf10f62c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2174&q=80",
 ];
 
+
+
+
 export default function ViewProperty(props) {
   const [property, setProperty] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +32,8 @@ export default function ViewProperty(props) {
   const [infoSent, setInfoSent] = useState(false);
   const [fullSliderActive, setFullSliderActive] = useState(false);
   const [sliderActiveIndex, setSliderActiveIndex] = useState(0);
+
+  const [propertyImages, setPropertyImages] = useState([]);
 
   useEffect(() => {
     function loadProperty() {
@@ -52,8 +57,15 @@ export default function ViewProperty(props) {
         setPropertyOwner(userId === property.userId);
         setProperty(property);
         setIsLoading(true);
-        console.log("here is profile");
-        console.log(profile);
+        console.log("here is images");
+        console.log(property.image);
+        console.log(property.image.length);
+        if (Array.isArray(property.image)) {
+          const s3Images = property.image.map(images => `https://${config.s3.BUCKET}.s3.amazonaws.com/public/${images}`);
+          setPropertyImages(s3Images);
+        } else {
+          setPropertyImages(property.image)
+        };
       } catch (e) {
         alert(e);
       }
@@ -91,6 +103,19 @@ export default function ViewProperty(props) {
   };
   console.log(props);
 
+  // const propertyImages = property.image.map((image) =>{
+  //   return (
+  //     `https://${config.s3.BUCKET}.s3.amazonaws.com/public/${image}`
+  //   )
+  // }
+  // );
+  console.log("testing images below");
+  // console.log(property);
+  console.log(propertyImages);
+
+
+  
+
   return (
     <div className='Index'>
       <div className='Breadcrumbs'>
@@ -107,7 +132,7 @@ export default function ViewProperty(props) {
             updateActiveIndex={setSliderActiveIndex}
             fullScreenMode={true}
             activeIndex={sliderActiveIndex}
-            slides={images}
+            slides={propertyImages}
           />
         </div>
       )}
@@ -165,7 +190,7 @@ export default function ViewProperty(props) {
                             updateActiveIndex={setSliderActiveIndex}
                             toggleFullScreen={toggleFullScreenSlider}
                             activeIndex={sliderActiveIndex}
-                            slides={images}
+                            slides={propertyImages}
                           />
                         </div>
                         <div className='ViewPropertyCard__Details'>
@@ -193,11 +218,11 @@ export default function ViewProperty(props) {
                               >
                                 <button
                                   className='ViewPropertyCard__ContactButton secondary-btn'
-                                  // onClick={
-                                  // userEmail
-                                  //   ? () => sendPropertyEmail()
-                                  //   : () => setViewCreateAccountModal(true)
-                                  // }
+                                  onClick={
+                                  userEmail
+                                    ? () => sendPropertyEmail()
+                                    : () => setViewCreateAccountModal(true)
+                                  }
                                 >
                                   Contact
                                 </button>

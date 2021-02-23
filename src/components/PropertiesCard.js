@@ -18,7 +18,7 @@ const PropertiesCard = ({ property, index, isSelected }) => (
     >
       <img
         alt={`${property.address} - Focus Property`}
-        src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image}`}
+        src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image.shift()}`}
       />
     </a>
     <div className='PropertiesCard__Details'>

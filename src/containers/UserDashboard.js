@@ -29,7 +29,7 @@ export default function UserDashboard() {
   }, []);
 
   function loadProperties() {
-    return API.get("properties", "/allproperties");
+    return API.get("properties", "/userproperties");
   }
   console.log(properties);
   return (
@@ -61,7 +61,7 @@ export default function UserDashboard() {
                   >
                     <img
                       alt={`${property.address} - Focus Property`}
-                      src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image}`}
+                      src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image.shift()}`}
                     />
                   </a>
                   <div className='PropertiesCard__Details PropertiesCard__Details--Dashboard'>
