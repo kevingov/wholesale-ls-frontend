@@ -10,23 +10,29 @@ import backArrowIcon from "../assets/back-icon.png";
 import mapPinIcon from "../assets/map-pin-icon.png";
 // import Slider from "../components/Slider";
 
-// const images = [
-//   "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
-//   "https://images.unsplash.com/photo-1470341223622-1019832be824?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2288&q=80",
-//   "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2094&q=80",
-//   "https://images.unsplash.com/photo-1534161308652-fdfcf10f62c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2174&q=80",
-// ];
-
 export default function PropertyChat(props) {
   const [property, setProperty] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [propertyOwner, setPropertyOwner] = useState(false);
+  const [currentUser, setCurrentUser]= useState(false);
   const [profile, setProfile] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
   const [viewCreateAccountModal, setViewCreateAccountModal] = useState(null);
   const [message, setMessage] = useState("");
   const [conversation, setConversation] = useState(null);
   const [conversationMessages, setConversationMessages] = useState(null);
+
+  function loadConversation(propertyOwnerId) {
+    return API.get(
+      "properties",
+      `/properties/${props.match.params.id}/chat`,
+      {
+        queryStringParameters: {
+          propertyOwner: propertyOwnerId,
+        },
+      }
+    );
+  }
 
   useEffect(() => {
     function loadProperty() {
@@ -63,9 +69,13 @@ export default function PropertyChat(props) {
         let userId = "none";
         if (user) userId = user["id"];
         if (user) setUserEmail(user.attributes.email);
+        const currentUser = await loadProfile(userId);
+        setCurrentUser(currentUser);
         const property = await loadProperty();
         console.log(property);
         const profile = await loadProfile(property.userId);
+        console.log("profile is below");
+        console.log(profile);
         setProfile(profile);
         setPropertyOwner(userId === property.userId);
         setProperty(property);
@@ -105,25 +115,36 @@ export default function PropertyChat(props) {
     });
   }
 
+  function addMessageToConversationMessages(response) {
+    setConversationMessages(conversationMessages => [...conversationMessages, response])
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
 
     setIsLoading(true);
 
     try {
-      if (conversation == null) {
+      if (conversation === null) {
         console.log("Existing conversation below");
         console.log(conversation);
         const newConversation = await createConversation(property.userId);
         console.log(newConversation);
         setConversation(newConversation);
-      }
+      };
+      console.log("what is conversation");
+      console.log(conversation);
       const response = await sendMessage({
         message: message,
         conversationId: conversation.conversationId,
         propertyOwner: profile.userId,
+        senderName: currentUser.firstName + " " + currentUser.lastName,
       });
-      console.log(response);
+      addMessageToConversationMessages(response);
+      setMessage("");
+      // console.log(response);
+      // const existingConversation = await loadConversation(property.userId);
+      // setConversation(existingConversation);
       props.history.push(`/properties/${property.propertyId}/chat`);
     } catch (e) {
       alert(e);
@@ -133,10 +154,12 @@ export default function PropertyChat(props) {
   }
 
   function sendMessage() {
-    return API.post("properties", `/properties/${props.match.params.id}/chat`, {
-      Body: {
-        // senderId: userId,
+    return API.post("properties", `/properties/${props.match.params.id}/message`, {
+      body: {
+        propertyOwner: profile.userId,
         content: message,
+        conversationId: conversation.conversationId,
+        senderName: currentUser.firstName + " " + currentUser.lastName,
       },
     });
   }
@@ -211,7 +234,7 @@ export default function PropertyChat(props) {
                           <li 
                           // key={testMessages.conversationId} 
                           className="message">
-                            <div>{conversationMessages.participants}</div>
+                            <div>{conversationMessages.senderName}</div>
                             <div>{conversationMessages.message}</div>
                           </li>
                         )

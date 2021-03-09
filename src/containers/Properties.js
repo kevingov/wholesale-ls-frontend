@@ -36,14 +36,18 @@ export default function Properties(props) {
     onLoad();
   }, [props.isAuthenticated, location]);
 
+  // function loadProperties() {
+  //   return API.get("properties", "/properties", {
+  //     queryStringParameters: {
+  //       filterBedrooms: filterBedrooms,
+  //       filterBathrooms: filterBathrooms,
+  //     },
+  //   });
+  // }
+
   function loadProperties() {
-    return API.get("properties", "/properties", {
-      queryStringParameters: {
-        filterBedrooms: filterBedrooms,
-        filterBathrooms: filterBathrooms,
-      },
-    });
-  }
+    return API.get("properties", "/allproperties")
+  };
 
   const updateFilterPropertyType = (event) => {
     setFilterPropertyType(event);
