@@ -118,7 +118,7 @@ export default function PropertyChat(props) {
         console.log(newConversation);
         setConversation(newConversation);
       }
-      const response = await createConversation({
+      const response = await sendMessage({
         message: message,
         conversationId: conversation.conversationId,
         propertyOwner: profile.userId,

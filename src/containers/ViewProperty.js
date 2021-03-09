@@ -213,9 +213,9 @@ export default function ViewProperty(props) {
                             {infoSent ? (
                               <p>info is sent</p>
                             ) : (
-                              <a
-                                href={`/properties/${property.propertyId}/chat`}
-                              >
+                              // <a
+                              //   href={`/properties/${property.propertyId}/chat`}
+                              // >
                                 <button
                                   className='ViewPropertyCard__ContactButton secondary-btn'
                                   onClick={
@@ -226,7 +226,7 @@ export default function ViewProperty(props) {
                                 >
                                   Contact
                                 </button>
-                              </a>
+                              // </a>
                             )}
                           </div>
                           <hr className='ViewPropertyCard__Separator' />
