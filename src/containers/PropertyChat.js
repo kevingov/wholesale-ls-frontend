@@ -22,18 +22,6 @@ export default function PropertyChat(props) {
   const [conversation, setConversation] = useState(null);
   const [conversationMessages, setConversationMessages] = useState(null);
 
-  function loadConversation(propertyOwnerId) {
-    return API.get(
-      "properties",
-      `/properties/${props.match.params.id}/chat`,
-      {
-        queryStringParameters: {
-          propertyOwner: propertyOwnerId,
-        },
-      }
-    );
-  }
-
   useEffect(() => {
     function loadProperty() {
       return API.get("properties", `/properties/${props.match.params.id}`);
@@ -72,35 +60,21 @@ export default function PropertyChat(props) {
         const currentUser = await loadProfile(userId);
         setCurrentUser(currentUser);
         const property = await loadProperty();
-        console.log(property);
         const profile = await loadProfile(property.userId);
-        console.log("profile is below");
-        console.log(profile);
         setProfile(profile);
         setPropertyOwner(userId === property.userId);
         setProperty(property);
         setIsLoading(true);
         const existingConversation = await loadConversation(property.userId);
-        console.log("existingConversation below");
-        console.log(existingConversation);
         setConversation(existingConversation);
-        console.log("after setConversation");
-        console.log(conversation);
         if (existingConversation) {
           const existingConversationMessages = await loadConversationMessages(
             existingConversation.conversationId
           );
           setConversationMessages(existingConversationMessages);
-          console.log("existingConversationMessages Below");
-          console.log(existingConversationMessages);
         }
-        console.log("out of if statement existing conversation messages");
-        console.log(conversationMessages);
-        console.log(conversation);
-        console.log(property);
       } catch (e) {
         alert(e);
-        // console.log(profile.userId);
       }
     }
 
@@ -126,14 +100,9 @@ export default function PropertyChat(props) {
 
     try {
       if (conversation === null) {
-        console.log("Existing conversation below");
-        console.log(conversation);
         const newConversation = await createConversation(property.userId);
-        console.log(newConversation);
         setConversation(newConversation);
       };
-      console.log("what is conversation");
-      console.log(conversation);
       const response = await sendMessage({
         message: message,
         conversationId: conversation.conversationId,
@@ -142,9 +111,6 @@ export default function PropertyChat(props) {
       });
       addMessageToConversationMessages(response);
       setMessage("");
-      // console.log(response);
-      // const existingConversation = await loadConversation(property.userId);
-      // setConversation(existingConversation);
       props.history.push(`/properties/${property.propertyId}/chat`);
     } catch (e) {
       alert(e);
@@ -163,12 +129,6 @@ export default function PropertyChat(props) {
       },
     });
   }
-
-  const testMessages = [
-    { senderId: "Kevin", content: "testing messages", conversationId: 123 },
-    { senderId: "Jon", content: "Hey how's it going?", conversationId: 123 },
-    { senderId: "Kevin", content: "Good, you", conversationId: 123 },
-  ];
 
   return (
     <div className='Index'>
