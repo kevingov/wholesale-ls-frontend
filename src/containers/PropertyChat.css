@@ -16,8 +16,6 @@
 
 .message-list {
     box-sizing: border-box;
-    /* padding: 0 0 0 6px;
-    margin: 0; */
     width: 100%;
     overflow: scroll;
     background: white;
@@ -49,19 +47,8 @@
 .send-message-form .form-control {
     margin-top: 50px;
     padding: 50px;
-    /* margin: 50px; */
     box-sizing: border-box;
     border: 1px solid #7CBEF1;
     background-color: #FFFFFF;
     box-shadow: 0 2px 4px 0 #D5E8F8;
 }
-
-/* .send-message-form {
-    margin-top: 80px;
-    padding: 50px;
-    margin: 50px;
-    box-sizing: border-box;
-    border: 1px solid #7CBEF1;
-    background-color: #FFFFFF;
-    box-shadow: 0 2px 4px 0 #D5E8F8;
-} */

@@ -194,7 +194,7 @@ export default function PropertyChat(props) {
                           <li 
                           // key={testMessages.conversationId} 
                           className="message">
-                            <div>{conversationMessages.senderName}</div>
+                            <div> <b>{conversationMessages.senderName}</b>      {conversationMessages.createdAt} </div>
                             <div>{conversationMessages.message}</div>
                           </li>
                         )
