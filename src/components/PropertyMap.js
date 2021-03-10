@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import MapGL, { NavigationControl, Marker } from "react-map-gl";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import mapPinIcon from "../assets/map-pin-icon.png";

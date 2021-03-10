@@ -1,48 +1,49 @@
-import React, {
-  Fragment,
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-} from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import MapGL, {
   NavigationControl,
   Marker,
   Popup,
   Layer,
   Source,
+  FlyToInterpolator,
 } from "react-map-gl";
-import Geocoder from "react-map-gl-geocoder";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import axios from "axios";
 
 import mapPinIcon from "../assets/map-pin-icon.png";
-import PropertiesCard from "../components/PropertiesCard";
+import PropertiesCardMini from "../components/PropertiesCardMini";
 
 const TOKEN =
   "pk.eyJ1IjoiZmlyZWhvYm8iLCJhIjoiY2s5aXdwOHQyMWUzZTNlcXQyejRzNTI1cyJ9.Mm2EY__EgXVLkeIcXnv1AQ";
 
-const layerStyle = {
+const polygonLayer = {
   id: "zone",
-  type: "fill",
+  type: "line",
   source: "zone",
   paint: {
-    "fill-color": "#3ab984",
-    "fill-opacity": 0.25,
+    "line-color": "#3ab984",
+    "line-width": 4,
+  },
+};
+const clusterLayer = {
+  id: "point",
+  type: "circle",
+  paint: {
+    "circle-radius": 8,
+    "circle-color": "#545454",
+    "circle-opacity": 0.75,
   },
 };
 
 export const PropertiesMap = ({
   properties,
-  geocoderRef,
   location,
-  setLocation,
   propertySelected,
   setPropertySelected,
 }) => {
   const mapRef = useRef();
   const [polygonFeatures, setPolygonFeatures] = useState({});
-  const [viewport, setViewport] = useState({
+  const [viewport, updateViewport] = useState({
     latitude: 43.6534817,
     longitude: -79.3839347,
     zoom: 10,
@@ -50,18 +51,22 @@ export const PropertiesMap = ({
   });
 
   useEffect(() => {
-    const URI = encodeURI(
-      `https://nominatim.openstreetmap.org/search/${location}?format=json&limit=1&polygon_geojson=1`
-    ); // nominatim API
-    handleGeojsonFeatures(URI);
+    if (location) {
+      const URI = encodeURI(
+        `https://nominatim.openstreetmap.org/search/${location}?format=json&limit=1&polygon_geojson=1`
+      ); // nominatim API
+      handleGeojsonZone(URI);
+    }
   }, [location]);
 
-  const handleGeojsonFeatures = (URI) => {
+  const handleGeojsonZone = (URI) => {
     axios
       .get(URI)
       .then((res) => {
         if (res && res.data.length > 0) {
           const coordinates = res.data[0].geojson.coordinates;
+          const lat = parseFloat(res.data[0].lat);
+          const lon = parseFloat(res.data[0].lon);
           const feature = [
             {
               type: "Feature",
@@ -72,45 +77,72 @@ export const PropertiesMap = ({
             },
           ];
           setPolygonFeatures(feature);
+          flyTo(lon, lat);
+          // console.log(res);
         }
       })
       .catch((err) => console.log(err.response));
   };
 
+  const pointFeatures = useCallback(() => {
+    const features = [];
+    properties.map((point) => {
+      const coordinates = [point.longitude, point.latitude];
+      const feature = {
+        properties: { propertyId: point.propertyId },
+        type: "Feature",
+        geometry: { type: "Point", coordinates },
+      };
+      features.push(feature);
+    });
+    return features;
+  }, [properties]);
+  pointFeatures();
+
   const handleViewportChange = useCallback(
-    (newViewport) => setViewport(newViewport),
+    (newViewport) => updateViewport(newViewport),
     []
   );
 
-  const handleGeocoderViewportChange = useCallback((newViewport) => {
-    const geocoderDefaultOverrides = { transitionDuration: 800 };
-    return handleViewportChange({
-      ...newViewport,
-      ...geocoderDefaultOverrides,
+  const flyTo = (lon, lat) => {
+    updateViewport({
+      ...viewport,
+      longitude: lon,
+      latitude: lat,
+      zoom: 10,
+      transitionInterpolator: new FlyToInterpolator(),
+      transitionDuration: 800,
     });
-  }, []);
+  };
 
   const loadPropertyMarkers = () => {
     if (properties) {
-      return properties.map((spot) => {
+      return properties.map((point) => {
         return (
           <Marker
-            key={spot.propertyId}
-            latitude={parseFloat(spot.latitude)}
-            longitude={parseFloat(spot.longitude)}
+            key={point.propertyId}
+            latitude={parseFloat(point.latitude)}
+            longitude={parseFloat(point.longitude)}
           >
-            <img
-              className='markerImage'
+            <div
+              className='mapbox-point'
               onClick={() => {
-                setPropertySelected(spot);
+                setPropertySelected(point);
               }}
-              src={mapPinIcon}
-              alt='Map Pin Icon'
             />
           </Marker>
         );
       });
     }
+  };
+
+  const onClick = (event) => {
+    // let feature;
+    // if (typeof event.features[0] !== "undefined") feature = event.features[0];
+    // console.log(event);
+    // if (feature.layer.id === "point") {
+    //   console.log(feature.properties)
+    // }
   };
 
   return (
@@ -122,21 +154,8 @@ export const PropertiesMap = ({
       mapboxApiAccessToken={TOKEN}
       mapStyle='mapbox://styles/mapbox/navigation-preview-day-v2'
       onViewportChange={handleViewportChange}
+      onClick={onClick}
     >
-      <Geocoder
-        mapRef={mapRef}
-        onResult={(event) => {
-          const { place_name } = event.result;
-          console.log(event.result);
-          setLocation(place_name);
-        }}
-        containerRef={geocoderRef}
-        onViewportChange={handleGeocoderViewportChange}
-        mapboxApiAccessToken={TOKEN}
-        marker={false}
-        countries='CA'
-        types='place, locality, neighborhood'
-      />
       <NavigationControl />
       {loadPropertyMarkers()}
       {propertySelected !== null ? (
@@ -145,7 +164,7 @@ export const PropertiesMap = ({
           longitude={parseFloat(propertySelected.longitude)}
           onClose={() => setPropertySelected(null)}
         >
-          <PropertiesCard property={propertySelected} />
+          <PropertiesCardMini property={propertySelected} />
         </Popup>
       ) : null}
       <Source
@@ -155,7 +174,16 @@ export const PropertiesMap = ({
           features: polygonFeatures,
         }}
       >
-        <Layer {...layerStyle} />
+        <Layer {...polygonLayer} />
+      </Source>
+      <Source
+        type='geojson'
+        data={{
+          type: "FeatureCollection",
+          features: pointFeatures(),
+        }}
+      >
+        <Layer {...clusterLayer} />
       </Source>
     </MapGL>
   );

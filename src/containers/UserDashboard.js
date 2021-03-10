@@ -48,7 +48,7 @@ export default function UserDashboard() {
             <p className='Dashboard__Results-Found'>
               {Object.keys(properties).length} Properties found
             </p>
-            <h1>My Saved Properties</h1>
+            <h1>My Listed Properties</h1>
             {properties.map((property, i) => (
               <Col key={i} md={4}>
                 <div
@@ -61,7 +61,9 @@ export default function UserDashboard() {
                   >
                     <img
                       alt={`${property.address} - Focus Property`}
-                      src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image.shift()}`}
+                      src={`https://${
+                        config.s3.BUCKET
+                      }.s3.amazonaws.com/public/${property.image.shift()}`}
                     />
                   </a>
                   <div className='PropertiesCard__Details PropertiesCard__Details--Dashboard'>
@@ -73,7 +75,7 @@ export default function UserDashboard() {
                     <div className='PropertiesCard__Address'>
                       <img src={mapPinIcon} alt='Map Pin Icon' />
                       {/* <p>{property.address}</p> */}
-                      <p className='lightText'>1025 Sesame Street, Aurora ON</p>
+                      <p className='lightText'>{property.address}</p>
                     </div>
                     <div className='PropertiesCard__Row-Highlights'>
                       {property.bedroom && (

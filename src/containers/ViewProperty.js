@@ -19,9 +19,6 @@ const images = [
   "https://images.unsplash.com/photo-1534161308652-fdfcf10f62c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2174&q=80",
 ];
 
-
-
-
 export default function ViewProperty(props) {
   const [property, setProperty] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -61,11 +58,14 @@ export default function ViewProperty(props) {
         console.log(property.image);
         console.log(property.image.length);
         if (Array.isArray(property.image)) {
-          const s3Images = property.image.map(images => `https://${config.s3.BUCKET}.s3.amazonaws.com/public/${images}`);
+          const s3Images = property.image.map(
+            (images) =>
+              `https://${config.s3.BUCKET}.s3.amazonaws.com/public/${images}`
+          );
           setPropertyImages(s3Images);
         } else {
-          setPropertyImages(property.image)
-        };
+          setPropertyImages(property.image);
+        }
       } catch (e) {
         alert(e);
       }
@@ -101,20 +101,6 @@ export default function ViewProperty(props) {
     }
     setFullSliderActive(!fullSliderActive);
   };
-  console.log(props);
-
-  // const propertyImages = property.image.map((image) =>{
-  //   return (
-  //     `https://${config.s3.BUCKET}.s3.amazonaws.com/public/${image}`
-  //   )
-  // }
-  // );
-  console.log("testing images below");
-  // console.log(property);
-  console.log(propertyImages);
-
-
-  
 
   return (
     <div className='Index'>
@@ -219,9 +205,9 @@ export default function ViewProperty(props) {
                                 <button
                                   className='ViewPropertyCard__ContactButton secondary-btn'
                                   onClick={
-                                  userEmail
-                                    ? () => sendPropertyEmail()
-                                    : () => setViewCreateAccountModal(true)
+                                    userEmail
+                                      ? () => sendPropertyEmail()
+                                      : () => setViewCreateAccountModal(true)
                                   }
                                 >
                                   Contact

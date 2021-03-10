@@ -128,4 +128,12 @@
   color: #fe6500;
 }
 
-/******* Properties Card (Map View) *******/
+/******* Properties Card Mini (On Mapbox) *******/
+.PropertiesCard--Mini {
+  margin: 0;
+  padding: 0;
+}
+
+.PropertiesCard--Mini__Details {
+  height: auto;
+}

@@ -1,28 +1,18 @@
 import "./ViewProperty.css";
 
-import { Col, Modal, Row, Breadcrumb } from "react-bootstrap";
+import { Col, Modal, Row } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 
-import Loading from "./Loading";
-import config from "../config";
 import { numberWithCommas } from "../helper";
-import backArrowIcon from "../assets/back-icon.png";
 import mapPinIcon from "../assets/map-pin-icon.png";
 import Slider from "../components/Slider";
 import PropertyMap from "../components/PropertyMap";
 
-// const images = [
-//   "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
-//   "https://images.unsplash.com/photo-1470341223622-1019832be824?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2288&q=80",
-//   "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2094&q=80",
-//   "https://images.unsplash.com/photo-1534161308652-fdfcf10f62c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2174&q=80",
-// ];
-
 export default function PreviewViewProperty({ property }) {
-  const [propertyOwner, setPropertyOwner] = useState(false);
-  const [profile, setProfile] = useState(null);
+  // const [propertyOwner, setPropertyOwner] = useState(false);
+  // const [profile, setProfile] = useState(null);
   const [viewCreateAccountModal, setViewCreateAccountModal] = useState(null);
-  const [infoSent, setInfoSent] = useState(false);
+  // const [infoSent, setInfoSent] = useState(false);
   const [fullSliderActive, setFullSliderActive] = useState(false);
   const [sliderActiveIndex, setSliderActiveIndex] = useState(0);
 
@@ -129,13 +119,9 @@ export default function PreviewViewProperty({ property }) {
                               <p className='lightText'>(647) XXX-XXXX</p>
                             </div>
                           </div>
-                          {infoSent ? (
-                            <p>info is sent</p>
-                          ) : (
-                            <button className='ViewPropertyCard__ContactButton secondary-btn'>
-                              Contact
-                            </button>
-                          )}
+                          <button className='ViewPropertyCard__ContactButton secondary-btn'>
+                            Contact
+                          </button>
                         </div>
                         <hr className='ViewPropertyCard__Separator' />
                         <div className='CardContainer'>

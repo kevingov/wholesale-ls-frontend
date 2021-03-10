@@ -2,11 +2,12 @@ import "./App.css";
 
 import { Col, Row, Image } from "react-bootstrap";
 import React, { Component } from "react";
-
 import { API, Auth } from "aws-amplify";
 import Routes from "./Routes";
 import { withRouter } from "react-router-dom";
 import config from "./config";
+
+import defaultAvatarIcon from "./assets/avatar-icon.png";
 
 class App extends Component {
   constructor(props) {
@@ -20,17 +21,15 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    console.log("Component mounting");
     try {
       await Auth.currentSession();
-      this.userHasAuthenticated(true);
       const user = await Auth.currentUserInfo();
       let userId = "none";
       if (user) userId = user["id"];
       const userProfile = await this.loadProfile(userId);
       this.setState({ profile: userProfile });
+      this.userHasAuthenticated(true);
       console.log("userProfile:", userProfile);
-      console.log(userProfile);
     } catch (e) {
       if (e !== "No current user") {
         alert(e);
@@ -79,22 +78,15 @@ class App extends Component {
               {this.state.isAuthenticated ? (
                 <div className='links'>
                   <Col xs={1}>
-                    <a href='/properties'>
-                      Search
-                    </a>
+                    <a href='/properties'>Search</a>
                   </Col>
                   <Col xs={1}>
-                    <a href='/dashboard'>
-                      My Properties
-                    </a>
+                    <a href='/dashboard'>My Properties</a>
                   </Col>
                   <Col xs={1}>
-                    <a href='/messages'>
-                      Messages
-                    </a>
+                    <a href='/messages'>Messages</a>
                   </Col>
-                  <Col xs={4}>
-                  </Col>
+                  <Col xs={4}></Col>
                   <Col xs={3}>
                     <a href='/properties/new' className='secondary-btn'>
                       + New Property
@@ -113,9 +105,17 @@ class App extends Component {
                     <a href='/profile' className='logo hidden-xs'>
                       <Image
                         height='45'
-                        alt={`${this.state.profile.firstName} ${this.state.profile.lastName}'s profile logo`}
-                        src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${this.state.profile.image}`}
-                        roundedcircle='true'
+                        alt={
+                          this.state.profile.image
+                            ? `${this.state.profile.firstName} ${this.state.profile.lastName}'s profile image`
+                            : "avatar icon"
+                        }
+                        src={
+                          this.state.profile.image
+                            ? `https://${config.s3.BUCKET}.s3.amazonaws.com/public/${this.state.profile.image}`
+                            : { defaultAvatarIcon }
+                        }
+                        style={{ borderRadius: 22.5 }}
                       />
                     </a>
                   </Col>
