@@ -1,12 +1,12 @@
-import { FormGroup, FormControl } from "react-bootstrap";
+import { FormGroup } from "react-bootstrap";
 import Dropdown from "react-dropdown";
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useRef, useState, Fragment } from "react";
 import { API } from "aws-amplify";
 
 import Loading from "./Loading";
 import "./Properties.css";
 import PropertiesMap from "../components/PropertiesMap";
-import PropertiesCard from "../components/PropertiesCard";
+import PropertyCard from "../components/PropertyCard";
 import closeDropdownIcon from "../assets/close-dropdown-icon.png";
 import openDropdownIcon from "../assets/open-dropdown-icon.png";
 import {
@@ -22,14 +22,17 @@ export default function Properties(props) {
   const [properties, setProperties] = useState([]);
   const [location, setLocation] = useState("");
   const [propertySelected, setPropertySelected] = useState(null);
+  const [propertyHovered, setPropertyHovered] = useState(null);
+  const propertyCardsRef = useRef({});
+
   const [searchInput, setSearchInput] = useState("");
   const [searchDropdownExpanded, setSearchDropdownExpanded] = useState(false);
 
-  const [filterBedrooms, setFilterBedrooms] = useState({ value: 0 });
-  const [filterBathrooms, setFilterBathrooms] = useState({ value: 0 });
   const [filterPropertyType, setFilterPropertyType] = useState({
     value: "All",
   });
+  const [filterBedrooms, setFilterBedrooms] = useState({ value: 0 });
+  const [filterBathrooms, setFilterBathrooms] = useState({ value: 0 });
   const [filterSort, setFilterSort] = useState({ value: "Newest" });
 
   useEffect(() => {
@@ -45,6 +48,15 @@ export default function Properties(props) {
 
     onLoad();
   }, [props.isAuthenticated, location]);
+
+  // function loadProperties() {
+  //   return API.get("properties", "/properties", {
+  //     queryStringParameters: {
+  //       filterBedrooms: filterBedrooms,
+  //       filterBathrooms: filterBathrooms,
+  //     },
+  //   });
+  // }
 
   function loadProperties() {
     return API.get("properties", "/allproperties");
@@ -112,6 +124,8 @@ export default function Properties(props) {
       );
     });
   };
+
+  console.log(propertyCardsRef);
 
   return (
     <div className='Index'>
@@ -216,13 +230,18 @@ export default function Properties(props) {
                 )}
                 {searchProperties.map((property, index) => {
                   return (
-                    <PropertiesCard
+                    <PropertyCard
                       key={("Property", index)}
                       property={property}
+                      setPropertyHovered={setPropertyHovered}
+                      setPropertySelected={setPropertySelected}
                       isSelected={
                         propertySelected &&
                         property.propertyId === propertySelected.propertyId
                       }
+                      forwardRef={(ref, propertyId) => {
+                        propertyCardsRef[propertyId] = ref;
+                      }}
                     />
                   );
                 })}
@@ -230,7 +249,7 @@ export default function Properties(props) {
             ) : (
               <Fragment>
                 <h2>No Properties Found</h2>
-                <p>Search again or adjust filter options</p>
+                <p>Search again or adjust the filter options</p>
               </Fragment>
             )}
           </div>
@@ -241,7 +260,9 @@ export default function Properties(props) {
               properties={searchProperties}
               location={location}
               propertySelected={propertySelected}
+              propertyHovered={propertyHovered}
               setPropertySelected={setPropertySelected}
+              setPropertyHovered={setPropertyHovered}
             />
           </div>
         </div>

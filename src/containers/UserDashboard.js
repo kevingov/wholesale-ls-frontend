@@ -53,11 +53,11 @@ export default function UserDashboard() {
               <Col key={i} md={4}>
                 <div
                   key={("Property", i)}
-                  className='PropertiesCard PropertiesCard--Dashboard'
+                  className='PropertyCard PropertyCard--Dashboard'
                 >
                   <a
                     href={`/properties/${property.propertyId}`}
-                    className='PropertiesCard__Image-Container PropertiesCard__Image-Container--Dashboard'
+                    className='PropertyCard__Image-Container PropertyCard__Image-Container--Dashboard'
                   >
                     <img
                       alt={`${property.address} - Focus Property`}
@@ -66,18 +66,18 @@ export default function UserDashboard() {
                       }.s3.amazonaws.com/public/${property.image.shift()}`}
                     />
                   </a>
-                  <div className='PropertiesCard__Details PropertiesCard__Details--Dashboard'>
-                    <h3 className='PropertiesCard__Title'>
+                  <div className='PropertyCard__Details PropertyCard__Details--Dashboard'>
+                    <h3 className='PropertyCard__Title'>
                       {property.title.length > 75
                         ? property.title.slice(0, 75) + " ..."
                         : property.title}
                     </h3>
-                    <div className='PropertiesCard__Address'>
+                    <div className='PropertyCard__Address'>
                       <img src={mapPinIcon} alt='Map Pin Icon' />
                       {/* <p>{property.address}</p> */}
                       <p className='lightText'>{property.address}</p>
                     </div>
-                    <div className='PropertiesCard__Row-Highlights'>
+                    <div className='PropertyCard__Row-Highlights'>
                       {property.bedroom && (
                         <div>{property.bedroom} Bedrooms</div>
                       )}
@@ -88,16 +88,16 @@ export default function UserDashboard() {
                         <div>{property.propertyType}</div>
                       )}
                     </div>
-                    <div className='PropertiesCard__Row-Pricing'>
-                      <div className='PropertiesCard__Row-Pricing-Item'>
+                    <div className='PropertyCard__Row-Pricing'>
+                      <div className='PropertyCard__Row-Pricing-Item'>
                         <p>Asking</p>
                         <p>${numberWithCommas(property.price)}</p>
                       </div>
-                      <div className='PropertiesCard__Row-Pricing-Item'>
+                      <div className='PropertyCard__Row-Pricing-Item'>
                         <p>Nearby</p>
                         <p>${numberWithCommas(property.nearbyPrice)}</p>
                       </div>
-                      <div className='PropertiesCard__Row-Pricing-Item PropertiesCard__Row-Pricing-Item--Profit'>
+                      <div className='PropertyCard__Row-Pricing-Item PropertyCard__Row-Pricing-Item--Profit'>
                         <p>Est. Profit</p>
                         <p>$120,000</p>
                       </div>

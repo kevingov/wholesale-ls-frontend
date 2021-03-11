@@ -10,8 +10,7 @@ import MapGL, {
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import axios from "axios";
 
-import mapPinIcon from "../assets/map-pin-icon.png";
-import PropertiesCardMini from "../components/PropertiesCardMini";
+import PropertyCardPopup from "./PropertyCardPopup";
 
 const TOKEN =
   "pk.eyJ1IjoiZmlyZWhvYm8iLCJhIjoiY2s5aXdwOHQyMWUzZTNlcXQyejRzNTI1cyJ9.Mm2EY__EgXVLkeIcXnv1AQ";
@@ -21,7 +20,7 @@ const polygonLayer = {
   type: "line",
   source: "zone",
   paint: {
-    "line-color": "#3ab984",
+    "line-color": "#1e7551",
     "line-width": 4,
   },
 };
@@ -31,7 +30,7 @@ const clusterLayer = {
   paint: {
     "circle-radius": 8,
     "circle-color": "#545454",
-    "circle-opacity": 0.75,
+    "circle-opacity": 0,
   },
 };
 
@@ -40,6 +39,8 @@ export const PropertiesMap = ({
   location,
   propertySelected,
   setPropertySelected,
+  propertyHovered,
+  setPropertyHovered,
 }) => {
   const mapRef = useRef();
   const [polygonFeatures, setPolygonFeatures] = useState({});
@@ -115,35 +116,27 @@ export const PropertiesMap = ({
     });
   };
 
-  const loadPropertyMarkers = () => {
-    if (properties) {
-      return properties.map((point) => {
-        return (
-          <Marker
-            key={point.propertyId}
-            latitude={parseFloat(point.latitude)}
-            longitude={parseFloat(point.longitude)}
-          >
-            <div
-              className='mapbox-point'
-              onClick={() => {
-                setPropertySelected(point);
-              }}
-            />
-          </Marker>
-        );
-      });
-    }
-  };
-
-  const onClick = (event) => {
-    // let feature;
-    // if (typeof event.features[0] !== "undefined") feature = event.features[0];
-    // console.log(event);
-    // if (feature.layer.id === "point") {
-    //   console.log(feature.properties)
-    // }
-  };
+  const loadPropertyMarkers = () =>
+    properties.map((point) => {
+      const isSelectedOrHovered =
+        (propertySelected &&
+          point.propertyId === propertySelected.propertyId) ||
+        (propertyHovered && point.propertyId === propertyHovered.propertyId);
+      return (
+        <Marker
+          key={point.propertyId}
+          latitude={parseFloat(point.latitude)}
+          longitude={parseFloat(point.longitude)}
+          offsetLeft={-8}
+          offsetTop={-8}
+        >
+          <div
+            className={`mapbox-point ${isSelectedOrHovered ? " selected" : ""}`}
+            onClick={() => setPropertySelected(point)}
+          />
+        </Marker>
+      );
+    });
 
   return (
     <MapGL
@@ -154,19 +147,18 @@ export const PropertiesMap = ({
       mapboxApiAccessToken={TOKEN}
       mapStyle='mapbox://styles/mapbox/navigation-preview-day-v2'
       onViewportChange={handleViewportChange}
-      onClick={onClick}
     >
       <NavigationControl />
-      {loadPropertyMarkers()}
-      {propertySelected !== null ? (
+      {properties && loadPropertyMarkers()}
+      {propertySelected && (
         <Popup
           latitude={parseFloat(propertySelected.latitude)}
           longitude={parseFloat(propertySelected.longitude)}
           onClose={() => setPropertySelected(null)}
         >
-          <PropertiesCardMini property={propertySelected} />
+          <PropertyCardPopup property={propertySelected} />
         </Popup>
-      ) : null}
+      )}
       <Source
         type='geojson'
         data={{

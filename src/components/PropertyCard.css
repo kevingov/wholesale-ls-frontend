@@ -1,22 +1,26 @@
 /******* Properties Card (List View) *******/
 
-.PropertiesCard {
+.PropertyCard {
   margin: 14px 0;
-  padding: 13px;
+  padding: 8px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   border-radius: 5px;
-  transition: background-color 500ms ease, box-shadow 500ms ease;
+  border: 3px solid #ffffff00;
+  transition: background-color 200ms ease, box-shadow 200ms ease;
 }
 
-.PropertiesCard.selected {
-  background-color: #d6dfe7;
-  box-shadow: 2px 3px 15px #a0a0a040;
+.PropertyCard.selected {
+  border: 3px solid #646464;
 }
 
-.PropertiesCard__Title {
+.PropertyCard:hover {
+  box-shadow: 2px 2px 10px #a0a0a090;
+}
+
+.PropertyCard__Title {
   font-size: 16px;
   font-weight: 600;
   margin-top: 0;
@@ -25,7 +29,7 @@
   overflow: hidden;
 }
 
-.PropertiesCard__Image-Container {
+.PropertyCard__Image-Container {
   height: 200px;
   width: 280px;
   display: flex;
@@ -34,46 +38,46 @@
   overflow: hidden;
 }
 
-.PropertiesCard__Image-Container > img {
+.PropertyCard__Image-Container > img {
   border-radius: 5px;
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
 
-.PropertiesCard__Details {
+.PropertyCard__Details {
   height: 200px;
   width: 320px;
   padding-left: 12px;
 }
 
-.PropertiesCard__Address {
+.PropertyCard__Address {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   margin-top: 12px;
 }
 
-.PropertiesCard__Address > img {
+.PropertyCard__Address > img {
   height: 13px;
   margin-right: 8px;
 }
 
-.PropertiesCard__Address > p {
+.PropertyCard__Address > p {
   font-size: 14px;
   line-height: 1.5em;
   height: 1.5em;
   overflow: hidden;
 }
 
-.PropertiesCard__Row-Highlights {
+.PropertyCard__Row-Highlights {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   margin-top: 14px;
 }
 
-.PropertiesCard__Highlight {
+.PropertyCard__Highlight {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -87,24 +91,24 @@
   color: #27313e;
 }
 
-.PropertiesCard__Highlight > p {
+.PropertyCard__Highlight > p {
   font-size: 12px;
 }
 
-.PropertiesCard__Highlight > img {
+.PropertyCard__Highlight > img {
   width: 20px;
   height: auto;
   margin-right: 8px;
 }
 
-.PropertiesCard__Row-Pricing {
+.PropertyCard__Row-Pricing {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   margin-top: 12px;
 }
 
-.PropertiesCard__Row-Pricing-Item {
+.PropertyCard__Row-Pricing-Item {
   margin-right: 9px;
   border-radius: 2px;
   padding: 8px 14px;
@@ -116,24 +120,14 @@
   overflow: hidden;
 }
 
-.PropertiesCard__Row-Pricing-Item p:first-child {
+.PropertyCard__Row-Pricing-Item p:first-child {
   color: #7f8fa4;
 }
 
-.PropertiesCard__Row-Pricing-Item--Profit {
+.PropertyCard__Row-Pricing-Item--Profit {
   background-color: #ffe8d9;
 }
 
-.PropertiesCard__Row-Pricing-Item--Profit p:first-child {
+.PropertyCard__Row-Pricing-Item--Profit p:first-child {
   color: #fe6500;
-}
-
-/******* Properties Card Mini (On Mapbox) *******/
-.PropertiesCard--Mini {
-  margin: 0;
-  padding: 0;
-}
-
-.PropertiesCard--Mini__Details {
-  height: auto;
 }

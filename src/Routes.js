@@ -20,6 +20,7 @@ import ViewProfile from "./containers/ViewProperty";
 import PropertyMultiform from "./containers/NewProperty";
 import PropertyChat from "./containers/PropertyChat";
 import ResetPassword from "./containers/ResetPassword";
+import MessageCentre from "./containers/MessageCentre";
 
 export default ({ childProps }) => (
   <Switch>
@@ -95,6 +96,12 @@ export default ({ childProps }) => (
       path='/login/reset'
       exact
       component={ResetPassword}
+      props={childProps}
+    />
+    <AuthenticatedRoute
+      path='/messages'
+      exact
+      component={MessageCentre}
       props={childProps}
     />
 

@@ -158,5 +158,22 @@
   width: 16px;
   height: 16px;
   border-radius: 16px;
-  background: #fe6500;
+  background: #4e4e4e;
+}
+
+.mapbox-point::after {
+  content: "";
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+  border-radius: 8px;
+  background: #fff;
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+}
+
+.mapbox-point.selected::after,
+.mapbox-point:hover::after {
+  background: #ff802c;
 }

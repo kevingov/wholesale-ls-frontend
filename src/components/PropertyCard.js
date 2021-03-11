@@ -5,35 +5,44 @@ import mapPinIcon from "../assets/map-pin-icon.png";
 import bedIcon from "../assets/bed-icon.png";
 import bathIcon from "../assets/bath-icon.png";
 import { numberWithCommas } from "../helper";
-import "./PropertiesCard.css";
+import "./PropertyCard.css";
 
-const PropertiesCard = ({ property, index, isSelected }) => (
+const PropertyCard = ({
+  property,
+  setPropertySelected,
+  setPropertyHovered,
+  isSelected,
+  index,
+}) => (
   <div
     key={index ? "Property " + index : ""}
-    className={`PropertiesCard ${isSelected ? " selected" : ""}`}
+    className={`PropertyCard ${isSelected ? " selected" : ""}`}
+    onClick={() => setPropertySelected(property)}
+    onMouseEnter={() => setPropertyHovered(property)}
+    onMouseLeave={() => setPropertyHovered(null)}
   >
     <a
       href={`/properties/${property.propertyId}`}
-      className='PropertiesCard__Image-Container'
+      className='PropertyCard__Image-Container'
     >
       <img
         alt={`${property.address} - Focus Property`}
         src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image[0]}`}
       />
     </a>
-    <div className='PropertiesCard__Details'>
-      <h3 className='PropertiesCard__Title'>
+    <div className='PropertyCard__Details'>
+      <h3 className='PropertyCard__Title'>
         {property.title.length > 55
           ? property.title.slice(0, 55) + " ..."
           : property.title}
       </h3>
-      <div className='PropertiesCard__Address'>
+      <div className='PropertyCard__Address'>
         <img src={mapPinIcon} alt='Map Pin Icon' />
         <p>{property.address}</p>
       </div>
-      <div className='PropertiesCard__Row-Highlights'>
+      <div className='PropertyCard__Row-Highlights'>
         {property.bedroom && (
-          <div className='PropertiesCard__Highlight'>
+          <div className='PropertyCard__Highlight'>
             <img src={bedIcon} />
             <p>
               {property.bedroom + (property.bedroom > 1 ? " Beds" : " Bed")}
@@ -41,7 +50,7 @@ const PropertiesCard = ({ property, index, isSelected }) => (
           </div>
         )}
         {property.bathroom && (
-          <div className='PropertiesCard__Highlight'>
+          <div className='PropertyCard__Highlight'>
             <img src={bathIcon} />
             <p>
               {property.bathroom + (property.bathroom > 1 ? " Baths" : " Bath")}
@@ -50,16 +59,16 @@ const PropertiesCard = ({ property, index, isSelected }) => (
         )}
         {property.propertType && <div>{property.propertyType}</div>}
       </div>
-      <div className='PropertiesCard__Row-Pricing'>
-        <div className='PropertiesCard__Row-Pricing-Item'>
+      <div className='PropertyCard__Row-Pricing'>
+        <div className='PropertyCard__Row-Pricing-Item'>
           <p>Asking</p>
           <p>${numberWithCommas(property.price)}</p>
         </div>
-        <div className='PropertiesCard__Row-Pricing-Item'>
+        <div className='PropertyCard__Row-Pricing-Item'>
           <p>Nearby</p>
           <p>${numberWithCommas(property.nearbyPrice)}</p>
         </div>
-        <div className='PropertiesCard__Row-Pricing-Item PropertiesCard__Row-Pricing-Item--Profit'>
+        <div className='PropertyCard__Row-Pricing-Item PropertyCard__Row-Pricing-Item--Profit'>
           <p>Est. Profit</p>
           <p>${(property.nearbyPrice - property.price).toLocaleString()}</p>
         </div>
@@ -68,4 +77,4 @@ const PropertiesCard = ({ property, index, isSelected }) => (
   </div>
 );
 
-export default PropertiesCard;
+export default PropertyCard;

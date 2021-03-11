@@ -54,6 +54,7 @@ export default function PropertyMultiForm(props) {
   const [title, setTitle] = useState("");
   const [tagline, setTagline] = useState("");
   const [city, setCity] = useState("");
+  const [province, setProvince] = useState("");
   const [address, setAddress] = useState("");
   const [geoAddress, setGeoAddress] = useState("");
   const [propertyType, setPropertyType] = useState("");
@@ -103,6 +104,7 @@ export default function PropertyMultiForm(props) {
         title,
         tagline,
         city,
+        province,
         address,
         propertyType: propertyType.value,
         propertyStatus: propertyStatus.value,
@@ -153,7 +155,14 @@ export default function PropertyMultiForm(props) {
   async function handleSelect(val) {
     const results = await geocodeByAddress(val);
     const result = results[0];
+    console.log("results for geocodebyaddress below");
+    console.log(results);
     const latLng = await getLatLng(result);
+    setProvince(
+      result.address_components.filter((component) =>
+        component.types.includes("administrative_area_level_1")
+      )[0]["long_name"]
+    );
     setCity(
       result.address_components.filter((component) =>
         component.types.includes("locality")
@@ -648,6 +657,7 @@ export default function PropertyMultiForm(props) {
                     title,
                     tagline,
                     city,
+                    province,
                     address,
                     propertyType: propertyType.value,
                     propertyStatus: propertyStatus.value,
