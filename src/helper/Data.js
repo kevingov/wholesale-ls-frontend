@@ -1,3 +1,4 @@
+// Property - Filters and Options
 export const BEDROOM_FILTERS = [
   {
     label: "Any",
@@ -55,7 +56,7 @@ export const SORT_FILTERS = [
   },
 ];
 
-export const PROPERTY_TYPE_FILTERS = [
+export const PROPERTY_TYPES = [
   {
     label: "All",
     value: "All",
@@ -79,5 +80,20 @@ export const PROPERTY_TYPE_FILTERS = [
   {
     label: "Multi-family",
     value: "Multi-family",
+  },
+];
+
+export const PROPERTY_STATUSES = [
+  {
+    label: "Active",
+    value: "Active",
+  },
+  {
+    label: "Pending",
+    value: "Pending",
+  },
+  {
+    label: "Assigned",
+    value: "Assigned",
   },
 ];

@@ -12,7 +12,7 @@ import openDropdownIcon from "../assets/open-dropdown-icon.png";
 import {
   BEDROOM_FILTERS,
   BATHROOM_FILTERS,
-  PROPERTY_TYPE_FILTERS,
+  PROPERTY_TYPES,
   SORT_FILTERS,
 } from "../helper/Data";
 import { LOCATIONS_ALL } from "../helper/LocationData";
@@ -49,6 +49,17 @@ export default function Properties(props) {
     onLoad();
   }, [props.isAuthenticated, location]);
 
+  useEffect(() => {
+    // scroll to Property Card when property is selected
+    if (propertySelected) {
+      const { propertyId } = propertySelected;
+      propertyCardsRef.current[propertyId].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [propertySelected]);
+
   // function loadProperties() {
   //   return API.get("properties", "/properties", {
   //     queryStringParameters: {
@@ -57,11 +68,11 @@ export default function Properties(props) {
   //     },
   //   });
   // }
-
   function loadProperties() {
     return API.get("properties", "/allproperties");
   }
 
+  // Filter functions
   const resultsFilteredByDropdown = properties.filter((results) => {
     let isPropertyType =
       filterPropertyType.value === "All"
@@ -74,7 +85,6 @@ export default function Properties(props) {
       results.bathroom >= filterBathrooms.value
     );
   });
-
   let searchProperties;
   if (filterSort === "Newest") {
     searchProperties = resultsFilteredByDropdown.sort(
@@ -94,6 +104,7 @@ export default function Properties(props) {
     );
   }
 
+  // Location search bar functions
   const onSelectDropdownLocation = (event) => {
     const location = event.currentTarget.getAttribute("data-location");
     setLocation(location);
@@ -124,8 +135,6 @@ export default function Properties(props) {
       );
     });
   };
-
-  console.log(propertyCardsRef);
 
   return (
     <div className='Index'>
@@ -182,7 +191,7 @@ export default function Properties(props) {
             <Dropdown
               placeholder='All'
               value={filterPropertyType.label}
-              options={PROPERTY_TYPE_FILTERS}
+              options={PROPERTY_TYPES}
               onChange={(event) => setFilterPropertyType(event)}
             />
           </FormGroup>
@@ -240,7 +249,7 @@ export default function Properties(props) {
                         property.propertyId === propertySelected.propertyId
                       }
                       forwardRef={(ref, propertyId) => {
-                        propertyCardsRef[propertyId] = ref;
+                        propertyCardsRef.current[propertyId] = ref;
                       }}
                     />
                   );
@@ -259,10 +268,9 @@ export default function Properties(props) {
               className='mapboxgl-map'
               properties={searchProperties}
               location={location}
-              propertySelected={propertySelected}
               propertyHovered={propertyHovered}
+              propertySelected={propertySelected}
               setPropertySelected={setPropertySelected}
-              setPropertyHovered={setPropertyHovered}
             />
           </div>
         </div>

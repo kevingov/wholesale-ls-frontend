@@ -171,11 +171,6 @@ p {
 }
 
 .ViewPropertyCard__ContactProfilePic {
-  border-radius: 50%;
-  border: 5px solid #efefef;
-  width: 65px;
-  height: 65px;
-  object-fit: cover;
   float: left;
 }
 

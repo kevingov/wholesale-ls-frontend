@@ -11,6 +11,7 @@ import backArrowIcon from "../assets/back-icon.png";
 import mapPinIcon from "../assets/map-pin-icon.png";
 import Slider from "../components/Slider";
 import PropertyMap from "../components/PropertyMap";
+import ProfileIcon from "../components/ProfileIcon";
 
 const images = [
   "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
@@ -55,8 +56,6 @@ export default function ViewProperty(props) {
         setProperty(property);
         setIsLoading(true);
         console.log("here is images");
-        console.log(property.image);
-        console.log(property.image.length);
         if (Array.isArray(property.image)) {
           const s3Images = property.image.map(
             (images) =>
@@ -182,11 +181,9 @@ export default function ViewProperty(props) {
                         <div className='ViewPropertyCard__Details'>
                           <div className='CardContainer'>
                             <div className='ViewPropertyCard__ContactProfile'>
-                              <img
-                                className='ViewPropertyCard__ContactProfilePic'
-                                alt={`${profile.firstName} ${profile.lastName} avatar`}
-                                src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${profile.image}`}
-                              />
+                              <div style={{ float: "left" }}>
+                                <ProfileIcon profile={profile} size='65' />
+                              </div>
                               <div className='ViewPropertyCard__ContactInfo'>
                                 <b className='ViewPropertyCard__PostedBy'>
                                   Posted By {profile.firstName}{" "}
@@ -202,16 +199,16 @@ export default function ViewProperty(props) {
                               // <a
                               //   href={`/properties/${property.propertyId}/chat`}
                               // >
-                                <button
-                                  className='ViewPropertyCard__ContactButton secondary-btn'
-                                  onClick={
-                                    userEmail
-                                      ? () => sendPropertyEmail()
-                                      : () => setViewCreateAccountModal(true)
-                                  }
-                                >
-                                  Contact
-                                </button>
+                              <button
+                                className='ViewPropertyCard__ContactButton secondary-btn'
+                                onClick={
+                                  userEmail
+                                    ? () => sendPropertyEmail()
+                                    : () => setViewCreateAccountModal(true)
+                                }
+                              >
+                                Contact
+                              </button>
                               // </a>
                             )}
                           </div>

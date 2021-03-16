@@ -13,6 +13,7 @@ const PropertyCard = ({
   setPropertyHovered,
   isSelected,
   index,
+  forwardRef,
 }) => (
   <div
     key={index ? "Property " + index : ""}
@@ -20,6 +21,7 @@ const PropertyCard = ({
     onClick={() => setPropertySelected(property)}
     onMouseEnter={() => setPropertyHovered(property)}
     onMouseLeave={() => setPropertyHovered(null)}
+    ref={(ref) => forwardRef(ref, property.propertyId)}
   >
     <a
       href={`/properties/${property.propertyId}`}

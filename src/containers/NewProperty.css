@@ -63,9 +63,31 @@
   width: 100%;
   object-fit: contain;
   margin: 15px 0;
+  position: relative;
 }
 .MultiForm__ImgWrapper > img {
   width: 100%;
+}
+
+.MultiForm__ImgDeleteBtn {
+  position: absolute;
+  display: flex;
+  top: 20px;
+  right: 20px;
+  height: 40px;
+  width: 40px;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.9;
+  border-radius: 50%;
+  cursor: pointer;
+  align-items: center;
+  background: #e2e2e2;
+  transition: transform ease-in 0.1s;
+}
+
+.MultiForm__ImgDeleteBtn:hover {
+  transform: scale(1.1);
 }
 
 /******* Progress Bar *******/
@@ -247,6 +269,12 @@
   border-radius: 4px;
   background-color: #34901b;
   padding: 4px 60px;
+}
+
+.form-group.required .control-label:after,
+label.form-group.required:after {
+  content: "*";
+  color: red;
 }
 
 /******* Media Queries (Responsive) *******/

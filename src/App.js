@@ -5,9 +5,8 @@ import React, { Component } from "react";
 import { API, Auth } from "aws-amplify";
 import Routes from "./Routes";
 import { withRouter } from "react-router-dom";
-import config from "./config";
 
-import defaultAvatarIcon from "./assets/avatar-icon.png";
+import ProfileIcon from "./components/ProfileIcon";
 
 class App extends Component {
   constructor(props) {
@@ -103,20 +102,7 @@ class App extends Component {
                   </Col>
                   <Col xs={1}>
                     <a href='/profile' className='logo hidden-xs'>
-                      <Image
-                        height='45'
-                        alt={
-                          this.state.profile.image
-                            ? `${this.state.profile.firstName} ${this.state.profile.lastName}'s profile image`
-                            : "avatar icon"
-                        }
-                        src={
-                          this.state.profile.image
-                            ? `https://${config.s3.BUCKET}.s3.amazonaws.com/public/${this.state.profile.image}`
-                            : { defaultAvatarIcon }
-                        }
-                        style={{ borderRadius: 22.5 }}
-                      />
+                      <ProfileIcon profile={this.state.profile} size='55' />
                     </a>
                   </Col>
                 </div>

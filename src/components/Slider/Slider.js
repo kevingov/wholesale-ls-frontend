@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, Fragment } from "react";
 import { css, jsx } from "@emotion/react";
 import Slide from "./Slide";
 import SliderContent from "./SliderContent";
@@ -77,24 +77,24 @@ const Slider = (props) => {
           ))}
         </SliderContent>
       )}
-      <Arrow
-        fullScreenMode={fullScreenMode}
-        direction='left'
-        handleClick={prevSlide}
-      />
-      <Arrow
-        fullScreenMode={fullScreenMode}
-        direction='right'
-        handleClick={nextSlide}
-      />
+      {slides.length > 1 && (
+        <Fragment>
+          <Arrow
+            fullScreenMode={fullScreenMode}
+            direction='left'
+            handleClick={prevSlide}
+          />
+          <Arrow
+            fullScreenMode={fullScreenMode}
+            direction='right'
+            handleClick={nextSlide}
+          />
+        </Fragment>
+      )}
       <Dots slides={slides} activeIndex={activeIndex} />
       {!fullScreenMode && (
-        <div css={FocusIconCSS}>
-          <img
-            style={{ width: "15px", height: "15px" }}
-            src={focusIcon}
-            onClick={() => toggleFullScreen(activeIndex)}
-          />
+        <div css={FocusIconCSS} onClick={() => toggleFullScreen(activeIndex)}>
+          <img style={{ width: "45%", height: "45%" }} src={focusIcon} />
         </div>
       )}
     </div>

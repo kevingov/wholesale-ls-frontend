@@ -40,7 +40,6 @@ export const PropertiesMap = ({
   propertySelected,
   setPropertySelected,
   propertyHovered,
-  setPropertyHovered,
 }) => {
   const mapRef = useRef();
   const [polygonFeatures, setPolygonFeatures] = useState({});
@@ -54,7 +53,7 @@ export const PropertiesMap = ({
   useEffect(() => {
     if (location) {
       const URI = encodeURI(
-        `https://nominatim.openstreetmap.org/search/${location}?format=json&limit=1&polygon_geojson=1`
+        `https://nominatim.openstreetmap.org/search/${location}?format=json&countrycodes=CA&limit=1&polygon_geojson=1`
       ); // nominatim API
       handleGeojsonZone(URI);
     }
@@ -64,6 +63,7 @@ export const PropertiesMap = ({
     axios
       .get(URI)
       .then((res) => {
+        // console.log(res);
         if (res && res.data.length > 0) {
           const coordinates = res.data[0].geojson.coordinates;
           const lat = parseFloat(res.data[0].lat);
@@ -79,7 +79,6 @@ export const PropertiesMap = ({
           ];
           setPolygonFeatures(feature);
           flyTo(lon, lat);
-          // console.log(res);
         }
       })
       .catch((err) => console.log(err.response));

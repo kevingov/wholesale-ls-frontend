@@ -54,8 +54,6 @@ export default function PreviewViewProperty({ property }) {
     setFullSliderActive(!fullSliderActive);
   };
 
-  console.log("PreviewViewProperty", property);
-
   return (
     <div className='Index'>
       {fullSliderActive && (
