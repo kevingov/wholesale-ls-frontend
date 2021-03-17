@@ -21,6 +21,7 @@ import PropertyMultiform from "./containers/NewProperty";
 import PropertyChat from "./containers/PropertyChat";
 import ResetPassword from "./containers/ResetPassword";
 import MessageCentre from "./containers/MessageCentre";
+import EmailPage from "./containers/EmailPage";
 
 export default ({ childProps }) => (
   <Switch>
@@ -102,6 +103,12 @@ export default ({ childProps }) => (
       path='/messages'
       exact
       component={MessageCentre}
+      props={childProps}
+    />
+    <AppliedRoute
+      path='/properties/:id/sendemail'
+      exact
+      component={EmailPage}
       props={childProps}
     />
 
