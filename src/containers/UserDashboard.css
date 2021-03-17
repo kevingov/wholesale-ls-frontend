@@ -24,7 +24,7 @@
 
 /******* Propertie Card - Dashboard *******/
 
-.PropertiesCard--Dashboard {
+.PropertyCard--Dashboard {
   margin: 15px 0;
   flex-direction: column;
   border-radius: 5px;
@@ -34,14 +34,14 @@
   border-radius: 5px;
 }
 
-.PropertiesCard__Image-Container--Dashboard {
+.PropertyCard__Image-Container--Dashboard {
   height: 210px;
   width: 100%;
   margin-bottom: 15px;
   border-radius: 5px;
 }
 
-.PropertiesCard__Details--Dashboard {
+.PropertyCard__Details--Dashboard {
   width: 100%;
   padding: 0;
 }

@@ -13,75 +13,52 @@ import PlacesAutocomplete, {
   getLatLng,
 } from "react-places-autocomplete";
 import { API, Storage, a, sectionFooterSecondaryContent } from "aws-amplify";
+
 import "./NewProperty.css";
 import "react-dropdown/style.css";
 import "react-datepicker/dist/react-datepicker.css";
 import checkmarkIcon from "../assets/checkmark-icon.png";
 import backIcon from "../assets/back-icon-green.png";
 import imageUploadIcon from "../assets/image-upload-icon.png";
+import imageDeleteIcon from "../assets/x-icon.png";
 import LoaderButton from "../components/LoaderButton";
 import PreviewViewProperty from "./PreviewViewProperty";
+import { PROPERTY_STATUSES, PROPERTY_TYPES } from "../helper/Data";
 
 export default function PropertyMultiForm(props) {
-  // const [form, setForm] = useState({
-  //     title: "",
-  //     tagline: "",
-  //     city: "",
-  //     address: "",
-  //     propertyType: "",
-  //     propertyStatus: "",
-  //     offerDate: new Date(),
-  //     closeDate: new Date(),
-  //     groupShowingDate: new Date(),
-  //     bedroom: 1,
-  //     bathroom: 1,
-  //     parking: 1,
-  //     netOperatingIncome: 0,
-  //     description: "",
-  //     propertyNeeds: "",
-  //     whyThisProperty: "",
-  //     comparable: "",
-  //     longitude: "",
-  //     latitude: "",
-  //     /* need to test file piece */
-  //     file: false,
-  //     /* test this piece */
-  //     price: "",
-  //     nearbyPrice: "",
-  //     arvPrice: "",
-  // })
-
-  const [title, setTitle] = useState("");
-  const [tagline, setTagline] = useState("");
-  const [city, setCity] = useState("");
-  const [province, setProvince] = useState("");
-  const [address, setAddress] = useState("");
-  const [geoAddress, setGeoAddress] = useState("");
-  const [propertyType, setPropertyType] = useState("");
-  const [propertyStatus, setPropertyStatus] = useState("");
-  const [offerDate, setOfferDate] = useState();
-  const [closeDate, setCloseDate] = useState();
-  const [groupShowingDate, setGroupShowingDate] = useState();
-  const [bedroom, setBedroom] = useState(1);
-  const [bathroom, setBathroom] = useState(1);
-  const [parking, setParking] = useState(1);
-  const [netOperatingIncome, setNetOperatingIncome] = useState(0);
-  const [description, setDescription] = useState("");
-  const [propertyNeeds, setPropertyNeeds] = useState("");
-  const [whyThisProperty, setWhyThisProperty] = useState("");
-  const [comparable, setComparable] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [files, setFiles] = useState(false);
-  const [price, setPrice] = useState("");
-  const [nearbyPrice, setNearbyPrice] = useState("");
-  const [arvPrice, setArvPrice] = useState("");
-  const [yearBuilt, setYearBuilt] = useState("");
-  const [lotSize, setLotSize] = useState("");
-  const [associationFees, setAssociationFees] = useState("");
+  const [fields, setFields] = useState({
+    title: "",
+    tagline: "",
+    city: "",
+    province: "",
+    address: "",
+    geoAddress: "",
+    propertyType: "",
+    propertyStatus: "",
+    offerDate: "",
+    closeDate: "",
+    groupShowingDate: "",
+    bedroom: "",
+    bathroom: "",
+    parking: "",
+    netOperatingIncome: "",
+    description: "",
+    propertyNeeds: "",
+    whyThisProperty: "",
+    comparable: "",
+    longitude: "",
+    latitude: "",
+    price: "",
+    nearbyPrice: "",
+    arvPrice: "",
+    yearBuilt: "",
+    lotSize: "",
+    associationFees: "",
+  });
 
   const uploadFileRef = useRef();
+  const [filesUploaded, setFilesUploaded] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(1);
   const stageNames = [
     "Basic Info",
@@ -90,47 +67,20 @@ export default function PropertyMultiForm(props) {
     "Images",
     "Price",
   ];
-  const [selectedImages, setSelectedImages] = useState([]);
 
   async function handleSubmit(event) {
     event.preventDefault();
-
     setIsLoading(true);
 
     try {
-      const image = files ? await s3Upload(files) : null;
-      console.log(image);
+      const images = filesUploaded ? await s3Upload(filesUploaded) : null;
       const property = await createProperty({
-        title,
-        tagline,
-        city,
-        province,
-        address,
-        propertyType: propertyType.value,
-        propertyStatus: propertyStatus.value,
-        offerDate,
-        closeDate,
-        groupShowingDate,
-        bedroom,
-        bathroom,
-        parking,
-        netOperatingIncome,
-        description,
-        propertyNeeds,
-        whyThisProperty,
-        comparable,
-        longitude,
-        latitude,
-        image,
-        price,
-        nearbyPrice,
-        arvPrice,
-        yearBuilt,
-        lotSize,
-        associationFees,
+        ...fields,
+        image: images,
       });
-      setIsLoading(false);
+
       props.history.push(`/properties/${property.propertyId}`);
+      setIsLoading(false);
     } catch (e) {
       alert(e);
       setIsLoading(false);
@@ -143,64 +93,62 @@ export default function PropertyMultiForm(props) {
     });
   }
 
-  function updatePropertyStatus(propertyStatus) {
-    setPropertyStatus(propertyStatus);
-  }
-
-  function updatePropertyType(propertyType) {
-    setPropertyType(propertyType);
-    console.log(propertyType);
-  }
-
-  async function handleSelect(val) {
+  async function handleSelectAddress(val) {
     const results = await geocodeByAddress(val);
     const result = results[0];
-    console.log("results for geocodebyaddress below");
-    console.log(results);
     const latLng = await getLatLng(result);
-    setProvince(
-      result.address_components.filter((component) =>
-        component.types.includes("administrative_area_level_1")
-      )[0]["long_name"]
-    );
-    setCity(
-      result.address_components.filter((component) =>
-        component.types.includes("locality")
-      )[0]["long_name"]
-    );
-    setAddress(result.formatted_address);
-    setLongitude(latLng.lng);
-    setLatitude(latLng.lat);
-    setGeoAddress(result.formatted_address);
+
+    const province = result.address_components.filter((component) =>
+      component.types.includes("administrative_area_level_1")
+    )[0]["long_name"];
+    const city = result.address_components.filter((component) =>
+      component.types.includes("locality")
+    )[0]["long_name"];
+
+    setFields({
+      ...fields,
+      province,
+      city,
+      address: result.formatted_address,
+      geoAddress: result.formatted_address,
+      longitude: latLng.lng,
+      latitude: latLng.lat,
+    });
   }
 
-  // function handleFileChange(event) {
-  //   setFiles(event.target.files);
-  // }
-
-  const handleChange = (e) => {
+  const handleFileChange = (e) => {
     if (e.target.files) {
-      const fileArray = Array.from(e.target.files).map((file) =>
-        URL.createObjectURL(file)
-      );
-
-      setSelectedImages((prevImages) => prevImages.concat(fileArray));
-      Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+      const fileArray = Array.from(e.target.files);
+      setFilesUploaded((prevImages) => prevImages.concat(fileArray));
     }
-    setFiles(e.target.files);
   };
 
-  const renderPhotos = (source) => {
-    return source.map((photo) => (
-      <div className='MultiForm__ImgWrapper'>
-        <img src={photo} key={photo} />
+  const imageURLs = filesUploaded.map((file) => URL.createObjectURL(file));
+
+  const deleteImage = (deleteAtIndex) => {
+    console.log(deleteAtIndex);
+    setFilesUploaded((prevFiles) =>
+      prevFiles.filter((file, index) => index !== deleteAtIndex)
+    );
+  };
+
+  const renderPhotos = () => {
+    return imageURLs.map((image, index) => (
+      <div key={("Property photo - ", index)} className='MultiForm__ImgWrapper'>
+        <div
+          className='MultiForm__ImgDeleteBtn'
+          onClick={() => deleteImage(index)}
+        >
+          <img style={{ width: "50%", height: "50%" }} src={imageDeleteIcon} />
+        </div>
+        <img src={image} alt={image} />
       </div>
     ));
   };
 
   async function s3Upload(files) {
     return Promise.all(
-      Array.from(files).map(async (file) => {
+      files.map(async (file) => {
         const filename = `${Date.now()}-${file.name}`;
         try {
           const stored = await Storage.put(filename, file, {
@@ -217,29 +165,47 @@ export default function PropertyMultiForm(props) {
 
   function validateForm() {
     return true;
-    return (
-      title.length > 0 &&
-      tagline.length > 0 &&
-      address.length > 0 &&
-      yearBuilt > 0 &&
-      lotSize > 0 &&
-      associationFees > 0 &&
-      propertyType.value.length > 0 &&
-      propertyStatus.value.length > 0 &&
-      bedroom > 0 &&
-      bathroom > 0 &&
-      description.length > 0 &&
-      whyThisProperty.length > 0 &&
-      propertyNeeds.length > 0 &&
-      comparable.length > 0 &&
-      offerDate > 0 &&
-      closeDate > 0 &&
-      groupShowingDate > 0 &&
-      price > 0 &&
-      nearbyPrice > 0 &&
-      arvPrice > 0
-    );
+    // return (
+    //   title.length > 0 &&
+    //   tagline.length > 0 &&
+    //   address.length > 0 &&
+    //   yearBuilt > 0 &&
+    //   lotSize > 0 &&
+    //   associationFees > 0 &&
+    //   propertyType.value.length > 0 &&
+    //   propertyStatus.value.length > 0 &&
+    //   bedroom > 0 &&
+    //   bathroom > 0 &&
+    //   description.length > 0 &&
+    //   whyThisProperty.length > 0 &&
+    //   propertyNeeds.length > 0 &&
+    //   comparable.length > 0 &&
+    //   offerDate > 0 &&
+    //   closeDate > 0 &&
+    //   groupShowingDate > 0 &&
+    //   price > 0 &&
+    //   nearbyPrice > 0 &&
+    //   arvPrice > 0 &&
+    //   filesUploaded.length > 0
+    // );
   }
+
+  const handleFieldChange = (event) => {
+    const value = event.target.value;
+    setFields({
+      ...fields,
+      [event.target.name]: value,
+    });
+  };
+
+  const handleOtherFieldChange = (fieldName, event) => {
+    const value = event.hasOwnProperty("value") ? event.value : event;
+    console.log(value);
+    setFields({
+      ...fields,
+      [fieldName]: value,
+    });
+  };
 
   return (
     <div className='Index'>
@@ -282,34 +248,43 @@ export default function PropertyMultiForm(props) {
                       <h1>Basic Information</h1>
                       <h2>Please add a title and description</h2>
                     </div>
-                    <FormGroup controlId='title'>
+                    <FormGroup
+                      controlId='title'
+                      className='form-group required'
+                    >
                       <ControlLabel>Title</ControlLabel>
                       <FormControl
-                        required
-                        value={title}
+                        value={fields.title}
                         type='text'
                         placeholder='Beautiful detached house in downtown London'
-                        onChange={(e) => setTitle(e.target.value)}
+                        onChange={handleFieldChange}
                         name='title'
                       />
                     </FormGroup>
-                    <FormGroup controlId='tagline'>
+                    <FormGroup
+                      controlId='tagline'
+                      className='form-group required'
+                    >
                       <ControlLabel>Tagline</ControlLabel>
                       <FormControl
-                        required
-                        value={tagline}
+                        value={fields.tagline}
                         type='text'
                         placeholder='I.e. $30k under Market Value'
-                        onChange={(e) => setTagline(e.target.value)}
+                        onChange={handleFieldChange}
                         name='tagline'
                       />
                     </FormGroup>
-                    <FormGroup controlId='address'>
+                    <FormGroup
+                      controlId='address'
+                      className='form-group required'
+                    >
                       <ControlLabel>Address</ControlLabel>
                       <PlacesAutocomplete
-                        value={geoAddress}
-                        onChange={setGeoAddress}
-                        onSelect={handleSelect}
+                        value={fields.geoAddress}
+                        onChange={(geoAddress) =>
+                          handleOtherFieldChange("geoAddress", geoAddress)
+                        }
+                        onSelect={handleSelectAddress}
                       >
                         {({
                           getInputProps,
@@ -348,33 +323,42 @@ export default function PropertyMultiForm(props) {
                       </PlacesAutocomplete>
                     </FormGroup>
                     <div className='MultiForm__Row MultiForm__Row-3'>
-                      <FormGroup controlId='yearBuilt'>
+                      <FormGroup
+                        controlId='yearBuilt'
+                        className='form-group required'
+                      >
                         <ControlLabel>Year Built</ControlLabel>
                         <FormControl
-                          value={yearBuilt}
+                          value={fields.yearBuilt}
                           type='number'
                           placeholder='0'
-                          onChange={(e) => setYearBuilt(e.target.value)}
+                          onChange={handleFieldChange}
                           name='yearBuilt'
                         />
                       </FormGroup>
-                      <FormGroup controlId='lotSize'>
+                      <FormGroup
+                        controlId='lotSize'
+                        className='form-group required'
+                      >
                         <ControlLabel>Lot Size</ControlLabel>
                         <FormControl
-                          value={lotSize}
+                          value={fields.lotSize}
                           type='number'
                           placeholder='0'
-                          onChange={(e) => setLotSize(e.target.value)}
+                          onChange={handleFieldChange}
                           name='lotSize'
                         />
                       </FormGroup>
-                      <FormGroup controlId='associationFees'>
+                      <FormGroup
+                        controlId='associationFees'
+                        className='form-group required'
+                      >
                         <ControlLabel>Association Fees</ControlLabel>
                         <FormControl
-                          value={associationFees}
+                          value={fields.associationFees}
                           type='number'
                           placeholder='0'
-                          onChange={(e) => setAssociationFees(e.target.value)}
+                          onChange={handleFieldChange}
                           name='associationFees'
                         />
                       </FormGroup>
@@ -388,99 +372,88 @@ export default function PropertyMultiForm(props) {
                       <h1>Property Detail</h1>
                       <h2>Please add a title and description</h2>
                     </div>
-                    <FormGroup controlId='propertyType'>
+                    <FormGroup
+                      controlId='propertyType'
+                      className='form-group required'
+                    >
                       <ControlLabel>Property Type</ControlLabel>
                       <Dropdown
-                        value={propertyType}
-                        options={[
-                          {
-                            label: "Detached",
-                            value: "Detached",
-                          },
-                          {
-                            label: "Semi-Detached",
-                            value: "Semi-Detached",
-                          },
-                          {
-                            label: "Townhome",
-                            value: "Townhome",
-                          },
-                          {
-                            label: "Condo",
-                            value: "Condo",
-                          },
-                          {
-                            label: "Multi-family",
-                            value: "Multi-family",
-                          },
-                        ]}
+                        value={fields.propertyType}
+                        options={PROPERTY_TYPES}
                         type='dropdown'
-                        onChange={updatePropertyType}
+                        onChange={(value) =>
+                          handleOtherFieldChange("propertyType", value)
+                        }
                         placeholder='Select an Option'
+                        name='propertyType'
                       />
                     </FormGroup>
-                    <FormGroup controlId='propertyStatus'>
+                    <FormGroup
+                      controlId='propertyStatus'
+                      className='form-group required'
+                    >
                       <ControlLabel>Property Status</ControlLabel>
                       <Dropdown
-                        value={propertyStatus}
-                        options={[
-                          {
-                            label: "Active",
-                            value: "Active",
-                          },
-                          {
-                            label: "Pending",
-                            value: "Pending",
-                          },
-                          {
-                            label: "Assigned",
-                            value: "Assigned",
-                          },
-                        ]}
-                        onChange={updatePropertyStatus}
+                        value={fields.propertyStatus}
+                        options={PROPERTY_STATUSES}
+                        onChange={(value) =>
+                          handleOtherFieldChange("propertyStatus", value)
+                        }
                         name='propertyStatus'
                       />
                     </FormGroup>
                     <div className='MultiForm__Row MultiForm__Row-3'>
-                      <FormGroup controlId='bedroom'>
+                      <FormGroup
+                        controlId='bedroom'
+                        className='form-group required'
+                      >
                         <ControlLabel>Bedrooms</ControlLabel>
                         <FormControl
-                          value={bedroom}
+                          value={fields.bedroom}
                           type='number'
                           placeholder='0'
-                          onChange={(e) => setBedroom(e.target.value)}
+                          onChange={handleFieldChange}
                           name='bedroom'
                         />
                       </FormGroup>
-                      <FormGroup controlId='bathroom'>
+                      <FormGroup
+                        controlId='bathroom'
+                        className='form-group required'
+                      >
                         <ControlLabel>Bathrooms</ControlLabel>
                         <FormControl
-                          value={bathroom}
+                          value={fields.bathroom}
                           type='number'
                           placeholder='0'
-                          onChange={(e) => setBathroom(e.target.value)}
-                          name='bathrooms'
+                          onChange={handleFieldChange}
+                          name='bathroom'
                         />
                       </FormGroup>
-                      <FormGroup controlId='parking'>
+                      <FormGroup
+                        controlId='parking'
+                        className='form-group required'
+                      >
                         <ControlLabel>Parking</ControlLabel>
                         <FormControl
-                          value={parking}
+                          value={fields.parking}
                           type='number'
                           placeholder='0'
-                          onChange={(e) => setParking(e.target.value)}
+                          onChange={handleFieldChange}
                           name='parking'
                         />
                       </FormGroup>
                     </div>
-                    <FormGroup controlId='description'>
+                    <FormGroup
+                      controlId='description'
+                      className='form-group required'
+                    >
                       <ControlLabel>Description</ControlLabel>
                       <FormControl
-                        value={description}
+                        value={fields.description}
                         rows={5}
                         componentClass='textarea'
                         placeholder='Enter the Description'
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={handleFieldChange}
                         name='description'
                       />
                     </FormGroup>
@@ -496,9 +469,9 @@ export default function PropertyMultiForm(props) {
                     <FormGroup controlId='whyThisProperty'>
                       <ControlLabel>Why This Property?</ControlLabel>
                       <FormControl
-                        value={whyThisProperty}
+                        value={fields.whyThisProperty}
                         componentClass='textarea'
-                        onChange={(e) => setWhyThisProperty(e.target.value)}
+                        onChange={handleFieldChange}
                         name='whyThisProperty'
                         placeholder='Enter Why This Property'
                         rows={4}
@@ -507,10 +480,10 @@ export default function PropertyMultiForm(props) {
                     <FormGroup controlId='propertyNeeds'>
                       <ControlLabel>Property Needs</ControlLabel>
                       <FormControl
-                        value={propertyNeeds}
+                        value={fields.propertyNeeds}
                         componentClass='textarea'
                         placeholder='Enter the Property Needs'
-                        onChange={(e) => setPropertyNeeds(e.target.value)}
+                        onChange={handleFieldChange}
                         name='propertyNeeds'
                         rows={4}
                       />
@@ -518,11 +491,11 @@ export default function PropertyMultiForm(props) {
                     <FormGroup controlId='comparableProperties'>
                       <ControlLabel>Comparable Properties</ControlLabel>
                       <FormControl
-                        value={comparable}
+                        value={fields.comparable}
                         componentClass='textarea'
                         placeholder='Enter the Comparables'
-                        onChange={(e) => setComparable(e.target.value)}
-                        name='comparableProperties'
+                        onChange={handleFieldChange}
+                        name='comparable'
                         rows={4}
                       />
                     </FormGroup>
@@ -534,13 +507,18 @@ export default function PropertyMultiForm(props) {
                     <div className='MultiForm__Title'>
                       <h1>Property Images</h1>
                       <h2>
-                        Please upload interior and exterior images of the
-                        property
+                        Upload interior and exterior images of the property
                       </h2>
                     </div>
                     <div className='MultiForm__Upload-container'>
-                      {selectedImages ? (
-                        renderPhotos(selectedImages)
+                      {filesUploaded.length === 0 && (
+                        <label className='form-group required'>
+                          Please ensure you upload at least one image of the
+                          property
+                        </label>
+                      )}
+                      {filesUploaded ? (
+                        renderPhotos()
                       ) : (
                         <img
                           alt='file upload icon'
@@ -549,7 +527,7 @@ export default function PropertyMultiForm(props) {
                         />
                       )}
                       <input
-                        onChange={handleChange}
+                        onChange={handleFileChange}
                         type='file'
                         multiple={true}
                         style={{ display: "none" }}
@@ -562,8 +540,7 @@ export default function PropertyMultiForm(props) {
                         UPLOAD
                       </div>
                       <label>
-                        {(selectedImages ? selectedImages.length : "No") +
-                          " image(s) uploaded"}
+                        {filesUploaded.length + " image(s) uploaded"}
                       </label>
                     </div>
                   </Fragment>
@@ -576,21 +553,28 @@ export default function PropertyMultiForm(props) {
                       <h2>Please add a title and description</h2>
                     </div>
                     <div className='MultiForm__Row MultiForm__Row-3'>
-                      <FormGroup controlId='offerDate'>
+                      <FormGroup
+                        controlId='offerDate'
+                        className='form-group required'
+                      >
                         <ControlLabel>Offer Date</ControlLabel>
                         <DatePicker
-                          selected={offerDate}
-                          onChange={(date) => setOfferDate(date)}
+                          selected={fields.offerDate}
+                          onChange={(date) =>
+                            handleOtherFieldChange("offerDate", date)
+                          }
                           name='offerDate'
                           dateFormat='MMMM d, yyyy'
                           className='form-control'
                         />
                       </FormGroup>
-                      <FormGroup controlId='closeDate'>
+                      <FormGroup controlId='closeDate' className='form-group'>
                         <ControlLabel>Close Date</ControlLabel>
                         <DatePicker
-                          selected={closeDate}
-                          onChange={(date) => setCloseDate(date)}
+                          selected={fields.closeDate}
+                          onChange={(date) =>
+                            handleOtherFieldChange("closeDate", date)
+                          }
                           name='closeDate'
                           dateFormat='MMMM d, yyyy'
                           className='form-control'
@@ -600,20 +584,25 @@ export default function PropertyMultiForm(props) {
                         <ControlLabel>Group Showing Date</ControlLabel>
                         <DatePicker
                           className='form-control'
-                          selected={groupShowingDate}
-                          onChange={(date) => setGroupShowingDate(date)}
+                          selected={fields.groupShowingDate}
+                          onChange={(date) =>
+                            handleOtherFieldChange("groupShowingDate", date)
+                          }
                           name='groupShowingDate'
                           dateFormat='MMMM d, yyyy'
                         />
                       </FormGroup>
                     </div>
                     <div className='MultiForm__Row MultiForm__Row-3'>
-                      <FormGroup controlId='price'>
+                      <FormGroup
+                        controlId='price'
+                        className='form-group required'
+                      >
                         <ControlLabel>Price</ControlLabel>
                         <FormControl
-                          value={price}
+                          value={fields.price}
                           type='number'
-                          onChange={(e) => setPrice(e.target.value)}
+                          onChange={handleFieldChange}
                           name='price'
                           pattern='[0-9]*'
                         />
@@ -621,19 +610,22 @@ export default function PropertyMultiForm(props) {
                       <FormGroup controlId='nearbyPrice'>
                         <ControlLabel>Nearby Price</ControlLabel>
                         <FormControl
-                          value={nearbyPrice}
+                          value={fields.nearbyPrice}
                           type='number'
-                          onChange={(e) => setNearbyPrice(e.target.value)}
+                          onChange={handleFieldChange}
                           name='nearbyPrice'
                           pattern='[0-9]*'
                         />
                       </FormGroup>
-                      <FormGroup controlId='arvPrice'>
+                      <FormGroup
+                        controlId='arvPrice'
+                        className='form-group required'
+                      >
                         <ControlLabel>After Repair Value Price</ControlLabel>
                         <FormControl
-                          value={arvPrice}
+                          value={fields.arvPrice}
                           type='number'
-                          onChange={(e) => setArvPrice(e.target.value)}
+                          onChange={handleFieldChange}
                           name='arvPrice'
                           pattern='[0-9]*'
                         />
@@ -654,33 +646,8 @@ export default function PropertyMultiForm(props) {
                 </div>
                 <PreviewViewProperty
                   property={{
-                    title,
-                    tagline,
-                    city,
-                    province,
-                    address,
-                    propertyType: propertyType.value,
-                    propertyStatus: propertyStatus.value,
-                    offerDate,
-                    closeDate,
-                    groupShowingDate,
-                    bedroom,
-                    bathroom,
-                    parking,
-                    netOperatingIncome,
-                    description,
-                    propertyNeeds,
-                    whyThisProperty,
-                    comparable,
-                    longitude,
-                    latitude,
-                    images: selectedImages,
-                    price,
-                    nearbyPrice,
-                    arvPrice,
-                    yearBuilt,
-                    lotSize,
-                    associationFees,
+                    ...fields,
+                    images: imageURLs,
                   }}
                 />
               </Fragment>

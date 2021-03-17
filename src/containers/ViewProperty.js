@@ -11,6 +11,7 @@ import backArrowIcon from "../assets/back-icon.png";
 import mapPinIcon from "../assets/map-pin-icon.png";
 import Slider from "../components/Slider";
 import PropertyMap from "../components/PropertyMap";
+import ProfileIcon from "../components/ProfileIcon";
 
 const images = [
   "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2100&q=80",
@@ -18,9 +19,6 @@ const images = [
   "https://images.unsplash.com/photo-1448630360428-65456885c650?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2094&q=80",
   "https://images.unsplash.com/photo-1534161308652-fdfcf10f62c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2174&q=80",
 ];
-
-
-
 
 export default function ViewProperty(props) {
   const [property, setProperty] = useState(null);
@@ -58,14 +56,15 @@ export default function ViewProperty(props) {
         setProperty(property);
         setIsLoading(true);
         console.log("here is images");
-        console.log(property.image);
-        console.log(property.image.length);
         if (Array.isArray(property.image)) {
-          const s3Images = property.image.map(images => `https://${config.s3.BUCKET}.s3.amazonaws.com/public/${images}`);
+          const s3Images = property.image.map(
+            (images) =>
+              `https://${config.s3.BUCKET}.s3.amazonaws.com/public/${images}`
+          );
           setPropertyImages(s3Images);
         } else {
-          setPropertyImages(property.image)
-        };
+          setPropertyImages(property.image);
+        }
       } catch (e) {
         alert(e);
       }
@@ -101,20 +100,6 @@ export default function ViewProperty(props) {
     }
     setFullSliderActive(!fullSliderActive);
   };
-  console.log(props);
-
-  // const propertyImages = property.image.map((image) =>{
-  //   return (
-  //     `https://${config.s3.BUCKET}.s3.amazonaws.com/public/${image}`
-  //   )
-  // }
-  // );
-  console.log("testing images below");
-  // console.log(property);
-  console.log(propertyImages);
-
-
-  
 
   return (
     <div className='Index'>
@@ -196,11 +181,9 @@ export default function ViewProperty(props) {
                         <div className='ViewPropertyCard__Details'>
                           <div className='CardContainer'>
                             <div className='ViewPropertyCard__ContactProfile'>
-                              <img
-                                className='ViewPropertyCard__ContactProfilePic'
-                                alt={`${profile.firstName} ${profile.lastName} avatar`}
-                                src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${profile.image}`}
-                              />
+                              <div style={{ float: "left" }}>
+                                <ProfileIcon profile={profile} size='65' />
+                              </div>
                               <div className='ViewPropertyCard__ContactInfo'>
                                 <b className='ViewPropertyCard__PostedBy'>
                                   Posted By {profile.firstName}{" "}
@@ -216,16 +199,16 @@ export default function ViewProperty(props) {
                               // <a
                               //   href={`/properties/${property.propertyId}/chat`}
                               // >
-                                <button
-                                  className='ViewPropertyCard__ContactButton secondary-btn'
-                                  onClick={
+                              <button
+                                className='ViewPropertyCard__ContactButton secondary-btn'
+                                onClick={
                                   userEmail
                                     ? () => sendPropertyEmail()
                                     : () => setViewCreateAccountModal(true)
-                                  }
-                                >
-                                  Contact
-                                </button>
+                                }
+                              >
+                                Contact
+                              </button>
                               // </a>
                             )}
                           </div>
@@ -277,7 +260,7 @@ export default function ViewProperty(props) {
                       <div className='ViewProperty__Details'>
                         <div className='ViewProperty__Desc'>
                           <h3>Property Details</h3>
-                          <p className='lightText'>{property.description}</p>
+                          <p>{property.description}</p>
                           <table className='ViewProperty__DetailsTable'>
                             <tbody>
                               <tr>

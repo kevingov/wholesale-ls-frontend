@@ -35,6 +35,7 @@
   padding-bottom: 2px;
   color: #7f8fa4;
   font-weight: 600;
+  min-width: 140px;
 }
 
 .Properties__Filter-Container .form-group {
@@ -58,14 +59,17 @@
 .Locations-Search-Bar__Wrapper {
   margin-top: 1.5em;
   border-radius: 4px;
-}
-.Locations-Search-Bar__Wrapper div.mapboxgl-ctrl-geocoder {
-  box-shadow: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.Locations-Search-Bar__Wrapper .mapboxgl-ctrl-geocoder--input {
+.Locations-Search-Bar__Wrapper > input {
   border-radius: 4px;
   border: 1px solid #ced0da;
+  box-shadow: none;
+  padding: 8px;
+  flex-grow: 1;
 }
 
 .Locations-Search-Bar__Wrapper > a {
@@ -81,9 +85,11 @@
   display: none;
   position: absolute;
   background-color: #fff;
-  width: 300px;
+  width: 290px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  max-height: 540px;
+  overflow: scroll;
 }
 .Locations-Search-Bar__Dropdown-Content.active {
   display: block;
@@ -113,10 +119,6 @@
   flex: 1 0 630px;
   height: 100%;
   overflow-y: scroll;
-}
-
-.Properties__Results h2 {
-  line-height: 30px;
 }
 
 .Properties__Results-Found {
@@ -150,4 +152,28 @@
 
 .markerImage {
   width: 26px;
+}
+
+.mapbox-point {
+  width: 16px;
+  height: 16px;
+  border-radius: 16px;
+  background: #4e4e4e;
+}
+
+.mapbox-point::after {
+  content: "";
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+  border-radius: 8px;
+  background: #fff;
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+}
+
+.mapbox-point.selected::after,
+.mapbox-point:hover::after {
+  background: #ff802c;
 }

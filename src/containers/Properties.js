@@ -1,26 +1,39 @@
-import { FormGroup, FormControl } from "react-bootstrap";
+import { FormGroup } from "react-bootstrap";
 import Dropdown from "react-dropdown";
-import React, { useEffect, useState, useRef, Fragment } from "react";
+import React, { useEffect, useRef, useState, Fragment } from "react";
 import { API } from "aws-amplify";
 
 import Loading from "./Loading";
 import "./Properties.css";
 import PropertiesMap from "../components/PropertiesMap";
-import PropertiesCard from "../components/PropertiesCard";
+import PropertyCard from "../components/PropertyCard";
+import closeDropdownIcon from "../assets/close-dropdown-icon.png";
+import openDropdownIcon from "../assets/open-dropdown-icon.png";
+import {
+  BEDROOM_FILTERS,
+  BATHROOM_FILTERS,
+  PROPERTY_TYPES,
+  SORT_FILTERS,
+} from "../helper/Data";
+import { LOCATIONS_ALL } from "../helper/LocationData";
 
 export default function Properties(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [properties, setProperties] = useState([]);
-  const [location, setLocation] = useState("Toronto");
+  const [location, setLocation] = useState("");
   const [propertySelected, setPropertySelected] = useState(null);
-  const geocoderRef = useRef(null);
+  const [propertyHovered, setPropertyHovered] = useState(null);
+  const propertyCardsRef = useRef({});
+
+  const [searchInput, setSearchInput] = useState("");
+  const [searchDropdownExpanded, setSearchDropdownExpanded] = useState(false);
 
   const [filterPropertyType, setFilterPropertyType] = useState({
     value: "All",
   });
   const [filterBedrooms, setFilterBedrooms] = useState({ value: 0 });
   const [filterBathrooms, setFilterBathrooms] = useState({ value: 0 });
-  const [filterSort, setFilterSort] = useState({ value: "" });
+  const [filterSort, setFilterSort] = useState({ value: "Newest" });
 
   useEffect(() => {
     async function onLoad() {
@@ -36,6 +49,17 @@ export default function Properties(props) {
     onLoad();
   }, [props.isAuthenticated, location]);
 
+  useEffect(() => {
+    // scroll to Property Card when property is selected
+    if (propertySelected) {
+      const { propertyId } = propertySelected;
+      propertyCardsRef.current[propertyId].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [propertySelected]);
+
   // function loadProperties() {
   //   return API.get("properties", "/properties", {
   //     queryStringParameters: {
@@ -44,27 +68,11 @@ export default function Properties(props) {
   //     },
   //   });
   // }
-
   function loadProperties() {
-    return API.get("properties", "/allproperties")
-  };
+    return API.get("properties", "/allproperties");
+  }
 
-  const updateFilterPropertyType = (event) => {
-    setFilterPropertyType(event);
-  };
-
-  const updateFilterBedrooms = (event) => {
-    setFilterBedrooms(event);
-  };
-
-  const updateFilterBathrooms = (event) => {
-    setFilterBathrooms(event);
-  };
-
-  const updateFilterSort = (event) => {
-    setFilterSort(event);
-  };
-
+  // Filter functions
   const resultsFilteredByDropdown = properties.filter((results) => {
     let isPropertyType =
       filterPropertyType.value === "All"
@@ -77,7 +85,6 @@ export default function Properties(props) {
       results.bathroom >= filterBathrooms.value
     );
   });
-
   let searchProperties;
   if (filterSort === "Newest") {
     searchProperties = resultsFilteredByDropdown.sort(
@@ -97,57 +104,61 @@ export default function Properties(props) {
     );
   }
 
-  // *FUTURE IMPLEMENTATION - CUSTOM SEARCH BAR w/ DROPDOWN*
-  // const LOCATION_LIST = [
-  //   "Toronto",
-  //   "Mississauage",
-  //   "Markham",
-  //   "Richmond Hill",
-  //   "Brampton",
-  //   "North York",
-  //   "Scarborough",
-  // ]
-  // const onSelectDropdownLocation = (event) => {
-  //   const location = event.currentTarget.getAttribute("data-location");
-  //   setLocation(location);
-  // };
-
-  // *GEOCODER DOM*
-  // if (geocoderRef.current) {
-  //   console.log(geocoderRef.current.children.item[1]);
-  // }
+  // Location search bar functions
+  const onSelectDropdownLocation = (event) => {
+    const location = event.currentTarget.getAttribute("data-location");
+    setLocation(location);
+    setSearchInput(location);
+    setSearchDropdownExpanded(false);
+  };
+  const onSearchInputChange = (input) => {
+    const { value } = input.target;
+    setSearchInput(value);
+    if (value.length >= 2) {
+      setSearchDropdownExpanded(true);
+    } else {
+      setSearchDropdownExpanded(false);
+    }
+  };
+  const handleOnBlurSearch = (event) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      setSearchDropdownExpanded(false);
+    }
+  };
+  const filteredLocations = () => {
+    const MAX_RESULTS = 8;
+    let count = 0;
+    return Object.keys(LOCATIONS_ALL).filter((location) => {
+      return (
+        location.toLowerCase().startsWith(searchInput.toLowerCase()) &&
+        count++ < MAX_RESULTS
+      );
+    });
+  };
 
   return (
     <div className='Index'>
       <div className='Properties__Filter'>
-        <div className='Properties__Filter-Container container'>
+        <div
+          className='Properties__Filter-Container container'
+          onBlur={handleOnBlurSearch}
+        >
           <FormGroup
             controlId='filterPropertyType'
             className='Locations-Search-Bar'
           >
-            <div
-              ref={geocoderRef}
-              className='Locations-Search-Bar__Wrapper'
-              style={{
-                height: 50,
-                display: "flex",
-                alignItems: "center",
-                paddingLeft: 4,
-              }}
-            ></div>
-            {/* FUTURE IMPLEMENTATION - CUSTOM SEARCH BAR w/ DROPDOWN
-                <div className='Locations-Search-Bar__Wrapper'>
+            <div className='Locations-Search-Bar__Wrapper'>
               <input
                 type='text'
                 placeholder='Search'
                 value={searchInput}
-                onChange={(input) => setSearchInput(input.value)}
-                onBlur={() => setSearchDropdownExpanded(false)}
+                onChange={onSearchInputChange}
               />
               <a
                 onClick={() =>
                   setSearchDropdownExpanded(!searchDropdownExpanded)
                 }
+                onBlur={() => setSearchDropdownExpanded(false)}
               >
                 <img
                   src={
@@ -163,127 +174,52 @@ export default function Properties(props) {
                 searchDropdownExpanded ? "active" : ""
               }`}
             >
-              {LOCATIONS_LIST.map((item) => (
+              {filteredLocations().map((item) => (
                 <a
                   onClick={onSelectDropdownLocation}
                   data-location={item}
                   key={item}
+                  tabIndex='0'
                 >
                   {item}
                 </a>
               ))}
-            </div> */}
+            </div>
           </FormGroup>
           <FormGroup controlId='filterPropertyType'>
             <p className='Property__Filter-Label'>Property Type</p>
             <Dropdown
-              placeholder='Property Types'
+              placeholder='All'
               value={filterPropertyType.label}
-              options={[
-                {
-                  label: "All",
-                  value: "All",
-                },
-                {
-                  label: "Detached",
-                  value: "Detached",
-                },
-                {
-                  label: "Semi-Detached",
-                  value: "Semi-Detached",
-                },
-                {
-                  label: "Townhome",
-                  value: "Townhome",
-                },
-                {
-                  label: "Condo",
-                  value: "Condo",
-                },
-                {
-                  label: "Multi-family",
-                  value: "Multi-family",
-                },
-              ]}
-              onChange={updateFilterPropertyType}
+              options={PROPERTY_TYPES}
+              onChange={(event) => setFilterPropertyType(event)}
             />
           </FormGroup>
           <FormGroup controlId='filterBedrooms'>
             <p className='Property__Filter-Label'>Bedrooms</p>
             <Dropdown
-              placeholder='Bedrooms'
+              placeholder='Any'
               value={filterBedrooms.label}
-              options={[
-                {
-                  label: "Any",
-                  value: 0,
-                },
-                {
-                  label: "2+",
-                  value: 2,
-                },
-                {
-                  label: "3+",
-                  value: 3,
-                },
-                {
-                  label: "4+",
-                  value: 4,
-                },
-              ]}
-              onChange={updateFilterBedrooms}
+              options={BEDROOM_FILTERS}
+              onChange={(event) => setFilterBedrooms(event)}
             />
           </FormGroup>
           <FormGroup controlId='filterBathrooms'>
             <p className='Property__Filter-Label'>Bathrooms</p>
             <Dropdown
-              placeholder='Bathrooms'
+              placeholder='Any'
               value={filterBathrooms.label}
-              options={[
-                {
-                  label: "Any",
-                  value: 0,
-                },
-                {
-                  label: "2+",
-                  value: 2,
-                },
-                {
-                  label: "3+",
-                  value: 3,
-                },
-                {
-                  label: "4+",
-                  value: 4,
-                },
-              ]}
-              onChange={updateFilterBathrooms}
+              options={BATHROOM_FILTERS}
+              onChange={(event) => setFilterBathrooms(event)}
             />
           </FormGroup>
           <FormGroup controlId='filterSort'>
             <p className='Property__Filter-Label'>Sort By</p>
             <Dropdown
-              placeholder='Sort By'
+              placeholder='Newest'
               value={filterSort.label}
-              options={[
-                {
-                  label: "Newest",
-                  value: "Newest",
-                },
-                {
-                  label: "Oldest",
-                  value: "Oldest",
-                },
-                {
-                  label: "Price High-Low",
-                  value: "Price High-Low",
-                },
-                {
-                  label: "Price Low-High",
-                  value: "Price Low-High",
-                },
-              ]}
-              onChange={updateFilterSort}
+              options={SORT_FILTERS}
+              onChange={(event) => setFilterSort(event)}
             />
           </FormGroup>
         </div>
@@ -296,20 +232,25 @@ export default function Properties(props) {
             </p>
             {searchProperties.length > 0 ? (
               <Fragment>
-                <h2>Properties in {location}</h2>
+                {location ? (
+                  <h2>Properties in {location}</h2>
+                ) : (
+                  <h2>Showing all properties</h2>
+                )}
                 {searchProperties.map((property, index) => {
-                  console.log(
-                    propertySelected &&
-                      property.propertyId === propertySelected.propertyId
-                  );
                   return (
-                    <PropertiesCard
+                    <PropertyCard
                       key={("Property", index)}
                       property={property}
+                      setPropertyHovered={setPropertyHovered}
+                      setPropertySelected={setPropertySelected}
                       isSelected={
                         propertySelected &&
                         property.propertyId === propertySelected.propertyId
                       }
+                      forwardRef={(ref, propertyId) => {
+                        propertyCardsRef.current[propertyId] = ref;
+                      }}
                     />
                   );
                 })}
@@ -317,7 +258,7 @@ export default function Properties(props) {
             ) : (
               <Fragment>
                 <h2>No Properties Found</h2>
-                <p>Search again or adjust filter options</p>
+                <p>Search again or adjust the filter options</p>
               </Fragment>
             )}
           </div>
@@ -325,10 +266,9 @@ export default function Properties(props) {
           <div className='Properties__MapContainer'>
             <PropertiesMap
               className='mapboxgl-map'
-              geocoderRef={geocoderRef}
               properties={searchProperties}
               location={location}
-              setLocation={setLocation}
+              propertyHovered={propertyHovered}
               propertySelected={propertySelected}
               setPropertySelected={setPropertySelected}
             />
@@ -340,4 +280,3 @@ export default function Properties(props) {
     </div>
   );
 }
-// test// 
