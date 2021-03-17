@@ -260,7 +260,7 @@ export default function ViewProperty(props) {
                       <div className='ViewProperty__Details'>
                         <div className='ViewProperty__Desc'>
                           <h3>Property Details</h3>
-                          <p className='lightText'>{property.description}</p>
+                          <p>{property.description}</p>
                           <table className='ViewProperty__DetailsTable'>
                             <tbody>
                               <tr>

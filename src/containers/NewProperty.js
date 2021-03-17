@@ -56,35 +56,6 @@ export default function PropertyMultiForm(props) {
     associationFees: "",
   });
 
-  // const [title, setTitle] = useState("");
-  // const [tagline, setTagline] = useState("");
-  // const [city, setCity] = useState("");
-  // const [province, setProvince] = useState("");
-  // const [address, setAddress] = useState("");
-  // const [geoAddress, setGeoAddress] = useState("");
-  // const [propertyType, setPropertyType] = useState("");
-  // const [propertyStatus, setPropertyStatus] = useState("");
-  // const [offerDate, setOfferDate] = useState();
-  // const [closeDate, setCloseDate] = useState();
-  // const [groupShowingDate, setGroupShowingDate] = useState();
-  // const [bedroom, setBedroom] = useState();
-  // const [bathroom, setBathroom] = useState();
-  // const [parking, setParking] = useState();
-  // const [netOperatingIncome, setNetOperatingIncome] = useState(0);
-  // const [description, setDescription] = useState("");
-  // const [propertyNeeds, setPropertyNeeds] = useState("");
-  // const [whyThisProperty, setWhyThisProperty] = useState("");
-  // const [comparable, setComparable] = useState("");
-  // const [latitude, setLatitude] = useState("");
-  // const [longitude, setLongitude] = useState("");
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [price, setPrice] = useState("");
-  // const [nearbyPrice, setNearbyPrice] = useState("");
-  // const [arvPrice, setArvPrice] = useState("");
-  // const [yearBuilt, setYearBuilt] = useState("");
-  // const [lotSize, setLotSize] = useState("");
-  // const [associationFees, setAssociationFees] = useState("");
-
   const uploadFileRef = useRef();
   const [filesUploaded, setFilesUploaded] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -107,35 +78,6 @@ export default function PropertyMultiForm(props) {
         ...fields,
         image: images,
       });
-      // const property = await createProperty({
-      //   title,
-      //   tagline,
-      //   city,
-      //   province,
-      //   address,
-      //   propertyType: propertyType.value,
-      //   propertyStatus: propertyStatus.value,
-      //   offerDate,
-      //   closeDate,
-      //   groupShowingDate,
-      //   bedroom,
-      //   bathroom,
-      //   parking,
-      //   netOperatingIncome,
-      //   description,
-      //   propertyNeeds,
-      //   whyThisProperty,
-      //   comparable,
-      //   longitude,
-      //   latitude,
-      //   image,
-      //   price,
-      //   nearbyPrice,
-      //   arvPrice,
-      //   yearBuilt,
-      //   lotSize,
-      //   associationFees,f
-      // });
 
       props.history.push(`/properties/${property.propertyId}`);
       setIsLoading(false);
@@ -707,35 +649,6 @@ export default function PropertyMultiForm(props) {
                     ...fields,
                     images: imageURLs,
                   }}
-                  // property={{
-                  //   title,
-                  //   tagline,
-                  //   city,
-                  //   province,
-                  //   address,
-                  //   propertyType: propertyType.value,
-                  //   propertyStatus: propertyStatus.value,
-                  //   offerDate,
-                  //   closeDate,
-                  //   groupShowingDate,
-                  //   bedroom,
-                  //   bathroom,
-                  //   parking,
-                  //   netOperatingIncome,
-                  //   description,
-                  //   propertyNeeds,
-                  //   whyThisProperty,
-                  //   comparable,
-                  //   longitude,
-                  //   latitude,
-                  //   images: imageURLs,
-                  //   price,
-                  //   nearbyPrice,
-                  //   arvPrice,
-                  //   yearBuilt,
-                  //   lotSize,
-                  //   associationFees,
-                  // }}
                 />
               </Fragment>
             ) : null}
