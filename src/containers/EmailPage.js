@@ -11,6 +11,7 @@ import config from "../config";
 import backArrowIcon from "../assets/back-icon.png";
 import mapPinIcon from "../assets/map-pin-icon.png";
 // import Slider from "../components/Slider";
+import Popup from 'react-popup';
 
 export default function EmailPage(props) {
     const [email, setEmail] = useState(null);
@@ -60,7 +61,8 @@ export default function EmailPage(props) {
     }, [props.match.params.id]);
 
     async function sendPropertyEmail() {
-        await sendEmail({
+        try {
+        const res = await sendEmail({
             buyerEmail: user.attributes.email,
             wholesalerEmail: profile.email,
             propertyTitle: property.title,
@@ -69,9 +71,14 @@ export default function EmailPage(props) {
             wholesalerFirstName: profile.firstName,
             message: message,
         });
-        alert("Your Email is being Sent");
-        window.location.replace("/properties");
+        } catch (e) {
+            console.log(e);
+        };
+        console.log("hey is this working after sendEmail");
+        alert("Your Email has been sent to the Wholesaler");
+        props.history.push("/properties");
         setInfoSent(true);
+
     }
 
     function sendEmail(info) {
@@ -119,7 +126,6 @@ export default function EmailPage(props) {
                             <button
                                 className='ViewPropertyCard__ContactButton secondary-btn'
                                 onClick={sendPropertyEmail}
-                                
                             >
                                 Send Email
                             </button>
