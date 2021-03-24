@@ -11,7 +11,6 @@ import config from "../config";
 import backArrowIcon from "../assets/back-icon.png";
 import mapPinIcon from "../assets/map-pin-icon.png";
 // import Slider from "../components/Slider";
-import Popup from 'react-popup';
 
 export default function EmailPage(props) {
     const [email, setEmail] = useState(null);
@@ -78,7 +77,6 @@ export default function EmailPage(props) {
         alert("Your Email has been sent to the Wholesaler");
         props.history.push("/properties");
         setInfoSent(true);
-
     }
 
     function sendEmail(info) {

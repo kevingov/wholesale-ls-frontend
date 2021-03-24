@@ -164,7 +164,7 @@ export default function EditProperty(props) {
         propertyNeeds,
         whyThisProperty,
         comparable,
-        image: newImage,
+        // image: newImage,
         latitude,
         longitude,
         price,
@@ -184,9 +184,9 @@ export default function EditProperty(props) {
     setPropertyType(propertyType);
   }
 
-  function formatFilename(str) {
-    return str.replace(/^\w+-/, "");
-  }
+  // function formatFilename(str) {
+  //   return str.replace(/^\w+-/, "");
+  // }
 
   return (
     <div className='EditProperty container'>
@@ -410,7 +410,7 @@ export default function EditProperty(props) {
                 />
               </FormGroup>
 
-              {image && (
+              {/* {image && (
                 <FormGroup>
                   <ControlLabel>Image</ControlLabel>
                   <FormControl.Static>
@@ -419,16 +419,16 @@ export default function EditProperty(props) {
                       rel='noopener noreferrer'
                       href={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${image}`}
                       className='pull-left'
-                    >
-                      {formatFilename(image)}
-                    </a>
+                    > */}
+                      {/* {formatFilename(image)} */}
+                    {/* </a>
                   </FormControl.Static>
                 </FormGroup>
-              )}
-              <FormGroup controlId='file'>
+              )} */}
+              {/* <FormGroup controlId='file'>
                 {!image && <ControlLabel>Attachment</ControlLabel>}
                 <FormControl onChange={handleFileChange} type='file' />
-              </FormGroup>
+              </FormGroup> */}
 
               <p className='text-right'>
                 <LoaderButton

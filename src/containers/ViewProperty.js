@@ -92,6 +92,10 @@ export default function ViewProperty(props) {
     });
   }
 
+  function goToEmail () {
+    props.history.push("/properties/${props.match.params.id}/sendemail")
+  }
+
   const toggleFullScreenSlider = () => {
     if (fullSliderActive) {
       document.body.style.overflow = "unset";
@@ -203,7 +207,7 @@ export default function ViewProperty(props) {
                                 className='ViewPropertyCard__ContactButton secondary-btn'
                                 onClick={
                                   userEmail
-                                    ? () => sendPropertyEmail()
+                                    ? () => props.history.push(`/properties/${props.match.params.id}/sendemail`)
                                     : () => setViewCreateAccountModal(true)
                                 }
                               >
