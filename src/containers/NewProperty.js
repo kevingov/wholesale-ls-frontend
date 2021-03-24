@@ -1,4 +1,4 @@
-import React, { useState, useRef, Fragment } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
 import {
   ControlLabel,
   FormControl,
@@ -12,7 +12,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
-import { API, Storage, a, sectionFooterSecondaryContent } from "aws-amplify";
+import { API, Storage } from "aws-amplify";
 
 import "./NewProperty.css";
 import "react-dropdown/style.css";
@@ -60,6 +60,7 @@ export default function PropertyMultiForm(props) {
   const [filesUploaded, setFilesUploaded] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(1);
+  const [sectionIsValid, setSectionIsValid] = useState(false);
   const stageNames = [
     "Basic Info",
     "Property Details",
@@ -67,6 +68,10 @@ export default function PropertyMultiForm(props) {
     "Images",
     "Price",
   ];
+
+  useEffect(() => {
+    setSectionIsValid(validateSection[step]());
+  }, [fields]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -80,6 +85,7 @@ export default function PropertyMultiForm(props) {
       });
 
       props.history.push(`/properties/${property.propertyId}`);
+      alert("Your property has been posted!");
       setIsLoading(false);
     } catch (e) {
       alert(e);
@@ -97,7 +103,6 @@ export default function PropertyMultiForm(props) {
     const results = await geocodeByAddress(val);
     const result = results[0];
     const latLng = await getLatLng(result);
-
     const province = result.address_components.filter((component) =>
       component.types.includes("administrative_area_level_1")
     )[0]["long_name"];
@@ -120,16 +125,17 @@ export default function PropertyMultiForm(props) {
     if (e.target.files) {
       const fileArray = Array.from(e.target.files);
       setFilesUploaded((prevImages) => prevImages.concat(fileArray));
+      setSectionIsValid(fileArray.length > 0);
     }
   };
 
   const imageURLs = filesUploaded.map((file) => URL.createObjectURL(file));
 
   const deleteImage = (deleteAtIndex) => {
-    console.log(deleteAtIndex);
     setFilesUploaded((prevFiles) =>
       prevFiles.filter((file, index) => index !== deleteAtIndex)
     );
+    setSectionIsValid(filesUploaded.length - 1 > 0);
   };
 
   const renderPhotos = () => {
@@ -163,34 +169,49 @@ export default function PropertyMultiForm(props) {
     );
   }
 
-  function validateForm() {
-    return true;
-    // return (
-    //   title.length > 0 &&
-    //   tagline.length > 0 &&
-    //   address.length > 0 &&
-    //   yearBuilt > 0 &&
-    //   lotSize > 0 &&
-    //   associationFees > 0 &&
-    //   propertyType.value.length > 0 &&
-    //   propertyStatus.value.length > 0 &&
-    //   bedroom > 0 &&
-    //   bathroom > 0 &&
-    //   description.length > 0 &&
-    //   whyThisProperty.length > 0 &&
-    //   propertyNeeds.length > 0 &&
-    //   comparable.length > 0 &&
-    //   offerDate > 0 &&
-    //   closeDate > 0 &&
-    //   groupShowingDate > 0 &&
-    //   price > 0 &&
-    //   nearbyPrice > 0 &&
-    //   arvPrice > 0 &&
-    //   filesUploaded.length > 0
-    // );
-  }
+  const validateSection1 = () =>
+    fields.title &&
+    fields.tagline &&
+    fields.address &&
+    fields.yearBuilt &&
+    fields.lotSize &&
+    fields.associationFees;
+  const validateSection2 = () =>
+    fields.propertyType &&
+    fields.propertyStatus &&
+    fields.bedroom &&
+    fields.bathroom &&
+    fields.parking &&
+    fields.description;
+  const validateSection3 = () => fields.propertyNeeds;
+  const validateSection4 = () => filesUploaded.length > 0;
+  const validateSection5 = () =>
+    fields.offerDate && fields.closeDate && fields.price && fields.arvPrice;
+
+  const validateSection = [
+    null,
+    validateSection1,
+    validateSection2,
+    validateSection3,
+    validateSection4,
+    validateSection5,
+  ];
+
+  const nextStep = () => {
+    if (typeof validateSection[step] !== null) {
+      if (!validateSection[step]()) return;
+    }
+    setSectionIsValid(validateSection[step + 1]);
+    setStep(step + 1);
+  };
+
+  const prevStep = () => {
+    setSectionIsValid(validateSection[step - 1]);
+    setStep(step - 1);
+  };
 
   const handleFieldChange = (event) => {
+    // applicable for text & number fields
     const value = event.target.value;
     setFields({
       ...fields,
@@ -199,11 +220,21 @@ export default function PropertyMultiForm(props) {
   };
 
   const handleOtherFieldChange = (fieldName, event) => {
+    // applicable for dropdown & date fields
     const value = event.hasOwnProperty("value") ? event.value : event;
-    console.log(value);
     setFields({
       ...fields,
       [fieldName]: value,
+    });
+  };
+
+  const handleAddressFieldChange = (geoAddress) => {
+    setFields({
+      ...fields,
+      address: "",
+      latitude: "",
+      longitude: "",
+      geoAddress,
     });
   };
 
@@ -259,6 +290,7 @@ export default function PropertyMultiForm(props) {
                         placeholder='Beautiful detached house in downtown London'
                         onChange={handleFieldChange}
                         name='title'
+                        required
                       />
                     </FormGroup>
                     <FormGroup
@@ -281,10 +313,11 @@ export default function PropertyMultiForm(props) {
                       <ControlLabel>Address</ControlLabel>
                       <PlacesAutocomplete
                         value={fields.geoAddress}
-                        onChange={(geoAddress) =>
-                          handleOtherFieldChange("geoAddress", geoAddress)
-                        }
                         onSelect={handleSelectAddress}
+                        onChange={handleAddressFieldChange}
+                        searchOptions={{
+                          componentRestrictions: { country: ["CA"] },
+                        }}
                       >
                         {({
                           getInputProps,
@@ -306,12 +339,12 @@ export default function PropertyMultiForm(props) {
                                 </div>
                               ) : null}
 
-                              {suggestions.map((suggestion, i) => {
+                              {suggestions.map((suggestion) => {
                                 return (
                                   <div
                                     className='MultiForm__AutoComplete-Suggestions'
-                                    key={suggestion}
                                     {...getSuggestionItemProps(suggestion, {})}
+                                    key={suggestion.placeId}
                                   >
                                     {suggestion.description}
                                   </div>
@@ -477,7 +510,10 @@ export default function PropertyMultiForm(props) {
                         rows={4}
                       />
                     </FormGroup>
-                    <FormGroup controlId='propertyNeeds'>
+                    <FormGroup
+                      controlId='propertyNeeds'
+                      className='form-group required'
+                    >
                       <ControlLabel>Property Needs</ControlLabel>
                       <FormControl
                         value={fields.propertyNeeds}
@@ -568,7 +604,10 @@ export default function PropertyMultiForm(props) {
                           className='form-control'
                         />
                       </FormGroup>
-                      <FormGroup controlId='closeDate' className='form-group'>
+                      <FormGroup
+                        controlId='closeDate'
+                        className='form-group required'
+                      >
                         <ControlLabel>Close Date</ControlLabel>
                         <DatePicker
                           selected={fields.closeDate}
@@ -654,42 +693,28 @@ export default function PropertyMultiForm(props) {
             ) : null}
             <div className='MultiForm__btn-container'>
               {step > 1 && (
-                <button
-                  className='MultiForm__back-btn btn'
-                  onClick={() => setStep(step - 1)}
-                >
+                <button className='MultiForm__back-btn btn' onClick={prevStep}>
                   <img alt='back button icon' src={backIcon} />
                   Back
                 </button>
               )}
-              {step < 5 && (
+              {step <= stageNames.length && (
                 <button
-                  className='MultiForm__btn btn'
-                  onClick={() => setStep(step + 1)}
+                  className={`MultiForm__btn btn ${
+                    sectionIsValid ? "" : "disabled"
+                  }`}
+                  onClick={nextStep}
                 >
-                  Next
+                  {step === stageNames.length ? "Preview" : "Next"}
                 </button>
               )}
-              {step < 6 && step > 4 && (
-                <LoaderButton
-                  className='MultiForm__btn btn'
-                  type='submit'
-                  bsSize='small'
-                  isLoading={isLoading}
-                  disabled={!validateForm()}
-                  onClick={() => setStep(step + 1)}
-                >
-                  Preview
-                </LoaderButton>
-              )}
 
-              {step > 5 && (
+              {step > stageNames.length && (
                 <LoaderButton
                   className='MultiForm__btn btn'
                   type='submit'
                   bsSize='small'
                   isLoading={isLoading}
-                  disabled={!validateForm()}
                   onClick={handleSubmit}
                 >
                   Submit

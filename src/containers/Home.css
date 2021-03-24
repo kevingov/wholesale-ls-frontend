@@ -56,6 +56,14 @@
   background-color: #55aa3e;
 }
 
+.btn.disabled {
+  background-color: rgb(124, 124, 124);
+}
+
+.btn.disabled:hover {
+  transform: none;
+}
+
 .highlight-container {
   /* background: #3ab984; */
   /* height: 250px;

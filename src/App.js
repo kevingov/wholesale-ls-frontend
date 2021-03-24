@@ -75,23 +75,16 @@ class App extends Component {
                 />
               </a>
               {this.state.isAuthenticated ? (
-                <div className='links'>
-                  <Col xs={1}>
+                <div className='nav-menu'>
+                  <div className='links'>
                     <a href='/properties'>Search</a>
-                  </Col>
-                  <Col xs={1}>
                     <a href='/dashboard'>My Properties</a>
-                  </Col>
-                  <Col xs={1}>
                     <a href='/messages'>Messages</a>
-                  </Col>
-                  <Col xs={4}></Col>
-                  <Col xs={3}>
+                  </div>
+                  <div className='links'>
                     <a href='/properties/new' className='secondary-btn'>
                       + New Property
                     </a>
-                  </Col>
-                  <Col xs={1}>
                     <a href='/profile' className='logo hidden-xs'>
                       <Image
                         height='30'
@@ -99,15 +92,13 @@ class App extends Component {
                         src='https://wholesale-ls-marketing.s3.amazonaws.com/Icons/notification.svg'
                       />
                     </a>
-                  </Col>
-                  <Col xs={1}>
                     <a href='/profile' className='logo hidden-xs'>
                       <ProfileIcon profile={this.state.profile} size='55' />
                     </a>
-                  </Col>
+                  </div>
                 </div>
               ) : (
-                <div className='links'>
+                <div className='nav-menu'>
                   <a
                     href='/login'
                     className={

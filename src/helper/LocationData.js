@@ -43,7 +43,7 @@ export const LOCATIONS_ALL = {
     city: "Edmonton",
     province: "AB",
   },
-  "Ottawa city, ON": {
+  "Ottawa, ON": {
     city: "Ottawa",
     province: "ON",
   },
