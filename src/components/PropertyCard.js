@@ -14,13 +14,13 @@ const PropertyCard = ({
   isSelected,
   index,
   forwardRef,
-  portraitMode,
+  landscapeMode,
 }) => (
   <div
     key={index ? "Property " + index : ""}
-    className={`PropertyCard ${portraitMode && " PropertyCard--Portrait"} ${
-      isSelected && " selected"
-    }`}
+    className={`PropertyCard ${
+      landscapeMode ? " PropertyCard--Landscape" : ""
+    } ${isSelected ? " selected" : ""}`}
     onClick={() => setPropertySelected(property)}
     onMouseEnter={() => setPropertyHovered(property)}
     onMouseLeave={() => setPropertyHovered(null)}
@@ -28,8 +28,8 @@ const PropertyCard = ({
   >
     <a
       href={`/properties/${property.propertyId}`}
-      className={`PropertyCard__Image-Container' ${
-        portraitMode && " PropertyCard__Image-Container"
+      className={`PropertyCard__Image-Container ${
+        landscapeMode ? " PropertyCard__Image-Container--Landscape" : ""
       }`}
     >
       <img
@@ -39,7 +39,7 @@ const PropertyCard = ({
     </a>
     <div
       className={`PropertyCard__Details ${
-        portraitMode && " PropertyCard__Details--Portrait"
+        landscapeMode ? " PropertyCard__Details--Landscape" : ""
       }`}
     >
       <h3 className='PropertyCard__Title'>

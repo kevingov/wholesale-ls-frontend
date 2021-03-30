@@ -1,4 +1,4 @@
-import { FormGroup, Col } from "react-bootstrap";
+import { FormGroup, Col, Row } from "react-bootstrap";
 import Dropdown from "react-dropdown";
 import React, { useEffect, useRef, useState, Fragment } from "react";
 import { API } from "aws-amplify";
@@ -20,6 +20,8 @@ import { useWindowDimensions } from "../helper";
 
 export default function Properties(props) {
   const { width: screenWidth } = useWindowDimensions();
+  const mapViewEnabled = screenWidth > 992;
+
   const [isLoading, setIsLoading] = useState(true);
   const [properties, setProperties] = useState([]);
   const [location, setLocation] = useState("");
@@ -29,7 +31,6 @@ export default function Properties(props) {
 
   const [searchInput, setSearchInput] = useState("");
   const [searchDropdownExpanded, setSearchDropdownExpanded] = useState(false);
-
   const [filterPropertyType, setFilterPropertyType] = useState({
     value: "All",
   });
@@ -192,42 +193,56 @@ export default function Properties(props) {
               ))}
             </div>
           </FormGroup>
-          <FormGroup controlId='filterPropertyType'>
-            <p className='Property__Filter-Label'>Property Type</p>
-            <Dropdown
-              placeholder='All'
-              value={filterPropertyType.label}
-              options={PROPERTY_TYPES}
-              onChange={(event) => setFilterPropertyType(event)}
-            />
-          </FormGroup>
-          <FormGroup controlId='filterBedrooms'>
-            <p className='Property__Filter-Label'>Bedrooms</p>
-            <Dropdown
-              placeholder='Any'
-              value={filterBedrooms.label}
-              options={BEDROOM_FILTERS}
-              onChange={(event) => setFilterBedrooms(event)}
-            />
-          </FormGroup>
-          <FormGroup controlId='filterBathrooms'>
-            <p className='Property__Filter-Label'>Bathrooms</p>
-            <Dropdown
-              placeholder='Any'
-              value={filterBathrooms.label}
-              options={BATHROOM_FILTERS}
-              onChange={(event) => setFilterBathrooms(event)}
-            />
-          </FormGroup>
-          <FormGroup controlId='filterSort'>
-            <p className='Property__Filter-Label'>Sort By</p>
-            <Dropdown
-              placeholder='Newest'
-              value={filterSort.label}
-              options={SORT_FILTERS}
-              onChange={(event) => setFilterSort(event)}
-            />
-          </FormGroup>
+          <div className='Properties__Filter-Selection'>
+            <Row>
+              <Col md={6}>
+                <FormGroup controlId='filterPropertyType'>
+                  <p className='Property__Filter-Label'>Property Type</p>
+                  <Dropdown
+                    placeholder='All'
+                    value={filterPropertyType.label}
+                    options={PROPERTY_TYPES}
+                    onChange={(event) => setFilterPropertyType(event)}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={6}>
+                <FormGroup controlId='filterBedrooms'>
+                  <p className='Property__Filter-Label'>Bedrooms</p>
+                  <Dropdown
+                    placeholder='Any'
+                    value={filterBedrooms.label}
+                    options={BEDROOM_FILTERS}
+                    onChange={(event) => setFilterBedrooms(event)}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={6}>
+                <FormGroup controlId='filterBathrooms'>
+                  <p className='Property__Filter-Label'>Bathrooms</p>
+                  <Dropdown
+                    placeholder='Any'
+                    value={filterBathrooms.label}
+                    options={BATHROOM_FILTERS}
+                    onChange={(event) => setFilterBathrooms(event)}
+                  />
+                </FormGroup>
+              </Col>
+              <Col md={6}>
+                <FormGroup controlId='filterSort'>
+                  <p className='Property__Filter-Label'>Sort By</p>
+                  <Dropdown
+                    placeholder='Newest'
+                    value={filterSort.label}
+                    options={SORT_FILTERS}
+                    onChange={(event) => setFilterSort(event)}
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+          </div>
         </div>
       </div>
       {!isLoading ? (
@@ -256,6 +271,7 @@ export default function Properties(props) {
                         property={property}
                         setPropertyHovered={setPropertyHovered}
                         setPropertySelected={setPropertySelected}
+                        landscapeMode={mapViewEnabled}
                         isSelected={
                           propertySelected &&
                           property.propertyId === propertySelected.propertyId
@@ -275,7 +291,7 @@ export default function Properties(props) {
               </Fragment>
             )}
           </div>
-          {screenWidth > 992 && (
+          {mapViewEnabled && (
             <div className='Properties__MapContainer'>
               <PropertiesMap
                 className='mapboxgl-map'
