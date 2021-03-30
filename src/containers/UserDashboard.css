@@ -21,27 +21,3 @@
 .Dashboard > div {
   padding-left: 0;
 }
-
-/******* Propertie Card - Dashboard *******/
-
-.PropertyCard--Dashboard {
-  margin: 15px 0;
-  flex-direction: column;
-  border-radius: 5px;
-  box-shadow: 0 0 5px 0 rgba(230, 230, 230, 0.5);
-  background-color: #fff;
-  padding: 11px;
-  border-radius: 5px;
-}
-
-.PropertyCard__Image-Container--Dashboard {
-  height: 210px;
-  width: 100%;
-  margin-bottom: 15px;
-  border-radius: 5px;
-}
-
-.PropertyCard__Details--Dashboard {
-  width: 100%;
-  padding: 0;
-}

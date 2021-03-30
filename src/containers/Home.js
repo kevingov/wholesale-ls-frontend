@@ -8,6 +8,7 @@ import React from "react";
 export default function Home(props) {
   return (
     <div>
+      {/* remove redirect to Properties? */}
       {props.isAuthenticated ? (
         props.history.push("/properties")
       ) : (

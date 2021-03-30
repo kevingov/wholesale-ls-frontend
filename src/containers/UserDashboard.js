@@ -31,7 +31,7 @@ export default function UserDashboard() {
   function loadProperties() {
     return API.get("properties", "/userproperties");
   }
-  console.log(properties);
+
   return (
     <div className='Index'>
       <div className='Breadcrumbs'>
@@ -50,14 +50,14 @@ export default function UserDashboard() {
             </p>
             <h1>My Listed Properties</h1>
             {properties.map((property, i) => (
-              <Col key={i} md={4}>
+              <Col key={i} md={4} sm={6}>
                 <div
                   key={("Property", i)}
-                  className='PropertyCard PropertyCard--Dashboard'
+                  className='PropertyCard PropertyCard--Portrait'
                 >
                   <a
                     href={`/properties/${property.propertyId}`}
-                    className='PropertyCard__Image-Container PropertyCard__Image-Container--Dashboard'
+                    className='PropertyCard__Image-Container PropertyCard__Image-Container--Portrait'
                   >
                     <img
                       alt={`${property.address} - Focus Property`}
@@ -66,7 +66,7 @@ export default function UserDashboard() {
                       }.s3.amazonaws.com/public/${property.image.shift()}`}
                     />
                   </a>
-                  <div className='PropertyCard__Details PropertyCard__Details--Dashboard'>
+                  <div className='PropertyCard__Details PropertyCard__Details--Portrait'>
                     <h3 className='PropertyCard__Title'>
                       {property.title.length > 75
                         ? property.title.slice(0, 75) + " ..."
@@ -99,7 +99,12 @@ export default function UserDashboard() {
                       </div>
                       <div className='PropertyCard__Row-Pricing-Item PropertyCard__Row-Pricing-Item--Profit'>
                         <p>Est. Profit</p>
-                        <p>$120,000</p>
+                        <p>
+                          $
+                          {(
+                            property.nearbyPrice - property.price
+                          ).toLocaleString()}
+                        </p>
                       </div>
                     </div>
                   </div>

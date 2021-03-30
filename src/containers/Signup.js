@@ -36,16 +36,13 @@ export default function Signup(props) {
   const [isBuyer, setIsBuyer] = useState(false);
   const [isWholesaler, setIsWholesaler] = useState(false);
 
-
-  useEffect(() => {}, []);
-
   console.log(isWholesaler, isBuyer);
 
   function accountForm() {
     return (
       <Row style={{ position: "relative" }}>
-        <Col xs={7} className='signup-left-background' />
-        <Col xs={7} className='signup-left'>
+        <Col md={7} className='signup-left-background hidden-sm hidden-xs' />
+        <Col md={7} className='signup-left hidden-sm hidden-xs'>
           <Image
             src='https://wholesale-ls-marketing.s3.amazonaws.com/Christian/Signup-Characters.png'
             fluid
@@ -53,8 +50,8 @@ export default function Signup(props) {
             id='landing-img'
           ></Image>
         </Col>
-        <form onSubmit={handleSubmit}>
-          <Col xs={5}>
+        <Col xs={12} md={5}>
+          <form onSubmit={handleSubmit}>
             <div className='signup-form'>
               <h1>Sign Up</h1>
               <p>I'm signing up for (Select all that Apply)</p>
@@ -162,8 +159,8 @@ export default function Signup(props) {
                 Log In
               </LoaderButton>
             </div>
-          </Col>
-        </form>
+          </form>
+        </Col>
       </Row>
     );
   }
@@ -196,7 +193,6 @@ export default function Signup(props) {
     });
   }
 
-
   async function handleSubmit(event) {
     event.preventDefault();
 
@@ -218,16 +214,14 @@ export default function Signup(props) {
       console.log(fields.email);
     } catch (e) {
       if (e.code === "UsernameExistsException") {
-        await Auth.resendSignUp(fields.email)
-      };
+        await Auth.resendSignUp(fields.email);
+      }
       setNewUser(true);
       console.log(e);
       alert(e.message);
       setIsLoading(false);
     }
   }
-
-  
 
   async function handleConfirmationSubmit(event) {
     event.preventDefault();
@@ -248,7 +242,7 @@ export default function Signup(props) {
 
   function renderConfirmationForm() {
     return (
-      <div className="container">
+      <div className='container'>
         <form onSubmit={handleConfirmationSubmit}>
           <FormGroup controlId='confirmationCode' bsSize='large'>
             <ControlLabel>Confirmation Code</ControlLabel>

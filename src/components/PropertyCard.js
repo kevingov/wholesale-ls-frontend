@@ -14,10 +14,13 @@ const PropertyCard = ({
   isSelected,
   index,
   forwardRef,
+  portraitMode,
 }) => (
   <div
     key={index ? "Property " + index : ""}
-    className={`PropertyCard ${isSelected ? " selected" : ""}`}
+    className={`PropertyCard ${portraitMode && " PropertyCard--Portrait"} ${
+      isSelected && " selected"
+    }`}
     onClick={() => setPropertySelected(property)}
     onMouseEnter={() => setPropertyHovered(property)}
     onMouseLeave={() => setPropertyHovered(null)}
@@ -25,14 +28,20 @@ const PropertyCard = ({
   >
     <a
       href={`/properties/${property.propertyId}`}
-      className='PropertyCard__Image-Container'
+      className={`PropertyCard__Image-Container' ${
+        portraitMode && " PropertyCard__Image-Container"
+      }`}
     >
       <img
         alt={`${property.address} - Focus Property`}
         src={`https://${config.s3.BUCKET}.s3.amazonaws.com/public/${property.image[0]}`}
       />
     </a>
-    <div className='PropertyCard__Details'>
+    <div
+      className={`PropertyCard__Details ${
+        portraitMode && " PropertyCard__Details--Portrait"
+      }`}
+    >
       <h3 className='PropertyCard__Title'>
         {property.title.length > 55
           ? property.title.slice(0, 55) + " ..."

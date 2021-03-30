@@ -1,4 +1,4 @@
-import { FormGroup } from "react-bootstrap";
+import { FormGroup, Col } from "react-bootstrap";
 import Dropdown from "react-dropdown";
 import React, { useEffect, useRef, useState, Fragment } from "react";
 import { API } from "aws-amplify";
@@ -15,9 +15,11 @@ import {
   PROPERTY_TYPES,
   SORT_FILTERS,
 } from "../helper/Data";
-import { LOCATIONS_ALL } from "../helper/LocationData";
+import { LOCATIONS_DATA } from "../helper/LocationData";
+import { useWindowDimensions } from "../helper";
 
 export default function Properties(props) {
+  const { width: screenWidth } = useWindowDimensions();
   const [isLoading, setIsLoading] = useState(true);
   const [properties, setProperties] = useState([]);
   const [location, setLocation] = useState("");
@@ -60,18 +62,22 @@ export default function Properties(props) {
     }
   }, [propertySelected]);
 
-  // function loadProperties() {
-  //   return API.get("properties", "/properties", {
-  //     queryStringParameters: {
-  //       filterBedrooms: filterBedrooms,
-  //       filterBathrooms: filterBathrooms,
-  //     },
-  //   });
-  // }
-  function loadProperties() {
-    return API.get("properties", "/allproperties");
-  }
+  useEffect(() => {
+    if (!searchInput) setLocation("");
+  }, [searchInput]);
 
+  function loadProperties() {
+    if (location) {
+      return API.get("properties", "/properties", {
+        queryStringParameters: {
+          city: LOCATIONS_DATA[location].city,
+          province: LOCATIONS_DATA[location].province,
+        },
+      });
+    } else {
+      return API.get("properties", "/allproperties");
+    }
+  }
   // Filter functions
   const resultsFilteredByDropdown = properties.filter((results) => {
     let isPropertyType =
@@ -128,7 +134,7 @@ export default function Properties(props) {
   const filteredLocations = () => {
     const MAX_RESULTS = 8;
     let count = 0;
-    return Object.keys(LOCATIONS_ALL).filter((location) => {
+    return Object.keys(LOCATIONS_DATA).filter((location) => {
       return (
         location.toLowerCase().startsWith(searchInput.toLowerCase()) &&
         count++ < MAX_RESULTS
@@ -239,19 +245,26 @@ export default function Properties(props) {
                 )}
                 {searchProperties.map((property, index) => {
                   return (
-                    <PropertyCard
-                      key={("Property", index)}
-                      property={property}
-                      setPropertyHovered={setPropertyHovered}
-                      setPropertySelected={setPropertySelected}
-                      isSelected={
-                        propertySelected &&
-                        property.propertyId === propertySelected.propertyId
-                      }
-                      forwardRef={(ref, propertyId) => {
-                        propertyCardsRef.current[propertyId] = ref;
-                      }}
-                    />
+                    <Col
+                      key={index}
+                      md={12}
+                      sm={6}
+                      xs={12}
+                      style={{ padding: "0" }}
+                    >
+                      <PropertyCard
+                        property={property}
+                        setPropertyHovered={setPropertyHovered}
+                        setPropertySelected={setPropertySelected}
+                        isSelected={
+                          propertySelected &&
+                          property.propertyId === propertySelected.propertyId
+                        }
+                        forwardRef={(ref, propertyId) => {
+                          propertyCardsRef.current[propertyId] = ref;
+                        }}
+                      />
+                    </Col>
                   );
                 })}
               </Fragment>
@@ -262,17 +275,18 @@ export default function Properties(props) {
               </Fragment>
             )}
           </div>
-
-          <div className='Properties__MapContainer'>
-            <PropertiesMap
-              className='mapboxgl-map'
-              properties={searchProperties}
-              location={location}
-              propertyHovered={propertyHovered}
-              propertySelected={propertySelected}
-              setPropertySelected={setPropertySelected}
-            />
-          </div>
+          {screenWidth > 992 && (
+            <div className='Properties__MapContainer'>
+              <PropertiesMap
+                className='mapboxgl-map'
+                properties={searchProperties}
+                location={location}
+                propertyHovered={propertyHovered}
+                propertySelected={propertySelected}
+                setPropertySelected={setPropertySelected}
+              />
+            </div>
+          )}
         </div>
       ) : (
         <Loading />

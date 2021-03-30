@@ -56,8 +56,15 @@ export const PropertiesMap = ({
         `https://nominatim.openstreetmap.org/search/${location}?format=json&countrycodes=CA&limit=1&polygon_geojson=1`
       ); // nominatim API
       handleGeojsonZone(URI);
+    } else {
+      clearGeojsonZone();
     }
   }, [location]);
+
+  const clearGeojsonZone = () => {
+    const feature = [];
+    setPolygonFeatures(feature);
+  };
 
   const handleGeojsonZone = (URI) => {
     axios

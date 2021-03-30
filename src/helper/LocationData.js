@@ -22,7 +22,7 @@ export const LOCATIONS = [
   "Whitchurch-Stouffville",
 ];
 
-export const LOCATIONS_ALL = {
+export const LOCATIONS_DATA = {
   "Toronto, ON": {
     city: "Toronto",
     province: "ON",

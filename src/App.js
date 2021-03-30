@@ -85,34 +85,29 @@ class App extends Component {
                     <a href='/properties/new' className='secondary-btn'>
                       + New Property
                     </a>
-                    <a href='/profile' className='logo hidden-xs'>
-                      <Image
-                        height='30'
-                        alt='Notification Icon'
-                        src='https://wholesale-ls-marketing.s3.amazonaws.com/Icons/notification.svg'
-                      />
-                    </a>
-                    <a href='/profile' className='logo hidden-xs'>
+                    <a href='/profile'>
                       <ProfileIcon profile={this.state.profile} size='55' />
                     </a>
                   </div>
                 </div>
               ) : (
-                <div className='nav-menu'>
-                  <a
-                    href='/login'
-                    className={
-                      window.location.pathname === "/login"
-                        ? "active link-10"
-                        : "link-10"
-                    }
-                  >
-                    Log In
-                  </a>
-                  <div className='seperator ' />
-                  <a href='/signup' className='secondary-btn '>
-                    Signup
-                  </a>
+                <div className='nav-menu right'>
+                  <div className='links'>
+                    <a
+                      href='/login'
+                      className={
+                        window.location.pathname === "/login"
+                          ? "active link-10"
+                          : "link-10"
+                      }
+                    >
+                      Log In
+                    </a>
+                    <div className='seperator ' />
+                    <a href='/signup' className='secondary-btn '>
+                      Signup
+                    </a>
+                  </div>
                 </div>
               )}
             </div>

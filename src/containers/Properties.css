@@ -116,7 +116,7 @@
 
 .Properties__Results {
   padding: 0 15px;
-  flex: 1 0 630px;
+  flex: 1 0;
   height: 100%;
   overflow-y: scroll;
 }
@@ -176,4 +176,11 @@
 .mapbox-point.selected::after,
 .mapbox-point:hover::after {
   background: #ff802c;
+}
+
+/******* Media Queries (Responsive) *******/
+@media only screen and (min-width: 992px) {
+  .Properties__Results {
+    flex: 1 0 630px;
+  }
 }

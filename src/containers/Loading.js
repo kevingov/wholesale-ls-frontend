@@ -15,36 +15,14 @@ export default class Loading extends Component {
 
   render() {
     return (
-      <div>
-        <br />
-        <br />
-        <br />
-        <br />
+      <div style={{ height: "100vh" }}>
         <ReactLoading
-          className="loading"
-          type={"bubbles"}
-          color={"#6C63FF"}
-          height={"100px"}
-          width={"150px"}
+          className='loader'
+          type={"spinningBubbles"}
+          color={"#3ab984"}
+          height={"70px"}
+          width={"70px"}
         />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
       </div>
     );
   }

@@ -40,60 +40,55 @@ export default function Login(props) {
   }
 
   return (
-    <div className="Login container">
+    <div className='Login container'>
       <Row>
-        {/* <Col sm={8} smOffset={2}> */}
-          <Col xs={7} className="signup-left">
-              <Image 
-                  src="https://wholesale-ls-marketing.s3.amazonaws.com/Christian/Signup-Characters.png" 
-                  fluid sizes="(max-width: 380px) 100vw, 380px"
-                  className="center login-picture"
-                  >
+        <Col md={7} className='signup-left hidden-sm hidden-xs'>
+          <Image
+            src='https://wholesale-ls-marketing.s3.amazonaws.com/Christian/Signup-Characters.png'
+            fluid
+            className='center login-picture'
+            style={{ width: "100%" }}
+          ></Image>
+        </Col>
 
-              </Image>
-            </Col>
-          
-            <form onSubmit={handleSubmit}>
-            <Col xs={5}>
-              <div className="signup-form">
+        <form onSubmit={handleSubmit}>
+          <Col xs={12} md={5}>
+            <div className='signup-form'>
+              <h1>Login</h1>
+              <p>Welcome Back</p>
 
-                <h1>Login</h1>
-                <p>Welcome Back</p>
-
-              <FormGroup controlId="email" bsSize="large">
+              <FormGroup controlId='email' bsSize='large'>
                 <ControlLabel>Email</ControlLabel>
                 <FormControl
                   autoFocus
-                  type="email"
+                  type='email'
                   value={fields.email}
                   onChange={handleFieldChange}
                 />
               </FormGroup>
-              <FormGroup controlId="password" bsSize="large">
+              <FormGroup controlId='password' bsSize='large'>
                 <ControlLabel>Password</ControlLabel>
                 <FormControl
-                  type="password"
+                  type='password'
                   value={fields.password}
                   onChange={handleFieldChange}
                 />
               </FormGroup>
-              <Row>
-              <a href='/login/reset'>Forgot your Password?</a>
-              </Row>
+              <div>
+                <a href='/login/reset'>Forgot your Password?</a>
+              </div>
               <LoaderButton
-                className="btn-primary"
-                type="submit"
-                bsSize="large"
+                className='btn-primary'
+                type='submit'
+                bsSize='large'
                 isLoading={isLoading}
                 disabled={!validateForm()}
               >
                 Login
               </LoaderButton>
-              </div>
-              </Col>
-            </form>
-          
-        {/* </Col> */}
+            </div>
+          </Col>
+        </form>
       </Row>
     </div>
   );

@@ -1,4 +1,4 @@
-/******* Properties Card (List View) *******/
+/******* Properties Card (Landscape) *******/
 
 .PropertyCard {
   margin: 14px 0;
@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   border-radius: 5px;
   border: 3px solid #ffffff00;
   transition: background-color 200ms ease, box-shadow 200ms ease;
@@ -130,4 +130,47 @@
 
 .PropertyCard__Row-Pricing-Item--Profit p:first-child {
   color: #fe6500;
+}
+
+/******* Propertie Card (Portrait) *******/
+
+.PropertyCard--Portrait {
+  flex-direction: column;
+  box-shadow: 0 0 5px 0 rgba(230, 230, 230, 0.5);
+  background-color: #fff;
+  padding: 10px;
+}
+
+.PropertyCard__Image-Container--Portrait {
+  width: 100%;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.PropertyCard__Details--Portrait {
+  width: 100%;
+  height: auto;
+  padding: 0;
+}
+
+/******* Media Queries (Responsive) *******/
+@media only screen and (max-width: 992px) {
+  .PropertyCard {
+    flex-direction: column;
+    box-shadow: 0 0 5px 0 rgba(230, 230, 230, 0.5);
+    background-color: #fff;
+    padding: 10px;
+  }
+
+  .PropertyCard__Image-Container {
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }
+
+  .PropertyCard__Details {
+    width: 100%;
+    height: auto;
+    padding: 0;
+  }
 }
