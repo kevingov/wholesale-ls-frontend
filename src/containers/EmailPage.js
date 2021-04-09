@@ -60,7 +60,8 @@ export default function EmailPage(props) {
     }, [props.match.params.id]);
 
     async function sendPropertyEmail() {
-        await sendEmail({
+        try {
+        const res = await sendEmail({
             buyerEmail: user.attributes.email,
             wholesalerEmail: profile.email,
             propertyTitle: property.title,
@@ -69,8 +70,12 @@ export default function EmailPage(props) {
             wholesalerFirstName: profile.firstName,
             message: message,
         });
-        alert("Your Email is being Sent");
-        window.location.replace("/properties");
+        } catch (e) {
+            console.log(e);
+        };
+        console.log("hey is this working after sendEmail");
+        alert("Your Email has been sent to the Wholesaler");
+        props.history.push("/properties");
         setInfoSent(true);
     }
 
@@ -119,7 +124,6 @@ export default function EmailPage(props) {
                             <button
                                 className='ViewPropertyCard__ContactButton secondary-btn'
                                 onClick={sendPropertyEmail}
-                                
                             >
                                 Send Email
                             </button>

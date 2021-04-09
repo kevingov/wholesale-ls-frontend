@@ -116,6 +116,11 @@ export default function EditProfile(props) {
       return str.replace(/^\w+-/, "");
     }
 
+    async function handleLogout(event) {
+      await Auth.signOut();
+      props.history.push("/login");
+    }
+
     return (
         <div className="EditProfile container">
             {!isLoading ? (
@@ -203,7 +208,16 @@ export default function EditProfile(props) {
                 >
                   Update
                 </LoaderButton>
+
+                <LoaderButton
+                className="btn-primary"
+                onClick={handleLogout}
+                bsSize="large"
+                >
+                  Logout
+                </LoaderButton>
               </form>
+              
             ) : (
                 <Loading />
             )}

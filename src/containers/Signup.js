@@ -216,9 +216,13 @@ export default function Signup(props) {
       if (e.code === "UsernameExistsException") {
         await Auth.resendSignUp(fields.email);
       }
+      if (e.code === "InvalidParameterException") {
+        alert(e.message);
+        props.history.push("/login");
+      }
       setNewUser(true);
       console.log(e);
-      alert(e.message);
+      alert(e);
       setIsLoading(false);
     }
   }
