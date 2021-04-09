@@ -68,16 +68,16 @@ export default function Properties(props) {
   }, [searchInput]);
 
   function loadProperties() {
-    if (location) {
-      return API.get("properties", "/properties", {
-        queryStringParameters: {
-          city: LOCATIONS_DATA[location].city,
-          province: LOCATIONS_DATA[location].province,
-        },
-      });
-    } else {
-      return API.get("properties", "/allproperties");
-    }
+    // if (location) {
+    //   return API.get("properties", "/properties", {
+    //     queryStringParameters: {
+    //       city: LOCATIONS_DATA[location].city,
+    //       province: LOCATIONS_DATA[location].province,
+    //     },
+    //   });
+    // } else {
+    return API.get("properties", "/allproperties");
+    // }
   }
   // Filter functions
   const resultsFilteredByDropdown = properties.filter((results) => {
