@@ -10,6 +10,8 @@ import backArrowIcon from "../assets/back-icon.png";
 import mapPinIcon from "../assets/map-pin-icon.png";
 // import Slider from "../components/Slider";
 
+import Dropdown from "../components/Dropdown";
+
 export default function MessageCentre(props) {
     const [property, setProperty] = useState(null);
     const [profile, setProfile] = useState(null);
@@ -20,7 +22,7 @@ export default function MessageCentre(props) {
     const [conversationMessages, setConversationMessages] = useState(null);
     const [createConversation, setCreateConversation] = useState(null);
     const [newMessage, setNewMessage] = useState(false);
-    const [search, setSearch] = useState('')
+    const [search, setSearch] = useState('');
 
     useEffect(() => {
         function listConversation() {
@@ -63,9 +65,16 @@ export default function MessageCentre(props) {
     console.log("all Conversations is now below");
     console.log(allConversations);
 
-    const filterProfiles = allProfiles.filter( allProfiles => {
-        return allProfiles.firstName.toLowerCase().includes( search.toLowerCase() )
+    const filterProfiles = allProfiles.filter((val) => {
+        if (search == "") {
+            return val
+        } else if (val.fullName.toLowerCase().includes( search.toLowerCase() )) {
+            return val
+        }
     })
+
+    console.log("filterPrifles is below");
+    console.log(filterProfiles);
 
     return (
         <div className='Index'>
@@ -113,21 +122,38 @@ export default function MessageCentre(props) {
                         </div>
                     </div>
                 </Col>
+                
                 <Col xs={8}>
                     <div className='ViewProperty'>
                         <div className='container'>
+                            <Row>
                             <div className='ViewProperty__Wrapper'>
                                     <h1>New Message</h1>
                                     {search}
                                     <input type="text" placeholder="Type a name or multiple names..." onChange={ e => setSearch(e.target.value) }></input>
+                                    <h1>List of Names</h1>
                                     {filterProfiles.map((profiles, i) => (
-                                        <div key={i} {...profiles} />
+                                        <div key={i} {...profiles}> 
+                                            <div>{profiles.fullName} {profiles.userId}</div>
+                                        </div>
                                     ))}
                             </div>
+                            </Row>
+                            <Row>
+                            <div className='container'>
+                                <h1>New Dropdown Below</h1>
+                                
+                                <Dropdown title="Select Profile" items={filterProfiles} multiSelect>
+                                <input type="text" placeholder="Type a name or multiple names..." onChange={ e => setSearch(e.target.value) }></input>
+                                </Dropdown>
+                            </div>
+                            </Row>
                         </div>
                     </div>
                 </Col>
-
+                
+                    
+               
 
             </Row>
 
