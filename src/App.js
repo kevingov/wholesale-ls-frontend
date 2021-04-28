@@ -155,8 +155,13 @@ class App extends Component {
                     </a>
                   </Col>
                   <Col sm={12} md={2}>
-                    <div className='sections-menu-headline'>Contact</div>
-                    <a
+                    <div className='sections-menu-headline'>Contact Us</div>
+
+
+                    <p className='structure-menu-link'>hello@uncommonestate.com</p>
+                    <p className='structure-menu-link'>(647) 447-8193</p>
+
+                    {/* <a
                       href='https://linkedin.com/company/uncommonestate'
                       className='structure-menu-link'
                     >
@@ -185,7 +190,7 @@ class App extends Component {
                       className='structure-menu-link'
                     >
                       Slack
-                    </a>
+                    </a> */}
                   </Col>
                 </Row>
               </div>
