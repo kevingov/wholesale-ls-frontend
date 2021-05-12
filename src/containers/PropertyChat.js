@@ -14,7 +14,7 @@ export default function PropertyChat(props) {
   const [property, setProperty] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [propertyOwner, setPropertyOwner] = useState(false);
-  const [currentUser, setCurrentUser]= useState(false);
+  const [currentUser, setCurrentUser] = useState(false);
   const [profile, setProfile] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
   const [viewCreateAccountModal, setViewCreateAccountModal] = useState(null);
@@ -90,7 +90,10 @@ export default function PropertyChat(props) {
   }
 
   function addMessageToConversationMessages(response) {
-    setConversationMessages(conversationMessages => [...conversationMessages, response])
+    setConversationMessages((conversationMessages) => [
+      ...conversationMessages,
+      response,
+    ]);
   }
 
   async function handleSubmit(event) {
@@ -102,7 +105,7 @@ export default function PropertyChat(props) {
       if (conversation === null) {
         const newConversation = await createConversation(property.userId);
         setConversation(newConversation);
-      };
+      }
       const response = await sendMessage({
         message: message,
         conversationId: conversation.conversationId,
@@ -120,14 +123,18 @@ export default function PropertyChat(props) {
   }
 
   function sendMessage() {
-    return API.post("properties", `/properties/${props.match.params.id}/message`, {
-      body: {
-        propertyOwner: profile.userId,
-        content: message,
-        conversationId: conversation.conversationId,
-        senderName: currentUser.firstName + " " + currentUser.lastName,
-      },
-    });
+    return API.post(
+      "properties",
+      `/properties/${props.match.params.id}/message`,
+      {
+        body: {
+          propertyOwner: profile.userId,
+          content: message,
+          conversationId: conversation.conversationId,
+          senderName: currentUser.firstName + " " + currentUser.lastName,
+        },
+      }
+    );
   }
 
   return (
@@ -183,46 +190,44 @@ export default function PropertyChat(props) {
                 </div>
 
                 <div className='chat-container'>
-                  
+                  <ul className='message-list'>
+                    {conversationMessages &&
+                      conversationMessages.map(
+                        (conversationMessages, index) => {
+                          return (
+                            <li
+                              // key={testMessages.conversationId}
+                              className='message'
+                            >
+                              <div>
+                                {" "}
+                                <b>{conversationMessages.senderName}</b>{" "}
+                                {conversationMessages.createdAt}{" "}
+                              </div>
+                              <div>{conversationMessages.message}</div>
+                            </li>
+                          );
+                        }
+                      )}
+                  </ul>
 
-                  
-                    <ul className="message-list">
-                      {
-                      conversationMessages &&
-                      conversationMessages.map((conversationMessages, index) => {
-                        return (
-                          <li 
-                          // key={testMessages.conversationId} 
-                          className="message">
-                            <div> <b>{conversationMessages.senderName}</b>      {conversationMessages.createdAt} </div>
-                            <div>{conversationMessages.message}</div>
-                          </li>
-                        )
-                      })}
-                    </ul>
+                  <div className='send-message-container'>
+                    <Form
+                      // onSubmit={handleSubmit}
+                      className='send-message-form'
+                    >
+                      <FormControl
+                        onChange={(e) => setMessage(e.target.value)}
+                        value={message}
+                        placeholder='Type your message and hit Enter'
+                        type='text'
+                      ></FormControl>
 
-
-                    <div className="send-message-container">
-                        <Form 
-                          // onSubmit={handleSubmit}
-                          className="send-message-form">
-                            <FormControl
-                              onChange={(e) => setMessage(e.target.value)}
-                              value={message}
-                              placeholder="Type your message and hit Enter"
-                              type="text">
-                            </FormControl>
-                        
-                      
-                        <button className='secondary-btn' onClick={handleSubmit}>Submit</button>
-                        </Form>
-
-                    </div>
-
-                    
-                  
-
-
+                      <button className='secondary-btn' onClick={handleSubmit}>
+                        Submit
+                      </button>
+                    </Form>
+                  </div>
                 </div>
               </div>
             ) : (

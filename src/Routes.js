@@ -89,6 +89,7 @@ export default ({ childProps }) => (
     />
     <AppliedRoute
       path='/properties/:id/chat'
+      // path='/chat/:id'
       exact
       component={PropertyChat}
       props={childProps}

@@ -132,13 +132,12 @@ export default function Properties(props) {
       setSearchDropdownExpanded(false);
     }
   };
-  const filteredLocations = () => {
-    const MAX_RESULTS = 8;
+  const filteredData = (locationData, maxResults) => {
     let count = 0;
-    return Object.keys(LOCATIONS_DATA).filter((location) => {
+    return Object.keys(locationData).filter((location) => {
       return (
         location.toLowerCase().startsWith(searchInput.toLowerCase()) &&
-        count++ < MAX_RESULTS
+        count++ < maxResults
       );
     });
   };
@@ -181,7 +180,7 @@ export default function Properties(props) {
                 searchDropdownExpanded ? "active" : ""
               }`}
             >
-              {filteredLocations().map((item) => (
+              {filteredData(LOCATIONS_DATA, 8).map((item) => (
                 <a
                   onClick={onSelectDropdownLocation}
                   data-location={item}
