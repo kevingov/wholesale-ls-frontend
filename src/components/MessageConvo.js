@@ -83,7 +83,6 @@ export default function MessageConvo({
       );
       console.log("messageCreated:", createMessageRes);
       setMessageInput("");
-      console.log("Cleared messageInput field");
       return createMessageRes;
     } catch (err) {
       console.log("messageCreated:", err);
@@ -149,7 +148,6 @@ export default function MessageConvo({
       return profilesObj;
     }
   }, [openConversation]);
-  console.log("participantProfiles:", participantProfiles);
 
   const participantNames = () => {
     if (participantProfiles) {
@@ -183,12 +181,6 @@ export default function MessageConvo({
         profilesSelected={profilesSelected}
         setProfilesSelected={setProfilesSelected}
       />
-      <button
-        className='secondary-btn'
-        onClick={() => createConversation(profilesSelected)}
-      >
-        Create Conversation
-      </button>
     </Fragment>
   );
 

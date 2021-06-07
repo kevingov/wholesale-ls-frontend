@@ -52,6 +52,8 @@ export default function MessageCentre(props) {
     }
   };
 
+  console.log("openConversation:", openConversation);
+
   const openCreateConvoScreen = () => {
     setOpenConversation(null);
   };

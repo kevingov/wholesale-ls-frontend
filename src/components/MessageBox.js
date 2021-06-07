@@ -4,6 +4,7 @@ import React from "react";
 import ProfileIcon from "./ProfileIcon";
 
 export default function MessageBox({ messages, profile, sentAt }) {
+  console.log("msgBox Profile:", profile);
   return (
     <div className='MessageBox'>
       <ProfileIcon profile={profile} size='45' />
