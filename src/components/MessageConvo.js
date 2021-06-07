@@ -149,6 +149,7 @@ export default function MessageConvo({
       return profilesObj;
     }
   }, [openConversation]);
+  console.log("participantProfiles:", participantProfiles);
 
   const participantNames = () => {
     if (participantProfiles) {
@@ -193,24 +194,21 @@ export default function MessageConvo({
 
   return (
     <div className='MessageConvo'>
-      {openConversation ? (
+      {openConversation && participantProfiles ? (
         <Fragment>
           <div className='MessageConvo__Head'>
             {<h3>{participantNames()}</h3>}
           </div>
           <div className='MessageConvo__Messages'>
             {messageBoxes &&
-              messageBoxes.map((msgBox, index) => {
-                console.log("msgBox:", msgBox);
-                return (
-                  <MessageBox
-                    key={("Message Box", index)}
-                    profile={participantProfiles[msgBox.userId]}
-                    sentAt={formatTime(msgBox.sentAt)}
-                    messages={msgBox.messages}
-                  />
-                );
-              })}
+              messageBoxes.map((msgBox, index) => (
+                <MessageBox
+                  key={("Message Box", index)}
+                  profile={participantProfiles[msgBox.userId]}
+                  sentAt={formatTime(msgBox.sentAt)}
+                  messages={msgBox.messages}
+                />
+              ))}
           </div>
         </Fragment>
       ) : (
