@@ -65,7 +65,7 @@
 }
 
 .highlight-container {
-  /* background: #3ab984; */
+  /* background: #1bbb5b; */
   /* height: 250px;
     padding: 25px; */
 }
@@ -233,7 +233,7 @@
   width: 100%;
   height: 2px;
   max-width: 200px;
-  background-color: #3ab984;
+  background-color: #1bbb5b;
 }
 
 .about-us-text img {
@@ -325,7 +325,7 @@
   overflow: hidden;
   padding-top: 70px;
   padding-bottom: 70px;
-  background-color: #3ab984;
+  background-color: #1bbb5b;
   margin-bottom: 100px;
 }
 
@@ -378,7 +378,7 @@
   z-index: 1;
   width: 52%;
   height: 100%;
-  background-color: #3ab984;
+  background-color: #1bbb5b;
   -webkit-transform: skew(-15deg, 0deg);
   -ms-transform: skew(-15deg, 0deg);
   transform: skew(-15deg, 0deg);

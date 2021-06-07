@@ -266,7 +266,7 @@ body {
 
 .secondary-btn {
   color: #fff;
-  background-color: #3ab984;
+  background-color: #1bbb5b;
   border-radius: 3px;
   padding: 10px 20px;
   border: none;
@@ -326,6 +326,11 @@ button:hover {
   -ms-transform: skew(8deg) rotate(3deg);
   -o-transform: skew(8deg) rotate(3deg);
   transform: skew(8deg) rotate(3deg);
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
 }
 
 /******* Media Queries (Responsive) *******/

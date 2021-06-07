@@ -1,0 +1,41 @@
+/******* Conversation Card *******/
+
+.MessageBox {
+  padding: 25px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.MessageBox__Details {
+  margin-left: 15px;
+  flex: 1;
+}
+
+.MessageBox__Name-Date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.MessageBox__Name {
+  font-size: 15px;
+  font-weight: 600;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+ul.MessageBox__Messages {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul.MessageBox__Messages li {
+  padding: 5px 0;
+}

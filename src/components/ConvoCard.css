@@ -1,0 +1,51 @@
+/******* Conversation Card *******/
+
+.ConvoCard {
+  padding: 25px 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.ConvoCard.selected {
+  background: #f9fff8;
+  box-shadow: inset 3px 0 0 #1bbb5b;
+}
+
+.ConvoCard:hover {
+  background: rgb(240, 240, 240);
+}
+
+.ConvoCard__Details {
+  margin-left: 15px;
+  flex: 1;
+}
+
+.ConvoCard__Names-Date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ConvoCard__Names {
+  font-size: 15px;
+  font-weight: 600;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.ConvoCard__Preview {
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

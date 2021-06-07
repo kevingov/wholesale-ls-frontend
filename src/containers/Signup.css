@@ -75,7 +75,7 @@
 
 .signup-selector:focus {
   outline: none !important;
-  border-color: #3ab984;
+  border-color: #1bbb5b;
 }
 
 .signup-selector:hover {
@@ -83,7 +83,7 @@
 }
 
 .signup-selector-active {
-  border: 2px solid #3ab984;
+  border: 2px solid #1bbb5b;
 }
 
 .signup-button {
@@ -105,8 +105,8 @@
 }
 
 .login-button:hover {
-  border-color: #3ab984;
-  background-color: #3ab984;
+  border-color: #1bbb5b;
+  background-color: #1bbb5b;
 }
 
 .login-separator {
@@ -226,7 +226,7 @@
   line-height: 26px;
   letter-spacing: 0.2px;
   text-transform: none;
-  background: #3ab984;
+  background: #1bbb5b;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -252,13 +252,13 @@ textarea {
 .progress-container {
   width: 100%;
   height: 15px;
-  border: 1px solid #3ab984;
+  border: 1px solid #1bbb5b;
   max-width: 500px;
   margin: auto;
 }
 
 .progress-bar {
   height: 100%;
-  background-color: #3ab984;
+  background-color: #1bbb5b;
   transition: 0.5s all ease;
 } */

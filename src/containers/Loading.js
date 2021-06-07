@@ -19,7 +19,7 @@ export default class Loading extends Component {
         <ReactLoading
           className='loader'
           type={"spinningBubbles"}
-          color={"#3ab984"}
+          color={"#1bbb5b"}
           height={"70px"}
           width={"70px"}
         />

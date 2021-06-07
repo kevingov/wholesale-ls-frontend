@@ -1,0 +1,67 @@
+/******* Message Centre *******/
+.MessageCentre {
+  padding: 40px 0;
+}
+
+.MessageCentre h3 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.11px;
+}
+
+.MessageCentre__Container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1040px;
+  height: 90vh;
+  margin: auto;
+}
+
+.MessagePanel,
+.MessageConvo {
+  height: 100%;
+  border-radius: 7px;
+  background-color: #ffffff;
+  box-shadow: 0 0 5px 0 rgba(230, 230, 230, 0.5);
+}
+
+/******* Message Centre - Panel *******/
+
+.MessagePanel {
+  flex: 1 0 400px;
+  margin-right: 12px;
+}
+
+.MessagePanel__Head {
+  margin: 20px 25px 10px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.MessagePanel__Head > img {
+  width: 23px;
+  cursor: pointer;
+}
+
+.MessagePanel__Convo-List {
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+.MessagePanel__Convo-List .ConvoCard:first-child {
+  border-top: 1px solid rgb(236, 236, 236);
+}
+
+.MessagePanel__Convo-List .ConvoCard:not(first-child) {
+  border-bottom: 1px solid rgb(236, 236, 236);
+}
+
+/******* Media Queries (Responsive) *******/
+
+@media only screen and (min-width: 767px) {
+}

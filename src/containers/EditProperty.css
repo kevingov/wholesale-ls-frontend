@@ -1,21 +1,20 @@
 .btn {
-    color: black;
-    min-height: 42px;
-    padding: 12px 20px 11px;
-    border-style: solid;
-    border-width: 2px;
-    border-color: black;
-    border-radius: 25px;
-    background-color: transparent;
-    transition: color 200ms ease, background-color 200ms ease;
-    font-size: 14px;
-    line-height: 15px;
-    font-weight: 700;
-    margin-top: 20px;
-  }
+  color: black;
+  min-height: 42px;
+  padding: 12px 20px 11px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  border-radius: 25px;
+  background-color: transparent;
+  transition: color 200ms ease, background-color 200ms ease;
+  font-size: 14px;
+  line-height: 15px;
+  font-weight: 700;
+  margin-top: 20px;
+}
 
-  .btn:hover {
-    background-color: #3ab984;
-    color:white;
-   
-  }
+.btn:hover {
+  background-color: #1bbb5b;
+  color: white;
+}

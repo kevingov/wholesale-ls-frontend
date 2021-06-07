@@ -1,0 +1,58 @@
+/******* Profile Search Bar *******/
+
+.Profile-Search-Bar {
+  border-radius: 3px;
+  width: 100%;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.Profile-Search-Bar__Wrapper {
+  margin-top: 1.5em;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Profile-Search-Bar__Wrapper > input {
+  border-radius: 4px;
+  border: 1px solid #d8d8d8;
+  box-shadow: none;
+  padding: 8px;
+  flex-grow: 1;
+}
+
+.Profile-Search-Bar__Wrapper > a {
+  cursor: pointer;
+  padding: 0 10px 0 10px;
+}
+
+.Profile-Search-Bar__Wrapper > a img {
+  width: 10px;
+  height: 10px;
+}
+
+.Profile-Search-Bar__Dropdown-Content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  width: 290px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  max-height: 540px;
+  overflow: scroll;
+}
+.Profile-Search-Bar__Dropdown-Content.active {
+  display: block;
+}
+.Profile-Search-Bar__Dropdown-Content a {
+  padding: 8px 10px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+.Profile-Search-Bar__Dropdown-Content a:hover {
+  background: rgb(243, 243, 243);
+}

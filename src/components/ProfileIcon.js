@@ -17,7 +17,7 @@ const ProfileIcon = ({ profile, size }) => {
       src={src}
       style={{
         borderRadius: "50%",
-        border: "5px solid #efefef",
+        border: "3px solid #efefef",
         width: diameter,
         height: diameter,
         objectFit: "cover",
