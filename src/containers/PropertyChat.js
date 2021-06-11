@@ -31,25 +31,38 @@ export default function PropertyChat(props) {
       return API.get("profiles", `/profiles/${userId}`);
     }
 
-    function loadConversation(propertyOwnerId) {
-      return API.get(
-        "properties",
-        `/properties/${props.match.params.id}/chat`,
-        {
-          queryStringParameters: {
-            propertyOwner: propertyOwnerId,
-          },
-        }
-      );
-    }
+    // function loadConversation(propertyOwnerId) {
+    //   return API.get(
+    //     "properties",
+    //     `/properties/${props.match.params.id}/chat`,
+    //     {
+    //       queryStringParameters: {
+    //         propertyOwner: propertyOwnerId,
+    //       },
+    //     }
+    //   );
+    // }
 
     function loadConversationMessages(conversationId) {
-      return API.get("properties", `/conversation/messages`, {
+      return API.get("properties", `/conversation/getmessages`, {
         queryStringParameters: {
           conversationId: conversationId,
+          
         },
       });
     }
+
+    function checkConversation(test) {
+      return API.get("properties", `/conversation/checkconversation`, {
+        queryStringParameters: {
+          participantIds: test,
+          numberOfParticipants: test.length,
+        },
+      });
+    }
+
+    const test = ['us-east-1:30ad799d-890f-4d4a-a041-5647a2b67c13', 'us-east-1:812b2d43-37db-4ec2-8e18-06174817874b']
+
 
     async function onLoad() {
       try {
@@ -65,14 +78,18 @@ export default function PropertyChat(props) {
         setPropertyOwner(userId === property.userId);
         setProperty(property);
         setIsLoading(true);
-        const existingConversation = await loadConversation(property.userId);
-        setConversation(existingConversation);
-        if (existingConversation) {
-          const existingConversationMessages = await loadConversationMessages(
-            existingConversation.conversationId
-          );
-          setConversationMessages(existingConversationMessages);
-        }
+        // const existingConversation = await loadConversation(property.userId);
+        // setConversation(existingConversation);
+        // if (existingConversation) {
+        //   const existingConversationMessages = await loadConversationMessages(
+        //     existingConversation.conversationId
+        //   );
+        //   setConversationMessages(existingConversationMessages);
+        // }
+        console.log(test.length);
+        const testCheckConversation = await checkConversation(test);
+        console.log("testCheckConversation Below");
+        console.log(testCheckConversation);
       } catch (e) {
         alert(e);
       }
