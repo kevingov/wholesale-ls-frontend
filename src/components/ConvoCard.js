@@ -9,9 +9,12 @@ export default function ConvoCard({
   isSelected,
   setOpenConversation,
   profiles,
+  authedProfile,
 }) {
-  const participantProfiles = profiles.filter((profile) =>
-    conversation.participants.includes(profile.userId)
+  const participantProfiles = profiles.filter(
+    (profile) =>
+      conversation.participants.includes(profile.userId) &&
+      profile.userId !== authedProfile.userId
   );
   const participantNames = participantProfiles
     .map((profile) => profile.fullName)
@@ -23,7 +26,7 @@ export default function ConvoCard({
       className={`ConvoCard ${isSelected ? " selected" : ""}`}
       onClick={() => setOpenConversation(conversation)}
     >
-      <ProfileIcon profile={profiles[0]} size='50' />
+      <ProfileIcon profile={participantProfiles[0]} size='50' />
       <div className='ConvoCard__Details'>
         <div>
           <div className='ConvoCard__Names-Date'>

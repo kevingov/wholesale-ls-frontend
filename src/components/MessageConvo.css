@@ -2,12 +2,19 @@
 
 .MessageConvo {
   width: 100%;
-  padding: 5px 25px;
   position: relative;
 }
 
 .MessageConvo__Head {
-  margin-bottom: 30px;
+  margin: 20px 25px 30px;
+}
+
+.MessageConvo__Separator {
+  border-bottom: 1px solid rgb(236, 236, 236);
+}
+
+.MessageConvo__Messages {
+  padding: 5px 25px;
 }
 
 .MessageConvo__Users {

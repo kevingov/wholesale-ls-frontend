@@ -35,8 +35,7 @@
 }
 
 .MessagePanel__Head {
-  margin: 20px 25px 10px;
-  margin-bottom: 30px;
+  margin: 20px 25px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -51,6 +50,8 @@
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
+  position: relative;
+  height: calc(100% - 73px);
 }
 
 .MessagePanel__Convo-List .ConvoCard:first-child {
