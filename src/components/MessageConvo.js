@@ -11,6 +11,7 @@ export default function MessageConvo({
   setOpenConversation,
   setConversations,
   allProfiles,
+  profiles,
   authedProfile,
 }) {
   const [messageBoxes, setMessageBoxes] = useState([]);
@@ -54,10 +55,9 @@ export default function MessageConvo({
           },
         }
       );
-      console.log("allMessages:", allMessages);
 
       const composeMessageBoxes = allMessages.reduce((res, msg) => {
-        appendMessage(res, msg);
+        createMsgBoxes(res, msg);
         return res;
       }, []);
 
@@ -83,15 +83,15 @@ export default function MessageConvo({
       );
       console.log("messageCreated:", createMessageRes);
       setMessageInput("");
-      console.log("Cleared messageInput field");
       return createMessageRes;
     } catch (err) {
       console.log("messageCreated:", err);
     }
   };
 
-  const appendMessage = (msgBoxes, newMsg) => {
-    const latestMsgBox = msgBoxes[msgBoxes.length - 1];
+  const createMsgBoxes = (msgBoxes, newMsg, isNewConvo) => {
+    if (isNewConvo) msgBoxes = [];
+    const latestMsgBox = msgBoxes.length ? msgBoxes[msgBoxes.length - 1] : null;
 
     if (latestMsgBox && latestMsgBox.userId === newMsg.userId) {
       latestMsgBox.messages.push(newMsg.message);
@@ -110,6 +110,7 @@ export default function MessageConvo({
   const onSendMessage = async () => {
     if (!messageInput || !authedProfile) return;
     let convoId;
+    let isNewConvo = false;
 
     try {
       // create conversation
@@ -120,6 +121,8 @@ export default function MessageConvo({
 
         setConversations((convos) => [convoCreated, ...convos]);
         setOpenConversation(convoCreated);
+        setProfilesSelected([]);
+        isNewConvo = true;
       }
       // create message
       convoId = openConversation ? openConversation.conversationId : convoId;
@@ -129,7 +132,11 @@ export default function MessageConvo({
         messageInput
       );
 
-      const updatedMsgsBoxes = appendMessage(messageBoxes, msgCreated);
+      const updatedMsgsBoxes = createMsgBoxes(
+        messageBoxes,
+        msgCreated,
+        isNewConvo
+      );
       console.log("updatedMsgsBoxes:", updatedMsgsBoxes);
       setMessageBoxes([...updatedMsgsBoxes]);
     } catch (err) {
@@ -137,25 +144,16 @@ export default function MessageConvo({
     }
   };
 
-  const participantProfiles = useMemo(() => {
-    if (openConversation && "participants" in openConversation) {
-      const profiles = allProfiles.filter((profile) =>
-        openConversation.participants.includes(profile.userId)
-      );
-      let profilesObj = {};
-      for (const profile of profiles) {
-        profilesObj[profile.userId] = profile;
-      }
-      return profilesObj;
-    }
-  }, [openConversation]);
-  console.log("participantProfiles:", participantProfiles);
-
   const participantNames = () => {
-    if (participantProfiles) {
-      return Object.entries(participantProfiles)
+    if ("participants" in openConversation && profiles) {
+      return Object.entries(profiles)
+        .filter(
+          ([userId, _]) =>
+            openConversation.participants.includes(userId) &&
+            userId !== authedProfile.userId
+        )
         .map(([_, profile]) => {
-          return profile.fullName;
+          if (profile.userId !== authedProfile.userId) return profile.fullName;
         })
         .join(", ");
     }
@@ -183,32 +181,38 @@ export default function MessageConvo({
         profilesSelected={profilesSelected}
         setProfilesSelected={setProfilesSelected}
       />
-      <button
-        className='secondary-btn'
-        onClick={() => createConversation(profilesSelected)}
-      >
-        Create Conversation
-      </button>
+      {profilesSelected.length > 0 && (
+        <button
+          className='secondary-btn'
+          onClick={() => setProfilesSelected([])}
+        >
+          Clear Selected
+        </button>
+      )}
     </Fragment>
   );
 
   return (
     <div className='MessageConvo'>
-      {openConversation && participantProfiles ? (
+      {openConversation ? (
         <Fragment>
           <div className='MessageConvo__Head'>
-            {<h3>{participantNames()}</h3>}
+            {<h3 style={{ margin: 0 }}>{participantNames()}</h3>}
           </div>
+          <div className='MessageConvo__Separator' />
           <div className='MessageConvo__Messages'>
             {messageBoxes &&
-              messageBoxes.map((msgBox, index) => (
-                <MessageBox
-                  key={("Message Box", index)}
-                  profile={participantProfiles[msgBox.userId]}
-                  sentAt={formatTime(msgBox.sentAt)}
-                  messages={msgBox.messages}
-                />
-              ))}
+              messageBoxes.map((msgBox, index) => {
+                console.log("msgBox:", msgBox);
+                return (
+                  <MessageBox
+                    key={("Message Box", index)}
+                    profile={profiles[msgBox.userId]}
+                    sentAt={formatTime(msgBox.sentAt)}
+                    messages={msgBox.messages}
+                  />
+                );
+              })}
           </div>
         </Fragment>
       ) : (

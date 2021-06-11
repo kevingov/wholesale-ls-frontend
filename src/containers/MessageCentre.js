@@ -2,7 +2,7 @@ import "./MessageCentre.css";
 
 import { API, Auth } from "aws-amplify";
 import { Breadcrumb } from "react-bootstrap";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 
 import ConvoCard from "../components/ConvoCard";
 import MessageConvo from "../components/MessageConvo";
@@ -46,11 +46,27 @@ export default function MessageCentre(props) {
     try {
       const profilesRes = await API.get("profiles", `/listprofile`);
       setAllProfiles(profilesRes);
-      console.log("allProfiles:", profilesRes);
+      // console.log("allProfiles:", profilesRes);
     } catch (err) {
       console.log("listProfiles:", err);
     }
   };
+
+  const profiles = useMemo(() => {
+    // *** Must replace allProfiles.
+    // Need to create endpoint fetch only participants profiles ***
+    if (allProfiles && conversations) {
+      let profilesObj = {};
+      for (const profile of allProfiles) {
+        profilesObj[profile.userId] = profile;
+      }
+      return profilesObj;
+    }
+  }, [allProfiles]);
+
+  console.log("profiles:", profiles);
+
+  console.log("openConversation:", openConversation);
 
   const openCreateConvoScreen = () => {
     setOpenConversation(null);
@@ -83,9 +99,6 @@ export default function MessageCentre(props) {
             <div className='MessagePanel__Convo-List'>
               {allProfiles &&
                 conversations.map((convo, index) => {
-                  const profiles = allProfiles.filter((profile) =>
-                    convo.participants.includes(profile.userId)
-                  );
                   return (
                     <ConvoCard
                       key={convo.conversationId}
@@ -95,7 +108,8 @@ export default function MessageCentre(props) {
                         convo.conversationId === openConversation.conversationId
                       }
                       setOpenConversation={setOpenConversation}
-                      profiles={profiles}
+                      profiles={allProfiles}
+                      authedProfile={authedProfile}
                     />
                   );
                 })}
@@ -107,6 +121,7 @@ export default function MessageCentre(props) {
               setOpenConversation={setOpenConversation}
               setConversations={setConversations}
               allProfiles={allProfiles}
+              profiles={profiles}
               authedProfile={authedProfile}
             />
           )}
