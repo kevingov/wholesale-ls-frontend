@@ -87,7 +87,7 @@ export default function PropertyChat(props) {
         //   setConversationMessages(existingConversationMessages);
         // }
         console.log(test.length);
-        const testCheckConversation = await checkConversation(test);
+        // const testCheckConversation = await checkConversation(test);
         console.log("testCheckConversation Below");
         console.log(testCheckConversation);
       } catch (e) {
@@ -102,6 +102,14 @@ export default function PropertyChat(props) {
     return API.post("properties", `/properties/${props.match.params.id}/chat`, {
       body: {
         propertyOwner: propertyOwnerId,
+      },
+    });
+  }
+
+  function createConversation2(test2) {
+    return API.post("properties", `/properties/${props.match.params.id}/chat`, {
+      body: {
+        propertyOwner: test2,
       },
     });
   }
