@@ -13,9 +13,12 @@
   border-bottom: 1px solid rgb(236, 236, 236);
 }
 
-.MessageConvo__Messages {
+.MessageConvo__Messages,
+.MessageConvo__CreateConvo {
   padding: 5px 25px;
 }
+
+/******* Create New Conversation *******/
 
 .MessageConvo__Users {
   display: flex;
