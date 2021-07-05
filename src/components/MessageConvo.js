@@ -20,7 +20,7 @@ export default function MessageConvo({
   const [profilesSelected, setProfilesSelected] = useState([]);
 
   useEffect(() => {
-    if (openConversation.conversationId) {
+    if (openConversation) {
       loadAllMessages(openConversation.conversationId);
     }
   }, [openConversation]);
@@ -50,7 +50,7 @@ export default function MessageConvo({
         `/conversation/getmessages`,
         {
           queryStringParameters: {
-            conversationId: conversationId,
+            conversationId,
           },
         }
       );
@@ -62,7 +62,7 @@ export default function MessageConvo({
 
       setMessageBoxes(composeMessageBoxes);
     } catch (err) {
-      console.log("loadAllMessages:", err);
+      console.log("loadAllMessages:", err.response.data);
     }
   };
 

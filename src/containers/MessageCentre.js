@@ -12,7 +12,7 @@ export default function MessageCentre(props) {
   const [authedProfile, setAuthedProfile] = useState("");
   const [allProfiles, setAllProfiles] = useState(null);
   const [conversations, setConversations] = useState([]);
-  const [openConversation, setOpenConversation] = useState({});
+  const [openConversation, setOpenConversation] = useState(null);
 
   useEffect(() => {
     loadAuthedProfile();
