@@ -65,8 +65,7 @@ export default function MessageCentre(props) {
   }, [allProfiles]);
 
   console.log("profiles:", profiles);
-
-  console.log("openConversation:", openConversation);
+  console.log("conversations:", conversations);
 
   const openCreateConvoScreen = () => {
     setOpenConversation(null);
@@ -119,6 +118,7 @@ export default function MessageCentre(props) {
             <MessageConvo
               openConversation={openConversation}
               setOpenConversation={setOpenConversation}
+              conversations={conversations}
               setConversations={setConversations}
               allProfiles={allProfiles}
               profiles={profiles}

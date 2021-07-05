@@ -9,6 +9,7 @@ import { formatTime } from "../helper/Utils";
 export default function MessageConvo({
   openConversation,
   setOpenConversation,
+  conversations,
   setConversations,
   allProfiles,
   profiles,
@@ -19,15 +20,13 @@ export default function MessageConvo({
   const [profilesSelected, setProfilesSelected] = useState([]);
 
   useEffect(() => {
-    if (openConversation) {
+    if (openConversation.conversationId) {
       loadAllMessages(openConversation.conversationId);
     }
   }, [openConversation]);
 
-  const createConversation = async () => {
+  const createConversation = async (participantIds) => {
     try {
-      const participantIds = profilesSelected.map((profile) => profile.userId);
-      participantIds.push(authedProfile.userId);
       const createConvoRes = await API.post(
         "properties",
         `/conversation/createconversation`,
@@ -90,6 +89,13 @@ export default function MessageConvo({
     }
   };
 
+  const conversationExists = (participantIds) => {
+    return conversations.reduce((existingConvo, convo) => {
+      if (convo.participants.equals(participantIds)) return convo;
+      return existingConvo;
+    }, null);
+  };
+
   const createMsgBoxes = (msgBoxes, newMsg, isNewConvo) => {
     if (isNewConvo) msgBoxes = [];
     const latestMsgBox = msgBoxes.length ? msgBoxes[msgBoxes.length - 1] : null;
@@ -114,14 +120,29 @@ export default function MessageConvo({
     let isNewConvo = false;
 
     try {
-      // create conversation
       if (!openConversation && profilesSelected.length > 0) {
-        const convoCreated = await createConversation(profilesSelected);
-        console.log("convoCreated:", convoCreated);
-        convoId = convoCreated.conversationId;
+        const participantIds = profilesSelected.map(
+          (profile) => profile.userId
+        );
+        participantIds.push(authedProfile.userId);
 
-        setConversations((convos) => [convoCreated, ...convos]);
-        setOpenConversation(convoCreated);
+        // check if conversation already exists with selected participants
+        const existingConvo = conversationExists(participantIds);
+        if (existingConvo) {
+          alert(
+            "You already have a conversation opened with the selected participant(s)"
+          );
+          setOpenConversation(existingConvo);
+          return;
+        }
+
+        // create conversation
+        const newConvo = await createConversation(participantIds);
+        console.log("newConvo:", newConvo);
+        convoId = newConvo.conversationId;
+
+        setConversations((convos) => [newConvo, ...convos]);
+        setOpenConversation(newConvo);
         setProfilesSelected([]);
         isNewConvo = true;
       }
@@ -170,26 +191,29 @@ export default function MessageConvo({
       <div className='MessageConvo__Head'>
         <h3>Participants Selected</h3>
       </div>
-      <div className='MessageConvo__Users'>
-        {profilesSelected.map((profile, index) => (
-          <div key={profile.userId} className='MessageConvo__Selected-User'>
-            {profile.fullName}
-          </div>
-        ))}
+      <div className='MessageConvo__Separator' />
+      <div className='MessageConvo__CreateConvo'>
+        <div className='MessageConvo__Users'>
+          {profilesSelected.map((profile, index) => (
+            <div key={profile.userId} className='MessageConvo__Selected-User'>
+              {profile.fullName}
+            </div>
+          ))}
+        </div>
+        <ProfileSearchBar
+          profiles={allProfiles}
+          profilesSelected={profilesSelected}
+          setProfilesSelected={setProfilesSelected}
+        />
+        {profilesSelected.length > 0 && (
+          <button
+            className='secondary-btn'
+            onClick={() => setProfilesSelected([])}
+          >
+            Clear Selected
+          </button>
+        )}
       </div>
-      <ProfileSearchBar
-        profiles={allProfiles}
-        profilesSelected={profilesSelected}
-        setProfilesSelected={setProfilesSelected}
-      />
-      {profilesSelected.length > 0 && (
-        <button
-          className='secondary-btn'
-          onClick={() => setProfilesSelected([])}
-        >
-          Clear Selected
-        </button>
-      )}
     </Fragment>
   );
 
