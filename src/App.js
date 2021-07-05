@@ -79,7 +79,7 @@ class App extends Component {
                   <div className='links'>
                     <a href='/properties'>Search</a>
                     <a href='/dashboard'>My Properties</a>
-                    {/* <a href='/messages'>Messages</a> */}
+                    <a href='/messages'>Messages</a>
                   </div>
                   <div className='links'>
                     <a href='/properties/new' className='secondary-btn'>

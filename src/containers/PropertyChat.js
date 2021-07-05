@@ -52,6 +52,14 @@ export default function PropertyChat(props) {
       });
     }
 
+    function loadConversationFirstMessage(conversationId) {
+      return API.get("properties", `/conversation/getfirstmessages`, {
+        queryStringParameters: {
+          conversationId: conversationId,
+        },
+      });
+    }
+
     function checkConversation(test) {
       return API.get("properties", `/conversation/checkconversation`, {
         queryStringParameters: {
@@ -89,7 +97,9 @@ export default function PropertyChat(props) {
         console.log(test.length);
         // const testCheckConversation = await checkConversation(test);
         console.log("testCheckConversation Below");
-        console.log(testCheckConversation);
+        // console.log(testCheckConversation);
+        const firstMessage = await loadConversationFirstMessage("307a3180-cac3-11eb-b177-9136a0612457");
+        console.log(firstMessage);
       } catch (e) {
         alert(e);
       }

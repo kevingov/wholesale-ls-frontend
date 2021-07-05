@@ -34,6 +34,7 @@ export default function MessageConvo({
         {
           body: {
             participants: participantIds,
+            profileId: ['82f9a180-7383-11eb-a005-6f3c23de9137','f016a3f0-c142-11eb-9327-677faf121733'],
           },
         }
       );
