@@ -237,7 +237,7 @@ export default function Signup(props) {
       await Auth.signIn(fields.email, fields.password);
       await createProfile();
       // props.userHasAuthenticated(true);
-      props.history.push("/");
+      props.history.push("/properties");
     } catch (e) {
       alert(e.message);
       setIsLoading(false);
