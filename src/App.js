@@ -67,7 +67,7 @@ class App extends Component {
         <div className='App'>
           <div className='nav'>
             <div className='nav-content container'>
-              <a href='/' className='logo hidden-xs'>
+              <a href='https://uncommonestate.com' className='logo hidden-xs'>
                 <img
                   height='45'
                   alt='uncommon estate logo'
