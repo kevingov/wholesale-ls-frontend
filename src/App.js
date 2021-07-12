@@ -158,7 +158,7 @@ class App extends Component {
                     <div className='sections-menu-headline'>Contact Us</div>
 
 
-                    <p className='structure-menu-link'>hello@uncommonestate.com</p>
+                    <p className='structure-menu-link'>kevin@kevingov.com</p>
                     <p className='structure-menu-link'>(647) 447-8193</p>
 
                     {/* <a
