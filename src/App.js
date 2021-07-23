@@ -71,7 +71,7 @@ class App extends Component {
                 <img
                   height='45'
                   alt='uncommon estate logo'
-                  src='https://wholesale-ls-marketing.s3.amazonaws.com/logo/Looka/Color+logo+-+no+background.png'
+                  src='https://wholesale-ls-marketing.s3.amazonaws.com/logo/Webflow_Logo_Colored.png'
                 />
               </a>
               {this.state.isAuthenticated ? (
@@ -122,7 +122,7 @@ class App extends Component {
                       <img
                         height='45'
                         alt='uncommon estate logo'
-                        src='https://wholesale-ls-marketing.s3.amazonaws.com/logo/Looka/White+logo+-+no+background.png'
+                        src='https://wholesale-ls-marketing.s3.amazonaws.com/logo/Webflow_Logo_white.png'
                       />
                     </div>
                     <br />
